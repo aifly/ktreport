@@ -1,6 +1,5 @@
 ﻿@import "../css/base.scss";
 
-
 html, body, div, p, ul, li, ol, dl, dt, dd, header, footer, video, h1, h2, h3, h4, canvas, section, figure {
 	padding: 0;
 	margin: 0;
@@ -34,6 +33,7 @@ img {
 
 .zmiti-index-main-ui {
 	@include transition(1s .4s);
+	z-index: 1000;
 
 	&.show {
 		z-index: 102;
@@ -44,38 +44,121 @@ img {
 	background: #fff;
 	z-index: -1;
 	font-size: 12px;
-	
-	.zmiti-house{
 
+	.zmiti-house {
+		@include pos(a);
+		width: 8rem;
+		left: 1rem;
+		top: 20vh;
+		opacity: .7;
+		@include transform(translate3d(0, 2rem, 0));
+
+		&.show {
+			@include transition(1s);
+			@include transform(translate3d(0, 0, 0));
+			opacity: 1;
+		}
+
+	}
+
+	.zmiti-meteor {
+		opacity: 0;
+		@include animation(move 3.8s  infinite);
+		width: .2rem;
+		height: 1rem;
+		@include pos(a);
+
+		&:before, &:after {
+			content: '';
+			@include pos(a);
+		}
+
+		&:before {
+			width: .2rem;
+			height: .2rem;
+			@include br();
+			background: #92faff;
+		}
+
+		&:after {
+			width: .1rem;
+			height: .8rem;
+			bottom: 0;
+			left: .05rem;
+			background: -webkit-linear-gradient(top, rgba(138, 243, 254, 1), rgba(138, 243, 254, .1));
+		}
+
+	}
+
+	.zmiti-meteor1 {
+		left: 1rem;
+		top: 8.5rem;
+		@include animation(move 3s linear infinite);
+	}
+
+	.zmiti-meteor2 {
+		left: 2rem;
+		top: 11rem;
+		@include animation(move 4s  infinite);
+	}
+
+	.zmiti-meteor3 {
+		left: 3.3rem;
+		top: 10rem;
+		@include animation(move 5s  infinite);
+	}
+
+	.zmiti-meteor4 {
+		left: 6.6rem;
+		top: 10rem;
+		@include animation(move 4.1s linear  infinite);
+	}
+
+	.zmiti-meteor5 {
+		left: 7rem;
+		top: 3rem;
+		@include animation(move 3.8s  infinite);
+	}
+
+	.zmiti-meteor6 {
+		left: 9rem;
+		top: 14rem;
+		@include animation(move 5s 1s infinite);
+	}
+
+	@-webkit-keyframes move {
+		100% {
+			opacity: 1;
+			@include transform(translate3d(0, -14rem, 0));
+		}
+
+	}
+
+	.zmiti-text {
 		@include pos(a);
 		width: 7rem;
-		right: 0;
-		top: 10vh;
-
-		opacity:0;
-		@include transform(translate3d(0,2rem,0));
-		&.show{
-			@include transition(1s);	
-			@include transform(translate3d(0,0,0));
-			opacity:1;
-		}
-	}
-
-	.zmiti-text{
-		@include pos(a);
-		width: 4rem;
 		bottom: 1rem;
-		left: 1rem;
-		opacity:0;
-		@include transform(translate3d(-1rem,0,0));
-		&.show{
+		left: 1.5rem;
+		opacity: 0;
+		@include transform(translate3d(0, 1rem, 0));
+
+		&.show {
 			@include transition(1s 1s);
-			@include transform(translate3d(0,0,0));
-			opacity:1;
+			@include transform(translate3d(0, 0, 0));
+			opacity: 1;
 		}
+
+		.zmiti-index-btn {
+			width: 3.6rem;
+			height: .9rem;
+			@include pos(a);
+			bottom: 0rem;
+			left: 0;
+		}
+
 	}
 
-	.zmiti-kpy{
+	.zmiti-kpy {
 		@include pos(a);
 		width: 3rem;
 		left: 0;
@@ -83,18 +166,22 @@ img {
 		z-index: 10;
 	}
 
-
 }
 
-
-.zmiti-main-ui{
-	@include displayBox(horizontal);
+.zmiti-main-ui {
+	@include displayBox(vertical);
 	@include transition(.3s);
-	&>li{
 
+	&>li {
+		width: 100%;
 		overflow: hidden;
-		-webkit-box-flex:1;
+		-webkit-box-flex: 1;
 		height: 100%;
 		@include pos(r);
 	}
+
+}
+
+.zmiti-play {
+	top: 1.5rem !important;
 }

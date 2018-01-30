@@ -56,27 +56,27 @@
 
 	var _componentsIndexIndex2 = _interopRequireDefault(_componentsIndexIndex);
 
-	var _componentsPage1Page1 = __webpack_require__(16);
+	var _componentsPagePage = __webpack_require__(13);
 
-	var _componentsPage1Page12 = _interopRequireDefault(_componentsPage1Page1);
+	var _componentsPagePage2 = _interopRequireDefault(_componentsPagePage);
 
-	var _componentsCopyrightCopyright = __webpack_require__(27);
-
-	var _componentsCopyrightCopyright2 = _interopRequireDefault(_componentsCopyrightCopyright);
-
-	var _componentsLibObserable = __webpack_require__(32);
+	var _componentsLibObserable = __webpack_require__(18);
 
 	var _componentsLibObserable2 = _interopRequireDefault(_componentsLibObserable);
 
-	var _componentsLibAssets = __webpack_require__(11);
+	var _componentsLibAssets = __webpack_require__(7);
 
 	var _componentsLibAssets2 = _interopRequireDefault(_componentsLibAssets);
 
-	var _jquery = __webpack_require__(14);
+	var _jquery = __webpack_require__(19);
 
 	var _jquery2 = _interopRequireDefault(_jquery);
 
-	__webpack_require__(33);
+	__webpack_require__(20);
+
+	var _componentsLibUtil = __webpack_require__(21);
+
+	var _componentsLibUtil2 = _interopRequireDefault(_componentsLibUtil);
 
 	var obserable = new _componentsLibObserable2['default']();
 
@@ -89,15 +89,86 @@
 			obserable: obserable,
 			rotate: false,
 			imgs: _componentsLibAssets2['default'],
+			index: 0,
+			page1Animate: false,
+			page2Animate: false,
+			page3Animate: false,
+			page4Animate: false,
+			page5Animate: false,
+			page6Animate: false,
+			page7Animate: false,
 			showMask: false,
+			business: 0,
+			customer: 0,
+			imgIndex: -1,
+
 			bg: './assets/music/bg.mp3',
-			viewH: document.documentElement.clientHeight
+			viewH: document.documentElement.clientHeight,
+			viewW: document.documentElement.clientWidth
 
 		},
-		el: '#app',
-		template: '<div>\n\t\t<Index :obserable=\'obserable\'></Index>\n\t\t<Page1 :obserable=\'obserable\'></Page1>\n\t\t<Copyright :obserable=\'obserable\'></Copyright>\n\t\t<div @click=\'toggleMusic\' class=\'zmiti-play\' :class=\'{"rotate":rotate}\'>\n\t\t\t<img :src=\'imgs.play\'/>\n\t\t</div>\n\n\t\t<audio ref=\'audio\' :src=\'bg\' loop autoplay></audio>\n\n\t\t<div :style="{height:viewH+\'px\'}"  class="zmiti-mask" v-if=\'showMask\' @touchstart=\'showMask = false\'>\n\t\t\t<img :src="imgs.arrow" alt="">\n\t\t</div>\n\t</div>',
-		methods: {
+		watch: {
+			index: function index(_index) {
+				var _this = this;
 
+				this.page1Animate = false;
+				this.page2Animate = false;
+				this.page3Animate = false;
+				this.page4Animate = false;
+				this.page5Animate = false;
+				this.page6Animate = false;
+				this.page7Animate = false;
+				switch (_index) {
+					case 0:
+						break;
+					case 1:
+					case 2:
+					case 4:
+					case 5:
+					case 6:
+					case 7:
+						this['page' + _index + 'Animate'] = true;
+						break;
+					case 3:
+						this.page3Animate = true;
+
+						var i = 0;
+						var j = 1500;
+						var t = setInterval(function () {
+							i += 2;
+							j += 10;
+							if (j >= 2000) {
+								j = 2000;
+								clearInterval(t);
+							}
+							if (i >= 96) {
+								i = 96;
+							}
+							_this.business = i;
+							_this.customer = j;
+						}, 40);
+						break;
+				}
+				obserable.trigger({
+					type: 'getIndex',
+					data: _index
+				});
+			}
+		},
+		el: '#app',
+		template: '<div class=\'zmiti-main\' :style="{width:viewW+\'px\',height:viewH+\'px\',oveflow:\'hidden\'}"> \n\t\t<ul v-swipeleft=\'swipeleft\' v-swipeup=\'swipeleft\' v-swiperight=\'swiperight\' v-swipedown=\'swiperight\' class=\'zmiti-main-ui\' :style="{height:8*viewH+\'px\',WebkitTransform:\'translate3d(0,\'+-(index*viewH)+\'px,0)\'}">\n\t\t\t<li v-tap=\'entryIndex\' :style="{height:viewH+\'px\'}">\n\t\t\t\t<Index @entryIndex=\'entryIndex\' :obserable=\'obserable\'></Index>\n\t\t\t</li>\n\t\t\t<li :style="{height:viewH+\'px\'}">\n\t\t\t\t<Page :page1Animate=\'page1Animate\' :pagenum=\'1\' :obserable=\'obserable\'></Page>\n\t\t\t</li>\n\t\t\t<li :style="{height:viewH+\'px\'}">\n\t\t\t\t<Page :pagenum=\'2\' :obserable=\'obserable\'>\n\t\t\t\t\t<div slot=\'title\'>\n\t\t\t\t\t\t深入耕耘云业务,业绩持续稳健增长。\n\t\t\t\t\t</div>\n\t\t\t\t\t<div :class="{\'show\':page2Animate}" class=\'zmiti-page2-img\' slot=\'page-img\' :style=\'{height:viewH-6*(viewW/10)+"px"}\'>\n\t\t\t\t\t\t<img :src=\'imgs.ar\' />\n\t\t\t\t\t\t<img :src=\'imgs.yun\' />\n\t\t\t\t\t</div>\n\t\t\t\t</Page>\n\t\t\t</li>\n\t\t\t<li :style="{height:viewH+\'px\'}">\n\t\t\t\t<Page :pagenum=\'3\' :obserable=\'obserable\'>\n\t\t\t\t\t<div slot=\'title\'>\n\t\t\t\t\t\t业务覆盖全国96%的省份,服务客户量2000+\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\'zmiti-page1-img zmiti-page3-img\' slot=\'page-img\' :style=\'{height:viewH-6*(viewW/10)+"px"}\'>\n\t\t\t\t\t\t<div :class="{\'show\':page3Animate}">\n\t\t\t\t\t\t\t<img :src=\'imgs.map\' />\n\t\t\t\t\t\t\t<span>{{business}}%</span>\n\t\t\t\t\t\t\t<span>{{customer}}+</span>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</Page>\n\t\t\t</li>\n\t\t\t<li :style="{height:viewH+\'px\'}">  \n\t\t\t\t<Page :pagenum=\'4\' :obserable=\'obserable\'>\n\t\t\t\t\t<div slot=\'title\'>\n\t\t\t\t\t\t开辟行业新天地,树立应用新典范。\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\'zmiti-page1-img zmiti-page4-img\' slot=\'page-img\' :style=\'{height:viewH-6*(viewW/10)+"px"}\'>\n\t\t\t\t\t\t<ol :class="{\'show\':page4Animate}">\n\t\t\t\t\t\t\t<li v-for=\'(n,i) in new Array(6)\'>\n\t\t\t\t\t\t\t\t<img :src=\'imgs["part"+(i+1)]\' />\n\t\t\t\t\t\t\t</li>\t\t\t\n\t\t\t\t\t\t</ol>\n\t\t\t\t\t</div>\n\t\t\t\t</Page>\n\t\t\t</li>\n\n\t\t\t<li :style="{height:viewH+\'px\'}"> \n\t\t\t\t<Page titleClass=\'page5\' :pageStyle="{background:\'#e4253f\'}" :pagenum=\'5\' :obserable=\'obserable\'>\n\t\t\t\t\t<div slot=\'title\'>\n\t\t\t\t\t\t辛劳付出饱受客户夸赞。\n\t\t\t\t\t</div>\n\t\t\t\t\t<img :src="imgs.pagenum1" slot=\'page-num\' alt="" />\n\t\t\t\t\t<div class=\'zmiti-page1-img zmiti-page5-img\' slot=\'page-img\' :style=\'{height:viewH-6*(viewW/10)+"px"}\'>\n\t\t\t\t\t\t<div :class="{\'show\':page5Animate}">\n\t\t\t\t\t\t\t<div class=\'zmiti-letter-C\'>\n\t\t\t\t\t\t\t\t<img :src=\'imgs.letter\' />\n\t\t\t\t\t\t\t\t<ol>\n\t\t\t\t\t\t\t\t\t<li @click=\'showImg(i)\' v-for=\'(n,i) in new Array((9))\'></li>\n\t\t\t\t\t\t\t\t</ol>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div class=\'zmiti-point\'>\n\t\t\t\t\t\t\t\t<span v-for=\'i in new Array(6)\'></span>\n\t\t\t\t\t\t\t</div>\n\t\t\t\t\t\t\t<div class=\'zmiti-btn\'>客户的认可是我们前行最大的动力</div>\n\t\t\t\t\t\t\t<h1 style=\'height:10px\'></h1>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</Page>\n\t\t\t</li>\n\t\t\t<li :style="{height:viewH+\'px\'}"> \n\t\t\t\t<Page titleClass=\'page6\' pageClass=\'page6\' :pageStyle="{background:\'#e4253f\'}" :pagenum=\'6\' :obserable=\'obserable\'>\n\t\t\t\t\t<div slot=\'title\'>\n\t\t\t\t\t\t \n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\'zmiti-page1-img zmiti-page6-img\' slot=\'page-img\' :style=\'{height:viewH-6*(viewW/10)+"px"}\'>\n\t\t\t\t\t\t<div :class="{\'show\':page6Animate}">\n\t\t\t\t\t\t\t<img :src=\'imgs.dream1\' />\n\t\t\t\t\t\t\t<img :src=\'imgs.dream2\' />\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</Page>\n\t\t\t</li>\n\t\t\t<li :style="{height:viewH+\'px\'}">\n\t\t\t\t<Page :pagenum=\'""\' pageClass=\'page7\' :obserable=\'obserable\'>\n\t\t\t\t\t<div slot=\'title\'>\n\t\t\t\t\t\t<img :src="imgs.sign2017" alt="" />\n\t\t\t\t\t</div>\n\t\t\t\t\t<img :src="imgs.kpy" slot=\'page-num\' alt="" />\n\t\t\t\t\t<div class=\'zmiti-page7-img\' slot=\'page-img\' :style=\'{height:viewH-4*(viewW/10)+"px"}\'>\n\t\t\t\t\t\t<ul :class="{\'show\':page7Animate}">\n\t\t\t\t\t\t\t<li><span>感谢</span><label>我们的客户</label></li>\n\t\t\t\t\t\t\t<li><span>感谢</span><label>我们的投资人</label></li>\n\t\t\t\t\t\t\t<li><span>感谢</span><label>我们努力的自己</label></li>\n\t\t\t\t\t\t\t<li><span>感谢</span><label>大家信任支持批评</label></li>\n\t\t\t\t\t\t</ul>\n\t\t\t\t\t\t<div class=\'zmiti-wish\'>祝福大家2018健康吉祥 平安如意</div>\n\t\t\t\t\t\t<div @click=\'showMask = true\' class=\'zmiti-share-btn\'>分享2017成绩单</div>\n\t\t\t\t\t</div>\n\t\t\t\t</Page>\n\t\t\t</li>\n\t\t\t\n\t\t</ul>\n\t\t<div  @click=\'toggleMusic\' class=\'zmiti-play\' :class=\'{"rotate":rotate}\'>\n\t\t\t<img :src=\'imgs.play\'/>\n\t\t</div>\n\n\t\t<audio ref=\'audio\' src=\'./assets/music/bg.mp3\' autoplay loop></audio>\n\n\n\t\t<div :style="{height:viewH+\'px\'}"  class="zmiti-mask" v-if=\'showMask\' @touchstart=\'showMask = false\'>\n\t\t\t<img :src="imgs.arrow" alt="">\n\t\t</div>\n\n\t\t<div @click=\'imgIndex = -1\' v-if=\'imgIndex>-1\' class=\'zmiti-img-C lt-full\'>\n\t\t\t<img :src=\'imgs["img"+(imgIndex+1)]\'/>\n\t\t</div>\n\t\t<div class=\'zmiti-progress\' :style="{WebkitTransform:\'scale(\'+index/7+\',1)\'}"></div>\n\t</div>',
+		methods: {
+			swipeleft: function swipeleft() {
+				this.index++;
+				this.index >= 7 && (this.index = 7);
+			},
+			swiperight: function swiperight() {
+				this.index--;
+				this.index <= 0 && (this.index = 0);
+			},
+			entryIndex: function entryIndex() {
+				this.index = 1;
+			},
 			loading: function loading(arr, fn, fnEnd) {
 				var len = arr.length;
 				var count = 0;
@@ -126,44 +197,70 @@
 				var music = this.$refs['audio'];
 				music[music.paused ? 'play' : 'pause']();
 			},
+			showImg: function showImg(index) {
+				this.imgIndex = index;
+			},
 			updatePv: function updatePv() {
 				_jquery2['default'].ajax({
 					url: window.protocol + '//api.zmiti.com/v2/custom/update_pvnum/',
 					type: 'post',
 					data: {
 						//isrand: 0,
-						customid: 36
+						customid: 37
 					}
 				});
 			}
 		},
 		components: {
 			Index: _componentsIndexIndex2['default'],
-			Page1: _componentsPage1Page12['default'],
-			Copyright: _componentsCopyrightCopyright2['default']
+			Page: _componentsPagePage2['default']
+
 		},
 		mounted: function mounted() {
-			var _this = this;
+			var _this2 = this;
 
-			/*this.loading(arr, (s) => {
-	  	obserable.trigger({
-	  		type: 'loading',
-	  		data: s * 100 | 0
-	  	})
-	  }, () => {
-	  	obserable.trigger({
-	  		type: 'loaded'
-	  	})
-	  })*/
+			var arr = [];
 
-			obserable.on('showShare', function () {
-				_this.showMask = true;
+			for (var attr in _componentsLibAssets2['default']) {
+				arr.push(_componentsLibAssets2['default'][attr]);
+			}
+
+			var loadingProgress = (0, _jquery2['default'])('#zmiti-progress');
+			var loadingText = (0, _jquery2['default'])("#loading-text");
+			this.loading(arr, function (s) {
+				loadingProgress.html((s * 100 | 0) + '%');
+				loadingText.css({
+					width: (s * 100 | 0) + '%'
+				});
+			}, function () {
+				(0, _jquery2['default'])('#zmiti-loading').remove();
+				setTimeout(function () {
+					obserable.trigger({
+						type: 'indexAniamte'
+					});
+				}, 300);
 			});
 
+			obserable.on('showShare', function () {
+				_this2.showMask = true;
+			});
+
+			obserable.on('next', function () {
+				_this2.index += 1;
+			});
+			obserable.on('prev', function () {
+				if (_this2.index <= 0) {
+					return;
+				}
+				_this2.index -= 1;
+			});
+
+			_componentsLibUtil2['default'].wxConfig(document.title, document.title);
+
 			(0, _jquery2['default'])(this.$refs['audio']).on('play', function () {
-				_this.rotate = true;
+				_this2.rotate = true;
 			}).on('pause', function () {
-				_this.rotate = false;
+				_this2.rotate = false;
 			});
 
 			this.$refs['audio'].volume = .3;
@@ -176,10 +273,9 @@
 			}, false);
 
 			obserable.on('toggleBgMusic', function (data) {
-				_this.$refs['audio'][data ? 'play' : 'pause']();
+				_this2.$refs['audio'][data ? 'play' : 'pause']();
 			});
-
-			this.updatePv();
+			//this.updatePv();
 		}
 	});
 
@@ -10992,7 +11088,7 @@
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var apply = Function.prototype.apply;
+	/* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
 
 	// DOM APIs, for completeness
 
@@ -11043,9 +11139,17 @@
 
 	// setimmediate attaches itself to the global object
 	__webpack_require__(3);
-	exports.setImmediate = setImmediate;
-	exports.clearImmediate = clearImmediate;
+	// On some exotic environments, it's not clear which object `setimmeidate` was
+	// able to install onto.  Search each possibility in the same order as the
+	// `setimmediate` library.
+	exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
+	                       (typeof global !== "undefined" && global.setImmediate) ||
+	                       (this && this.setImmediate);
+	exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
+	                         (typeof global !== "undefined" && global.clearImmediate) ||
+	                         (this && this.clearImmediate);
 
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ }),
 /* 3 */
@@ -11436,7 +11540,7 @@
 
 	var __vue_script__, __vue_template__
 	__vue_script__ = __webpack_require__(6)
-	__vue_template__ = __webpack_require__(15)
+	__vue_template__ = __webpack_require__(12)
 	module.exports = __vue_script__ || {}
 	if (module.exports.__esModule) module.exports = module.exports.default
 	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
@@ -11444,7 +11548,7 @@
 	  var hotAPI = require("vue-hot-reload-api")
 	  hotAPI.install(require("vue"), true)
 	  if (!hotAPI.compatible) return
-	  var id = "F:\\xuchang2018\\project\\journalist\\components\\index\\index.vue"
+	  var id = "F:\\xuchang2018\\project\\ktreport\\components\\index\\index.vue"
 	  if (!module.hot.data) {
 	    hotAPI.createRecord(id, module.exports)
 	  } else {
@@ -11457,80 +11561,19 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	// <template>
-	// 	<div :class="{'scale':isSure,'show':show}" @touchmove='touchmove($event)' @touchend='touchend($event)' class="zmiti-index-main-ui lt-full" >
-	// 		<div class="zmiti-index-title">
-	// 			<img :src="imgs.title" alt="">
+	// 	<div :style='{width:10+"rem"}' class="zmiti-index-main-ui lt-full" ref='page'>
+	// 		<div class="zmiti-index-bg lt-full" :style="{background:'url('+imgs.indexBg+') no-repeat center bottom',backgroundSize:'cover'}">
+	// 			<div :class="{'show':animate}" class="zmiti-house">
+	// 				<img :src="imgs.house" alt="">
+	// 			</div>
+	// 			<div :style="{left:Math.random()*10+'rem',top:Math.random()*10+5+'rem',WebkitAnimationDuration:Math.random()*6+3+'s',WebkitAnimationDelay:Math.random()*6+'s'}" class="zmiti-meteor" :class='"zmiti-meteor"+(i+1)' v-for='(n,i) in new Array(20)'></div>
+	// 			<div :class="{'show':animate}" class="zmiti-text">
+	// 				<img :src="imgs.indexText" alt="">
+	// 				<div @touchstart='entryIndex' class="zmiti-index-btn"></div>
+	// 			</div>
 	// 		</div>
-	//
-	// 		<div class="zmiti-index-camera">
-	// 			<img :src='imgs.camera1' class="zmiti-camera-top" />
-	// 			<img :src='imgs.camera'/>
-	//
-	// 			<div v-tap='entryDetail' v-if='i===index' v-for='(detail,i) in detailList' class="zmiti-camera-img" :style="detailList[index].indexStyle">
-	//
-	// 			</div>
-	//
-	// 			<div :style="{WebkitTransform:'rotate('+rotation+'deg)'}" @touchend='touchend($event)' @touchstart='touchstart($event)' class="zmiti-wheel">
-	// 				<img :src='imgs.wheel'/>
-	// 			</div>
-	//
-	// 			<div v-tap='entryDetail' class="zmiti-sure">
-	// 				<img :src="imgs.sure" alt="">
-	// 			</div>
-	//
-	// 			<div class="zmiti-img-C1">
-	// 				<div class="zmiti-img" @touchstart='setJIndex(0)'>
-	// 					<img v-if='index === 0' :src="imgs.imgBg1" class='zmiti-img-bg' alt="">
-	// 					<img v-if='index !== 0' :src="imgs.imgBg" class='zmiti-img-bg' alt="">
-	// 					<img :src='imgs.img1'/>
-	// 				</div>
-	//
-	// 				<div class="zmiti-img" @touchstart='setJIndex(1)'>
-	// 					<img v-if='index === 1' :src="imgs.imgBg1" class='zmiti-img-bg' alt="">
-	// 					<img v-if='index !== 1' :src="imgs.imgBg" class='zmiti-img-bg' alt="">
-	// 					<img :src='imgs.img2'/>
-	// 				</div>
-	// 				<div class="zmiti-img" @touchstart='setJIndex(2)'>
-	// 					<img v-if='index === 2' :src="imgs.imgBg1" class='zmiti-img-bg' alt="">
-	// 					<img v-if='index !== 2' :src="imgs.imgBg" class='zmiti-img-bg' alt="">
-	// 					<img :src='imgs.img3'/>
-	// 				</div>
-	// 			</div>
-	// 			<div class="zmiti-img-C2">
-	//
-	// 				<div class="zmiti-img" @touchstart='setJIndex(6)'>
-	// 					<img v-if='index === 6' :src="imgs.imgBg1" class='zmiti-img-bg' alt="">
-	// 					<img v-if='index !== 6' :src="imgs.imgBg" class='zmiti-img-bg' alt="">
-	// 					<img :src='imgs.img7'/>
-	// 				</div>	
-	// 				<div class="zmiti-img" @touchstart='setJIndex(5)'>
-	// 					<img v-if='index === 5' :src="imgs.imgBg1" class='zmiti-img-bg' alt="">
-	// 					<img v-if='index !== 5' :src="imgs.imgBg" class='zmiti-img-bg' alt="">
-	// 					<img :src='imgs.img6'/>
-	// 				</div>
-	// 				<div class="zmiti-img" @touchstart='setJIndex(4)'>
-	// 					<img v-if='index === 4' :src="imgs.imgBg1" class='zmiti-img-bg' alt="">
-	// 					<img v-if='index !== 4' :src="imgs.imgBg" class='zmiti-img-bg' alt="">
-	// 					<img :src='imgs.img5'/>
-	// 				</div>
-	// 				<div class="zmiti-img" @touchstart='setJIndex(3)'>
-	// 					<img v-if='index === 3' :src="imgs.imgBg1" class='zmiti-img-bg' alt="">
-	// 					<img v-if='index !== 3' :src="imgs.imgBg" class='zmiti-img-bg' alt="">
-	// 					<img :src='imgs.img4'/>
-	// 				</div>
-	// 			</div>
-	//
-	// 		</div>		
-	//
-	// 		<div class="zmiti-index-bottom">
-	// 			<img :src='imgs.bottom'/>
-	// 		</div>
-	// 		<audio  ref='wheel' :src='wheelMusic'></audio>
-	// 		<audio  ref='change' :src='changeMusic'></audio>
-	//
 	// 	</div>
 	// </template>
-	//
 	// <script>
 	'use strict';
 
@@ -11540,163 +11583,38 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	__webpack_require__(7);
+	var _libAssets = __webpack_require__(7);
 
-	var _libAssetsJs = __webpack_require__(11);
+	var _libAssets2 = _interopRequireDefault(_libAssets);
 
-	var _libAssetsJs2 = _interopRequireDefault(_libAssetsJs);
-
-	var _libDataJs = __webpack_require__(12);
-
-	var _libDataJs2 = _interopRequireDefault(_libDataJs);
-
-	var _libUtil = __webpack_require__(13);
-
-	var _libUtil2 = _interopRequireDefault(_libUtil);
+	__webpack_require__(8);
 
 	exports['default'] = {
-		props: ['obserable'],
 		name: 'zmitiindex',
+		props: ['obserable'],
 		data: function data() {
 			return {
-				progress: 0,
-				imgs: _libAssetsJs2['default'],
-				detailList: _libDataJs2['default'],
-				show: false,
-				loaded: false, //资源是否加载完成
-				viewW: window.innerWidth,
-				viewH: window.innerHeight,
-				canMove: false, //默认不能移动
-				rotation: 0,
-				i: 0,
-				index: 0,
-				lastX: 0,
-				lastY: 0,
-				lastIndex: 0,
-				isSure: false,
-				wheelMusic: './assets/music/wheel.mp3',
-				changeMusic: './assets/music/change.mp3',
-				direction: -1 };
+				imgs: _libAssets2['default'],
+				animate: false
+			};
 		},
-		//方向 0:水平，1垂直
-
 		methods: {
-
-			autoChange: function autoChange() {
-				var _this = this;
-
-				this.timer = setInterval(function () {
-					if (_this.index > 5) {
-						_this.index = 0;
-					} else {
-						_this.index += 1;
-					}
-
-					_this.rotation = 360 / 7 * _this.index;
-
-					_this.$refs['change'].play();
-				}, 3000);
-			},
-
-			setJIndex: function setJIndex(index) {
-
-				this.rotation = 360 / 7 * index;
-				this.index = index;
-
-				this.$refs['change'].play();
-			},
-			entryDetail: function entryDetail() {
-				this.isSure = true;
-				clearInterval(this.timer);
-				var obserable = this.obserable;
-
-				obserable.trigger({
-					type: 'togglePage',
-					data: true
-				});
-			},
-			touchstart: function touchstart(e) {
-
-				this.canMove = true;
-				var e = e.changedTouches[0];
-				this.startX = e.clientX;
-				this.startY = e.clientY;
-			},
-			touchmove: function touchmove(e) {
-				if (!this.canMove) {
-					return;
-				};
-				var e = e.changedTouches[0];
-				this.endX = e.clientX;
-				this.endY = e.clientY;
-
-				var disX = this.startX - this.endX;
-				var disY = this.startY - this.endY;
-				if (this.i === 0) {
-					this.i++;
-					if (Math.abs(disX) > Math.abs(disY)) {
-						this.direction = 0;
-					} else {
-						this.direction = 1;
-					}
-				}
-				if (this.direction === 1) {
-					//垂直
-					this.rotation += -disY / 10 | 0;
-				} else {
-					//水平
-					this.rotation += disX / 10 | 0;
-				}
-
-				this.wheelAduio.play();
-				this.rotation %= 360;
-
-				///console.log(this.rotation/(360/7)|0);
-
-				var index = this.rotation / (360 / 7) | 0;
-				if (index < 0) {
-					index = 7 + index;
-				}
-				this.index = index;
-
-				if (this.index !== this.lastIndex) {
-
-					this.$refs['change'].play();
-				}
-
-				this.lastIndex = index;
-
-				/*this.startX = this.endX;
-	   this.startY = this.endY*/
-			},
-			touchend: function touchend(e) {
-				this.canMove = false;
-				this.i = 0;
+			entryIndex: function entryIndex() {
+				this.$emit('entryIndex');
 			}
 		},
+		components: {},
 		mounted: function mounted() {
-			var _this2 = this;
-
-			this.wheelAduio = this.$refs['wheel'];
-
-			this.autoChange();
+			var _this = this;
 
 			var obserable = this.obserable;
 
-			obserable.on('getIndex', function () {
-				return _this2.index;
+			obserable.on('getIndex', function (index) {
+				_this.animate = index === 0;
 			});
-
-			obserable.on('showIndex', function () {
-				_this2.isSure = false;
-				_this2.autoChange();
+			obserable.on('indexAniamte', function () {
+				_this.animate = true;
 			});
-
-			_libUtil2['default'].wxConfig(document.title, document.title);
-
-			setTimeout(function () {
-				_this2.show = true;
-			}, 100);
 		}
 	};
 
@@ -11705,15 +11623,64 @@
 
 /***/ }),
 /* 7 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	var imgs = {
+		play: './assets/images/play.png',
+		logo: './assets/images/logo.png',
+		ar: './assets/images/ar.png',
+		arrow: './assets/images/arrow.png',
+		yun: './assets/images/yun.png',
+		part1: './assets/images/4-1.png',
+		part2: './assets/images/4-2.png',
+		part3: './assets/images/4-3.png',
+		part4: './assets/images/4-4.png',
+		part5: './assets/images/4-5.png',
+		part6: './assets/images/4-6.png',
+		dream1: './assets/images/6-1.png',
+		dream2: './assets/images/6-2.png',
+
+		img1: './assets/images/1.jpg',
+		img2: './assets/images/2.jpg',
+		img3: './assets/images/3.jpg',
+		img4: './assets/images/4.jpg',
+		img5: './assets/images/5.jpg',
+		img6: './assets/images/6.jpg',
+		img7: './assets/images/7.jpg',
+		img8: './assets/images/8.jpg',
+		img9: './assets/images/9.jpg',
+
+		letter: './assets/images/5-1.png',
+		sign2017: './assets/images/7-1.png',
+
+		map: './assets/images/map.png',
+		pagenum: './assets/images/pagenum.png',
+		pagenum1: './assets/images/pagenum1.png',
+		indexBg: './assets/images/index-bg.jpg',
+		kpy: './assets/images/kpy.jpg',
+		house: './assets/images/index-hourse.png',
+		indexText: './assets/images/index-text.png',
+		pageimg1: './assets/images/1.png'
+	};
+	exports['default'] = imgs;
+	module.exports = exports['default'];
+
+/***/ }),
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(8);
+	var content = __webpack_require__(9);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(10)(content, {});
+	var update = __webpack_require__(11)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -11730,21 +11697,21 @@
 	}
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(9)();
+	exports = module.exports = __webpack_require__(10)();
 	// imports
 
 
 	// module
-	exports.push([module.id, "@charset \"UTF-8\";\r\n/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0; }\r\n\r\n.zmiti-text-overflow {\r\n  overflow: hidden;\r\n  white-space: nowrap;\r\n  word-break: break-all;\r\n  text-overflow: ellipsis;\r\n  -webkit-text-overflow: ellipsis; }\r\n\r\n.zmiti-play {\r\n  width: .8rem;\r\n  height: .8rem;\r\n  border-radius: 50%;\r\n  position: fixed;\r\n  z-index: 1000;\r\n  right: .5rem;\r\n  top: .5rem; }\r\n  .zmiti-play.rotate {\r\n    -webkit-animation: rotate 5s linear infinite;\r\n    animation: rotate 5s linear infinite; }\r\n\r\n@-webkit-keyframes rotate {\r\n  to {\r\n    -webkit-transform: rotate(360deg);\r\n    transform: rotate(360deg); } }\r\nhtml, body, div, p, ul, li, ol, dl, dt, dd, header, footer, video, h1, h2, h3, h4, canvas, section, figure {\r\n  padding: 0;\r\n  margin: 0; }\r\n\r\na {\r\n  text-decoration: none; }\r\n\r\nli {\r\n  list-style: none; }\r\n\r\nhtml, body {\r\n  height: 100%;\r\n  -webkit-tap-highlight-color: transparent; }\r\n\r\nbody {\r\n  font-family: \"Helvetica Neue\", 'Helvetica', \"Microsoft YaHei\", '\\5FAE\\8F6F\\96C5\\9ED1', arial, sans-serif;\r\n  font-size: 14px;\r\n  background: #fff;\r\n  overflow: hidden; }\r\n\r\nimg {\r\n  border: none;\r\n  vertical-align: middle;\r\n  width: 100%;\r\n  height: auto; }\r\n\r\n.zmiti-index-main-ui {\r\n  z-index: 101;\r\n  -webkit-transition: 2s;\r\n  transition: 2s;\r\n  opacity: 0;\r\n  -webkit-transform: scale(0.5);\r\n  transform: scale(0.5); }\r\n  .zmiti-index-main-ui.show {\r\n    opacity: 1;\r\n    -webkit-transform: scale(1);\r\n    transform: scale(1); }\r\n  .zmiti-index-main-ui.scale {\r\n    -webkit-transform: scale(3);\r\n    transform: scale(3);\r\n    opacity: 0;\r\n    z-index: -1; }\r\n  .zmiti-index-main-ui .zmiti-index-camera {\r\n    position: absolute;\r\n    z-index: 10;\r\n    width: 7rem;\r\n    left: 1.5rem; }\r\n    .zmiti-index-main-ui .zmiti-index-camera .zmiti-camera-img {\r\n      position: absolute;\r\n      width: 4.13rem;\r\n      height: 2.3rem;\r\n      top: 1.3rem;\r\n      z-index: 10;\r\n      left: .6rem; }\r\n    .zmiti-index-main-ui .zmiti-index-camera .zmiti-wheel {\r\n      position: absolute;\r\n      width: 2rem;\r\n      top: .2rem;\r\n      right: -.7rem;\r\n      z-index: 1; }\r\n    .zmiti-index-main-ui .zmiti-index-camera > img {\r\n      z-index: 2;\r\n      position: relative; }\r\n    .zmiti-index-main-ui .zmiti-index-camera .zmiti-img-C1 {\r\n      position: absolute;\r\n      width: 1rem;\r\n      height: 30vh;\r\n      top: 9vh;\r\n      right: .4rem;\r\n      z-index: 10; }\r\n      .zmiti-index-main-ui .zmiti-index-camera .zmiti-img-C1 .zmiti-img:nth-of-type(2) {\r\n        margin: .2rem 0; }\r\n    .zmiti-index-main-ui .zmiti-index-camera .zmiti-img {\r\n      position: relative; }\r\n      .zmiti-index-main-ui .zmiti-index-camera .zmiti-img .zmiti-img-bg {\r\n        position: absolute;\r\n        left: 0;\r\n        top: 0;\r\n        z-index: -1; }\r\n    .zmiti-index-main-ui .zmiti-index-camera .zmiti-img-C2 {\r\n      position: absolute;\r\n      display: -webkit-box;\r\n      -webkit-box-align: center;\r\n      -webkit-box-pack: center;\r\n      -webkit-box-orient: horizontal;\r\n      width: 5.5rem;\r\n      bottom: .3rem;\r\n      z-index: 10;\r\n      left: .1rem; }\r\n      .zmiti-index-main-ui .zmiti-index-camera .zmiti-img-C2 > div {\r\n        -webkit-box-flex: 1;\r\n        margin: 0 .1rem; }\r\n    .zmiti-index-main-ui .zmiti-index-camera .zmiti-camera-top {\r\n      z-index: 0; }\r\n    .zmiti-index-main-ui .zmiti-index-camera .zmiti-sure {\r\n      width: 1rem;\r\n      position: absolute;\r\n      bottom: .3rem;\r\n      right: .3rem;\r\n      z-index: 11; }\r\n  .zmiti-index-main-ui .zmiti-index-bottom {\r\n    width: 10rem;\r\n    position: absolute;\r\n    left: 0;\r\n    z-index: -1;\r\n    bottom: 0; }\r\n\r\n.zmiti-mask {\r\n  position: fixed;\r\n  left: 0;\r\n  top: 0;\r\n  width: 100%;\r\n  height: 100%;\r\n  background: rgba(0, 0, 0, 0.6);\r\n  z-index: 300;\r\n  text-align: right; }\r\n  .zmiti-mask img {\r\n    width: 6rem; }\r\n\r\n/*# sourceMappingURL=index.css.map */\r\n", ""]);
+	exports.push([module.id, "@charset \"UTF-8\";\r\n/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0; }\r\n\r\n.zmiti-text-overflow {\r\n  overflow: hidden;\r\n  white-space: nowrap;\r\n  word-break: break-all;\r\n  text-overflow: ellipsis;\r\n  -webkit-text-overflow: ellipsis; }\r\n\r\n.zmiti-play {\r\n  width: .8rem;\r\n  height: .8rem;\r\n  border-radius: 50%;\r\n  position: fixed;\r\n  z-index: 1000;\r\n  right: .5rem;\r\n  top: .5rem; }\r\n  .zmiti-play.rotate {\r\n    -webkit-animation: rotate 5s linear infinite;\r\n    animation: rotate 5s linear infinite; }\r\n\r\n@-webkit-keyframes rotate {\r\n  to {\r\n    -webkit-transform: rotate(360deg);\r\n    transform: rotate(360deg); } }\r\nhtml, body, div, p, ul, li, ol, dl, dt, dd, header, footer, video, h1, h2, h3, h4, canvas, section, figure {\r\n  padding: 0;\r\n  margin: 0; }\r\n\r\na {\r\n  text-decoration: none; }\r\n\r\nli {\r\n  list-style: none; }\r\n\r\nhtml, body {\r\n  height: 100%;\r\n  -webkit-tap-highlight-color: transparent; }\r\n\r\nbody {\r\n  font-family: \"Helvetica Neue\", 'Helvetica', \"Microsoft YaHei\", '\\5FAE\\8F6F\\96C5\\9ED1', arial, sans-serif;\r\n  font-size: 14px;\r\n  overflow: hidden; }\r\n\r\nimg {\r\n  border: none;\r\n  vertical-align: middle;\r\n  width: 100%;\r\n  height: auto; }\r\n\r\n.zmiti-index-main-ui {\r\n  -webkit-transition: 1s 0.4s;\r\n  transition: 1s 0.4s;\r\n  z-index: 1000;\r\n  color: #054485;\r\n  background: #fff;\r\n  z-index: -1;\r\n  font-size: 12px; }\r\n  .zmiti-index-main-ui.show {\r\n    z-index: 102;\r\n    opacity: 1; }\r\n  .zmiti-index-main-ui .zmiti-house {\r\n    position: absolute;\r\n    width: 8rem;\r\n    left: 1rem;\r\n    top: 20vh;\r\n    opacity: .7;\r\n    -webkit-transform: translate3d(0, 2rem, 0);\r\n    transform: translate3d(0, 2rem, 0); }\r\n    .zmiti-index-main-ui .zmiti-house.show {\r\n      -webkit-transition: 1s;\r\n      transition: 1s;\r\n      -webkit-transform: translate3d(0, 0, 0);\r\n      transform: translate3d(0, 0, 0);\r\n      opacity: 1; }\r\n  .zmiti-index-main-ui .zmiti-meteor {\r\n    opacity: 0;\r\n    -webkit-animation: move 3.8s infinite;\r\n    animation: move 3.8s infinite;\r\n    width: .2rem;\r\n    height: 1rem;\r\n    position: absolute; }\r\n    .zmiti-index-main-ui .zmiti-meteor:before, .zmiti-index-main-ui .zmiti-meteor:after {\r\n      content: '';\r\n      position: absolute; }\r\n    .zmiti-index-main-ui .zmiti-meteor:before {\r\n      width: .2rem;\r\n      height: .2rem;\r\n      border-radius: 50%;\r\n      background: #92faff; }\r\n    .zmiti-index-main-ui .zmiti-meteor:after {\r\n      width: .1rem;\r\n      height: .8rem;\r\n      bottom: 0;\r\n      left: .05rem;\r\n      background: -webkit-linear-gradient(top, #8af3fe, rgba(138, 243, 254, 0.1)); }\r\n  .zmiti-index-main-ui .zmiti-meteor1 {\r\n    left: 1rem;\r\n    top: 8.5rem;\r\n    -webkit-animation: move 3s linear infinite;\r\n    animation: move 3s linear infinite; }\r\n  .zmiti-index-main-ui .zmiti-meteor2 {\r\n    left: 2rem;\r\n    top: 11rem;\r\n    -webkit-animation: move 4s infinite;\r\n    animation: move 4s infinite; }\r\n  .zmiti-index-main-ui .zmiti-meteor3 {\r\n    left: 3.3rem;\r\n    top: 10rem;\r\n    -webkit-animation: move 5s infinite;\r\n    animation: move 5s infinite; }\r\n  .zmiti-index-main-ui .zmiti-meteor4 {\r\n    left: 6.6rem;\r\n    top: 10rem;\r\n    -webkit-animation: move 4.1s linear infinite;\r\n    animation: move 4.1s linear infinite; }\r\n  .zmiti-index-main-ui .zmiti-meteor5 {\r\n    left: 7rem;\r\n    top: 3rem;\r\n    -webkit-animation: move 3.8s infinite;\r\n    animation: move 3.8s infinite; }\r\n  .zmiti-index-main-ui .zmiti-meteor6 {\r\n    left: 9rem;\r\n    top: 14rem;\r\n    -webkit-animation: move 5s 1s infinite;\r\n    animation: move 5s 1s infinite; }\r\n@-webkit-keyframes move {\r\n  100% {\r\n    opacity: 1;\r\n    -webkit-transform: translate3d(0, -14rem, 0);\r\n    transform: translate3d(0, -14rem, 0); } }\r\n  .zmiti-index-main-ui .zmiti-text {\r\n    position: absolute;\r\n    width: 7rem;\r\n    bottom: 1rem;\r\n    left: 1.5rem;\r\n    opacity: 0;\r\n    -webkit-transform: translate3d(0, 1rem, 0);\r\n    transform: translate3d(0, 1rem, 0); }\r\n    .zmiti-index-main-ui .zmiti-text.show {\r\n      -webkit-transition: 1s 1s;\r\n      transition: 1s 1s;\r\n      -webkit-transform: translate3d(0, 0, 0);\r\n      transform: translate3d(0, 0, 0);\r\n      opacity: 1; }\r\n    .zmiti-index-main-ui .zmiti-text .zmiti-index-btn {\r\n      width: 3.6rem;\r\n      height: .9rem;\r\n      position: absolute;\r\n      bottom: 0rem;\r\n      left: 0; }\r\n  .zmiti-index-main-ui .zmiti-kpy {\r\n    position: absolute;\r\n    width: 3rem;\r\n    left: 0;\r\n    top: 0;\r\n    z-index: 10; }\r\n\r\n.zmiti-main-ui {\r\n  display: -webkit-box;\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: center;\r\n  -webkit-box-orient: vertical;\r\n  -webkit-transition: 0.3s;\r\n  transition: 0.3s; }\r\n  .zmiti-main-ui > li {\r\n    width: 100%;\r\n    overflow: hidden;\r\n    -webkit-box-flex: 1;\r\n    height: 100%;\r\n    position: relative; }\r\n\r\n.zmiti-play {\r\n  top: 1.5rem !important; }\r\n\r\n/*# sourceMappingURL=index.css.map */\r\n", ""]);
 
 	// exports
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
 	/*
@@ -11800,7 +11767,7 @@
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -12052,22 +12019,69 @@
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var imgs = window.imgs;
-	exports["default"] = imgs;
-	module.exports = exports["default"];
+	module.exports = "\n\t<div :style='{width:10+\"rem\"}' class=\"zmiti-index-main-ui lt-full\" ref='page'>\n\t\t<div class=\"zmiti-index-bg lt-full\" :style=\"{background:'url('+imgs.indexBg+') no-repeat center bottom',backgroundSize:'cover'}\">\n\t\t\t<div :class=\"{'show':animate}\" class=\"zmiti-house\">\n\t\t\t\t<img :src=\"imgs.house\" alt=\"\">\n\t\t\t</div>\n\t\t\t<div :style=\"{left:Math.random()*10+'rem',top:Math.random()*10+5+'rem',WebkitAnimationDuration:Math.random()*6+3+'s',WebkitAnimationDelay:Math.random()*6+'s'}\" class=\"zmiti-meteor\" :class='\"zmiti-meteor\"+(i+1)' v-for='(n,i) in new Array(20)'></div>\n\t\t\t<div :class=\"{'show':animate}\" class=\"zmiti-text\">\n\t\t\t\t<img :src=\"imgs.indexText\" alt=\"\">\n\t\t\t\t<div @touchstart='entryIndex' class=\"zmiti-index-btn\"></div>\n\t\t\t</div>\n\t\t</div>\n\t</div>\n";
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	var __vue_script__, __vue_template__
+	__vue_script__ = __webpack_require__(14)
+	__vue_template__ = __webpack_require__(17)
+	module.exports = __vue_script__ || {}
+	if (module.exports.__esModule) module.exports = module.exports.default
+	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
+	if (false) {(function () {  module.hot.accept()
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), true)
+	  if (!hotAPI.compatible) return
+	  var id = "F:\\xuchang2018\\project\\ktreport\\components\\page\\page.vue"
+	  if (!module.hot.data) {
+	    hotAPI.createRecord(id, module.exports)
+	  } else {
+	    hotAPI.update(id, module.exports, __vue_template__)
+	  }
+	})()}
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// <template>
+	// 	<div :class="pageClass" :style="pageStyle
+	//
+	// 	" class="zmiti-page-main-ui lt-full">
+	//
+	// 			<div :class='titleClass' class="zmiti-title">
+	// 				<h1>2017我们</h1>
+	// 				<slot name='title'>	
+	// 					<div>成功挂牌新三版，完成新一轮融资；获得资本市场认可，翻开了新的画卷。</div>
+	// 				</slot>
+	// 			</div>
+	// 		<div class="zmiti-pager">
+	// 			<span>{{pagenum}}</span>
+	// 			<slot name='page-num'><img :src="imgs.pagenum" /></slot>
+	// 		</div>
+	// 		<slot name='page-img'>
+	//
+	// 			<div  class="zmiti-page1-img" :style='{height:viewH-7*(viewW/10)+"px"}'>
+	// 				<div :class="{'show':page1Animate}">
+	// 					<img :src="imgs.pageimg1" alt="">
+	// 				</div>
+	// 			</div>
+	// 		</slot>
+	//
+	// 		<div class="zmiti-pagation">
+	// 			<div @click='prev' :class="{'disabled':pagenum === 0}">上一页</div>
+	// 			<div><img :src="imgs.logo" alt=""></div>
+	// 			<div @click='next'>下一页</div>
+	// 		</div>
+	// 	</div>	
+	// </template>
+	// <script>
 	'use strict';
 
 	Object.defineProperty(exports, '__esModule', {
@@ -12076,195 +12090,95 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _assetsJs = __webpack_require__(11);
+	var _libAssets = __webpack_require__(7);
 
-	var _assetsJs2 = _interopRequireDefault(_assetsJs);
+	var _libAssets2 = _interopRequireDefault(_libAssets);
 
-	var detailList = [{ //0
-		mediaType: 'video',
-		src: './assets/video/hhh.mp4',
-		poster: 'hhhPoster',
-		title: '身体和灵魂，同在路上',
-		name: 'hhh',
-		indexStyle: {
-			background: 'url(' + _assetsJs2['default'].hhhIndex + ') no-repeat center center',
-			backgroundSize: 'cover'
-		},
-		subTitle: '——新疆分社记者 胡虎虎',
-		text1: ['这一年间，我参与到新华社客户端“现场新闻”共16场。繁华的城市、边远的乡村、浩瀚的沙海、茫茫的雪原，我随同分社同事一道，足迹遍布天山南北，用多媒体融合报道的形式，将“大美新疆”呈现给受众。有人告诉我，在新疆做摄影记者是幸福的，这片约占我国国土陆地面积1/6的土地上，我用镜头记录了新疆发生的变化，也感受了浓郁的民族风情和炙热的情感。'],
-		text2: ['“直击春运——2017回家路上有我陪伴”，是我2017年参与的第一场“现场新闻”。除夕前一天那趟由乌鲁木齐开往克拉玛依的城际列车上，乘务员们为旅客们准备了别开生面的“春晚”，歌舞、快板、游戏，行驶在戈壁滩上的列车传出阵阵欢声笑语。当乘务员们集体表演的《常回家看看》响起，我分明看到了她们眼中的泪花，而我，何尝不是呢；透过贴在列车玻璃上的“福”字窗花向外望去，雪花飞舞，茫茫戈壁已被大雪覆盖。毋庸赘言，这是一种最普通最深沉的情感共鸣——团圆。这是我在外过的第一个春节，每每念及至此，我都感激万分，记者这份工作给了我体验人生百态的机会，同时也教会我，只有拉近心与心的距离，才能挖掘出打动人心的故事。'],
-		text3: ['边境高原牧业点、赛里木湖畔的转场服务站、葡萄沟里的民居、精河地震震中的村委会，都留下了我和同事们夜宿采访的身影。时常在想，这是我初做记者时的风发意气，更应当是我成熟练达后的常态。专注和热情，这不是两个简单的词语，身体力行，何其难也！'],
-		text4: ['“天空之眼瞰祖国”的第15、16站是我2017年参与的“现场新闻”系列的岁末“收官战”。从脚本写作到内容采集，我个人收获良多。在“飞阅帕米尔高原”时，为近距离拍摄慕士塔格冰川，我们在牧民的引导下，通过摩托车和徒步，最终来到了海拔近5000米的冰川前。满身的器材给高原徒步带来极大负担，在穿越冰封路面时，由于脚底打滑，我意外摔倒。还好有惊无险，最终还是完成了采访拍摄。', '“世之奇伟、瑰怪、非常之观，常在于险远”，“非有志者不能至也”。在新疆的农牧区采访，对此话的感受尤为深刻。地理上的距离，可以用脚力去克服；心理上的距离，则只有带着情感不断去磨砺技能，才可攻克。2017年是在匆忙中寻找从容的一年，也是身体和灵魂同时在路上的一年。'],
-		text1Style: {},
-		text2Style: {},
-		text3Style: {},
-		text4Style: {}
-	}, { //1
-		mediaType: 'video',
-		src: './assets/video/jc.mp4',
-		poster: 'jcPoster',
-		indexStyle: {
-			background: 'url(' + _assetsJs2['default'].jcIndex + ') no-repeat center center',
-			backgroundSize: 'cover'
-		},
-		title: '生死别离，每天都在这里上演',
-		name: 'jc',
-		subTitle: '——喀布尔分社记者 蒋超',
-		text1: ['“我的哥哥……他已经失踪了，”一位而立之年的阿富汗男子，拿下他的头巾，用整只手捂住脸。', '“奥米德，停！”我跟我的搭档用唇语示意不再提问了。', '奥米德拍拍他的肩膀，给他一个拥抱，绕过男子颈后的无线话筒，录到了他的啜泣声。'],
-		text2: ['这是2017年5月31日的喀布尔。我站在封锁线外，离这个男子超过5米，远远地举着摄像机拍摄他。这是一场直播，男子的绝望正被数十万世界各地的观众目睹。', '两个小时前，一辆洒水车，装着1.5吨炸药在这个国家最热闹的市区引爆，超过500人死伤。', '搭档奥米德已经不再向男子提问了，我应该移走镜头。'],
-		text1Style: {},
-		text2Style: {
-			height: '4rem'
-		},
-		text3Style: {},
-		text4Style: {
-			height: '17rem'
-		},
-		text3: ['但是我没有，因为我的眼眶已经湿润了。我想让更多人一起看到这一幕，跟他、跟我一样留下痛苦的泪水。这并不是一个普通阿富汗人的哭泣，这是他们每天都在经历的苦难，理应唤起更多人深思，或者做些什么。'],
-		text4: ['报道结束了，我回到驻地。整片玻璃窗墙都不见了，连木窗框都被冲击波震碎了。毕竟我们从爆炸现场走回来，也不过几分钟而已，距离太近了。', '顾不上收拾踩在脚下的玻璃碎渣，我让奥米德告诉我刚才那个男子讲述的完整故事。', '“他的哥哥，今天早上开车刚把他送到目的地，可能是加班开夜车太累了，就在路边停下来眯了一会儿。然后就……你刚刚出镜拍到的那辆被烧到只剩骨架的那辆车，也许就是那辆车，”奥米德也沉沉地叹了口气。', '入夜，兴都库什山脉的罡风没有了墙的屏障，直接吹进卧室。我紧了紧被子，望着黑暗空中的上弦月，回想起早上在爆炸现场看到的那一辆辆焦黑的车，以及闻到的那种混合着人体和橡胶材料烧焦的气味。', '“这个气味，我会记住一辈子吧，” 我闭上眼，沉沉睡去。']
-	}, { //2
-		mediaType: 'video',
-		src: './assets/video/lyj.mp4',
-		poster: 'lyjPoster',
-		title: '追风女孩',
-		name: 'lyj',
-		indexStyle: {
-			background: 'url(' + _assetsJs2['default'].lyjIndex + ') no-repeat center center',
-			backgroundSize: 'cover'
-		},
-		subTitle: '——总编室 刘羽佳',
-		text1: ['“羽佳，台风‘天鸽’要登陆广东了，你跟他们一起去采访。”当广东分社总编室领导平静地抛来这句话时，我感到自己的心跳在莫名加速。作为一个从未经历过台风的北方女生，我对台风的印象仅仅是电视里的场景，一屏之隔的距离让台风看起来似乎并没那么凶。'],
-		text2: ['然而，实际情况并非如我所想。我们一行人在“天鸽”到达前一天傍晚来到广东省台山市广海镇，彼时，整个城镇被黑紫色的乌云笼罩着，雷电在楼宇间穿梭跳跃。这不是特效，灾难电影中的险景就在眼前。 '],
-		text3: ['川哥，我的同事，一位多次参与台风报道的资深记者。布置采访任务时他派了个活儿给我：出镜报道。在川哥眼里，这只是个小活儿。而我却陷入了矛盾：既不想错过锻炼的机会，但又担心不能完成任务。晚上，脑海中出现一连串的问号：报道时说些什么？台风危险程度如何？我的表现会怎样？……那一夜，辗转难眠。'],
-		text4: ['翌日，码头。狂风裹挟着海水拍打着脚下的岸堤，掀起了一米多高的海浪，脸被雨水抽打得生疼……“这次台风看起来挺狠。”已经“追风”多年的川哥喃喃自语，我脑中也闪过一丝退缩的念头，但最后，还是“挣扎”着走进了风雨中……', '台风走了，我们的报道还没有结束——救灾，是另一个“战场”。这些年川哥参加过很多灾难性报道，每次出门，家里人的心都是悬着的。“看到那些受灾群众勇敢、乐观的样子，我总想为他们做点什么。这是记者应有的激情，也是我们的职责……”忙碌的人群里声音嘈杂，但川哥这段话，我却听得真切。'],
-		text1Style: {
-			height: '8.4rem'
-		},
-		text2Style: {
-			height: '2.2rem'
-		},
-		text3Style: {
-			height: '8.3rem'
-		},
-		text4Style: {
-			height: '12rem'
-		}
-	}, { //3
-		mediaType: 'image',
-		src: _assetsJs2['default'].ms,
-		indexStyle: {
-			background: 'url(' + _assetsJs2['default'].msIndex + ') no-repeat center center',
-			backgroundSize: 'cover'
-		},
-		poster: 'msPoster',
-		title: '“扎荒”原始森林里的五天四夜',
-		name: 'msImg',
-		subTitle: '——甘肃分社记者 马莎',
-		text1: ['以前，我以为人生最孤独的时刻是独自一人。直到走进原始森林，我才明白，人生最孤独的时刻是在没有信号的大山深处，独自一人与三头驴在一起。', '这已经是我与同事张钦、范培珅在原始森林里“扎荒”的第四天。为了寻觅到野生大熊猫的足迹，四天前，我们随9名护林员，从甘肃省陇南市文县白水江沿岸的古道坪村出发，徒步九小时，来到“扎荒”点。'],
-		text2: ['“90后”护林员韩雨晨马上要结婚了，这是她新婚前最后一次“走线”，我们当时计划来回两天。', '每季度一次的野外动态例行监测被护林员称作“走线”，主要是上山换取红外相机的卡和电池，采集拍摄到的野生大熊猫画面。', '原始森林里是没有路的，被护林员称作“大路”的山间小道，基本都是拿根木棍拨开的，走在悬崖峭壁上时，拖着行李的驴“大汗淋漓”，一路上不断往下掉落的石头声和驴的喘息声格外清脆。这里的夜晚睁眼闭眼都是一个模样，在一个不遮风雨更不隔音的小木棚里，12个人钻进睡袋，夜晚，头顶驴叫声不断......'],
-		text3: ['从第二天开始的雨雪天气，打破了原本的计划，我们被困在无电无信号的原始森林，整整五天四夜。'],
-		text4: ['每天的正餐基本一顿，要么米饭要么挂面，带的干粮不够，大家每一餐都吃得很节约。为了采集到野生大熊猫珍贵的画面，所有人在与外界“隔绝”的大山深处等待着，相依为命。 ', '“徒步6小时，换卡10分钟”。寒冷的季节，护林员们在大雪天“走线”时，薄外套下只穿一件短袖。走路太热，会不断出汗，消耗体能。', '最终，六台相机有两台拍到了大熊猫的画面，时长总共不到1分钟，但这足以让他们开心到忘记“扎荒”过程中的种种艰辛。', '我承认，一开始是冲着大熊猫来的，但没想到，最后这群护林员却深深烙刻在了心里，原来在险象环生的原始森林，不仅有国宝级的大熊猫，更有“国宝级”的护林员。'],
-		text1Style: {
-			height: '10rem'
-		},
-		text2Style: {
-			height: '8.2rem'
-		},
-		text3Style: {
-			height: '4.6rem'
-		},
-		text4Style: {
-			height: '14rem'
-		}
-	}, { //4
-		mediaType: 'image',
-		src: _assetsJs2['default'].wjj,
-		indexStyle: {
-			background: 'url(' + _assetsJs2['default'].wjjIndex + ') no-repeat center center',
-			backgroundSize: 'cover'
-		},
-		poster: 'msPoster',
-		title: '老农民卖米记——互联网铺就岭头村的脱贫路',
-		name: 'wjjImg',
-		subTitle: '——新媒体中心 王晶晶',
-		text1: ['第一次走进魏宝玉家。他14岁的儿子正在玩电脑游戏，全神贯注、手法熟练，这一刻我觉得他和城里的孩子没什么区别。但在一年前，还曾是贫困户的魏宝玉从来没想过，有一天他能买得起电脑，用得上智能手机，孩子也能像“城里娃”一样熟练地操作电脑。'],
-		text2: [' 现在的魏宝玉，开起了自己的手机微店，客户遍布全国。更重要的是，就在2016年，他借助互联网摘掉了贫困户的帽子，过上了舒心的日子。', '在山西省武乡县岭头村这个曾经的贫困村调研采访时，我深切的感受到了互联网带给这里的变化。听村支书赵玉堂说，以前乡亲们没事儿的时候，都是在村头坐着斗嘴闲话。现在几乎每个人都拿着手机，在村口交流开微店的心得。'],
-		text3: ['为了更好地卖出自己微店的小米，魏宝玉率先借助“直播平台”提高自己的知名度。他在某直播平台上进行了施肥和播种的过程，让儿子拿着手机一会拍一拍他手里的羊粪肥，一会拍一拍岭头村特有的红土地，一会用蹩脚的普通话讲一讲武乡县的红色革命历史。'],
-		text4: ['“浏览量有60多万”。当我把新华社客户端现场新闻直播数据告诉魏宝玉的时候，他简直不敢相信自己的耳朵，再三确认之后，他喃喃念到，“互联网真是了不起啊”。', '有一天我在微信上问魏宝玉，最近的微店生意怎么样？他告诉我，在县电商办的帮助下他注册了食品经营许可证，他的微店都有了来自国外的订单。从10月份小米丰收后到今天，短短两个多月他已经挣了1万多块钱。', '魏宝玉正通过自己的双手，甩掉了贫困帽，奔向小康。'],
-		text1Style: {
-			height: '9rem'
-		},
-		text2Style: {
-			height: '5rem'
-		},
-		text3Style: {
-			height: '7.6rem'
-		},
-		text4Style: {
-			height: '11rem'
-		}
-	}, { //5
-		mediaType: 'video',
-		src: './assets/video/xwx.mp4',
-		poster: 'xwxPoster',
-		indexStyle: {
-			background: 'url(' + _assetsJs2['default'].xwxIndex + ') no-repeat center center',
-			backgroundSize: 'cover'
-		},
-		title: '冰川取芯历险记',
-		name: 'xwx',
-		subTitle: '——西藏分社记者 薛文献',
-		text1: ['“太惊险了，就像上甘岭一样。”', '薛文献大口喘着粗气，一屁股坐在满是积雪的冰湖边。', '6月27日下午，新华社记者薛文献、索朗罗布、王沁鸥随科考队前往海拔5650米的唐古拉山龙匣宰陇巴冰川冰芯钻取点取冰芯。'],
-		text2: ['在行至海拔约5470米一处相对平缓的地点时，前面的队员忽然叫道：雪下面都是水，不能再走了！看起来比较硬的雪地，真的去触摸，是非常软的，根本发不上力，如果下面再有水，是很难行走得通的，后面的人必须爬着过去。即使爬，身体依然会陷进雪里，行动得非常缓慢。', '“可能是我体重的缘故，当时还有个背包，我用肘支撑着地面，也感觉到肘部已经深深陷到了雪里，而且几乎感觉不到前进的反作用力。再一使劲，双手也到了雪里面，触摸到冰冷冰冷的水，那一瞬间，真是刺骨的疼。只想赶快把手拔出来，双腿一使劲，腿也陷得更深了。在这一刻，我才体会到，在雪地里爬行，就像游泳一样，越着急，越走不动。”薛文献回忆。'],
-		text3: ['爬过了下面满是水的一段雪地，记者们倒在山坡上大口大口喘气，感觉就像要窒息一样。双手已经冻得完全失去了知觉，但为了防止冻伤，必须使劲拍打双手。而此刻双手已经在雪里被划伤了数道口子，流出鲜红的血。'],
-		text4: ['就在这个时候，突然听到前边有人大喊：有人掉冰湖里了！', '是行走在最前面的科考队员温旭全身陷进了冰湖里。', '温旭踩着踏雪板，走在一段平缓的雪面，走上去并没有什么异常，突然间，整个人就陷了下去。他尽力用冰镐砸冰面，冰碎了,借助背上背包的浮力，躺着往后一拱，向湖边接近了一点，再用冰镐砸向冰面，就这样一点点吃力的砸、努力的拱，最终爬出了冰湖……', '冰湖挡住了科考队的去路，无奈之下，当天的取冰芯活动只能取消。', '两天后，6月30日晚9时到7月1日晨6点，记者同科考队员再次前往冰川末端钻取古老冰芯。', '历经艰难，考察队此次共钻了4个孔，钻取冰芯长度为10.03米。这些冰芯封装在冰箱里，运往拉萨冷库，将为世人揭开高原的诸多奥秘。'],
-		text1Style: {
-			height: '8.4rem'
-		},
-		text2Style: {
-			height: '8.2rem'
-		},
-		text3Style: {
-			height: '6.3rem'
-		},
-		text4Style: {
-			height: '16.6rem'
-		}
-	}, { //6
-		mediaType: 'image',
-		src: _assetsJs2['default'].zl,
-		indexStyle: {
-			background: 'url(' + _assetsJs2['default'].zlIndex + ') no-repeat center center',
-			backgroundSize: 'cover'
-		},
-		poster: 'msPoster',
-		title: '在老山见证生死线上的青春绽放',
-		name: 'zlImg',
-		subTitle: '——新华社云南分社记者 周磊',
-		text1: ['由于历史原因，中越边境云南段埋有一百多万枚地雷，多年来，误入雷区被炸死炸伤的群众将近6000人。有一个村子，曾经有87位村民被地雷炸得只剩下78条腿。', '经过两次大规模排雷行动，中越边境仍有约50万枚地雷。而此时此刻，有一支扫雷部队每天与地雷为伴，生活在生死边缘。这是和平年代的一个特殊战场。 '],
-		text2: ['跟随排雷官兵走进骷髅标志后面的雷场，来到一个将近70度的陡坡，我和官兵们都得沿着这个陡坡下到排雷作业区，坡中间只有一条仅一人宽的通道，这个陡坡就是雷场，我甚至可以看到通道两边散落着的地雷。', '战士们说，在这个陡坡上，踩到一颗小石头都有可能滑倒，如果摔出通道，就可能触雷丧命。我一只手用尽全力抓紧绳子，另一只手举着相机拍摄他们下坡的过程。身上的防护装备和摄影器材有20多公斤，行动相当困难，必须小心翼翼。'],
-		text3: [],
-		text4: [' 在爆破开辟了一片安全区域后，官兵们开始了排雷作业。一名战士用探雷器探测到地雷后，他趴在陡坡上，开始用探针一针一针地插到土里，检查这枚地雷有没有诡计装置，这种装置正是用来迷惑排雷人员的，一旦中计，地雷将被触发。', '当我们坐在空调房里，喝着咖啡，一页一页地刷着朋友圈的时候，在中越边境的大山深处，这群年轻的勇士，正趴在地上，顶着烈日，用他们的双手，将随时会爆炸的地雷一枚一枚地挖出来......', '“世上哪儿有什么岁月静好，无非是有人替我们负重前行”。', '我常默默地祈祷，祝我们年轻的排雷勇士们，平安、平安、永远平安。'],
-		text1Style: {
-			height: '10rem'
-		},
-		text2Style: {
-			height: '6rem'
-		},
-		text3Style: {
-			height: '7.6rem'
-		},
-		text4Style: {
-			height: '13rem'
-		}
-	}];
+	__webpack_require__(15);
 
-	exports['default'] = detailList;
+	exports['default'] = {
+		name: 'zmitipage',
+		props: ['obserable', 'pagenum', 'pageStyle', 'titleClass', 'pageClass', 'page1Animate'],
+		data: function data() {
+			return {
+				imgs: _libAssets2['default'],
+				viewW: document.documentElement.clientWidth,
+				viewH: document.documentElement.clientHeight
+			};
+		},
+		methods: {
+
+			next: function next() {
+				var obserable = this.obserable;
+
+				obserable.trigger({
+					type: 'next'
+				});
+			},
+			prev: function prev() {
+				var obserable = this.obserable;
+
+				obserable.trigger({
+					type: 'prev'
+				});
+			}
+
+		},
+		mounted: function mounted() {}
+	};
+
+	// </script>
 	module.exports = exports['default'];
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(16);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(11)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!./page.css", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!./page.css");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(10)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0; }\r\n\r\n.zmiti-text-overflow {\r\n  overflow: hidden;\r\n  white-space: nowrap;\r\n  word-break: break-all;\r\n  text-overflow: ellipsis;\r\n  -webkit-text-overflow: ellipsis; }\r\n\r\n.zmiti-play {\r\n  width: .8rem;\r\n  height: .8rem;\r\n  border-radius: 50%;\r\n  position: fixed;\r\n  z-index: 1000;\r\n  right: .5rem;\r\n  top: .5rem; }\r\n  .zmiti-play.rotate {\r\n    -webkit-animation: rotate 5s linear infinite;\r\n    animation: rotate 5s linear infinite; }\r\n\r\n@-webkit-keyframes rotate {\r\n  to {\r\n    -webkit-transform: rotate(360deg);\r\n    transform: rotate(360deg); } }\r\n.zmiti-page-main-ui {\r\n  background: #f0f9fe; }\r\n  .zmiti-page-main-ui.page6 {\r\n    background: none; }\r\n    .zmiti-page-main-ui.page6:before {\r\n      content: '';\r\n      position: absolute;\r\n      width: 100%;\r\n      height: 100%;\r\n      left: 0;\r\n      top: 0;\r\n      background-image: linear-gradient(45deg, #e11e3f, #fda93e);\r\n      background-image: -webkit-linear-gradient(45deg, #e11e3f, #fda93e); }\r\n    .zmiti-page-main-ui.page6 .zmiti-title {\r\n      display: none; }\r\n  .zmiti-page-main-ui.page7 {\r\n    color: #fdf5c3; }\r\n    .zmiti-page-main-ui.page7 ul li {\r\n      background: #f9504f !important; }\r\n    .zmiti-page-main-ui.page7:before {\r\n      content: '';\r\n      position: absolute;\r\n      width: 100%;\r\n      height: 100%;\r\n      left: 0;\r\n      top: 0;\r\n      background-image: -webkit-linear-gradient(top, #ed3c43, #e23052); }\r\n    .zmiti-page-main-ui.page7 .zmiti-pagation {\r\n      display: none; }\r\n    .zmiti-page-main-ui.page7 h1 {\r\n      display: none; }\r\n    .zmiti-page-main-ui.page7 .zmiti-title:before {\r\n      content: \"\";\r\n      background-image: -webkit-linear-gradient(45deg, #ec3840, #f25253); }\r\n    .zmiti-page-main-ui.page7 .zmiti-title img {\r\n      width: 5rem; }\r\n  .zmiti-page-main-ui .zmiti-title {\r\n    width: 8rem;\r\n    height: 4rem;\r\n    padding-left: 1rem;\r\n    position: relative; }\r\n    .zmiti-page-main-ui .zmiti-title.page5 {\r\n      color: #fff6bc; }\r\n      .zmiti-page-main-ui .zmiti-title.page5:before {\r\n        content: '';\r\n        position: absolute;\r\n        width: 100%;\r\n        height: 100%;\r\n        left: 0;\r\n        top: 0;\r\n        z-index: 0;\r\n        background: #f04b4e; }\r\n      .zmiti-page-main-ui .zmiti-title.page5 > h1:before {\r\n        background: #fff6bc; }\r\n    .zmiti-page-main-ui .zmiti-title:before {\r\n      content: '';\r\n      position: absolute;\r\n      width: 100%;\r\n      height: 100%;\r\n      left: 0;\r\n      top: 0;\r\n      z-index: 0;\r\n      background: -webkit-linear-gradient(left, #f0f9fe, #e2f2ff); }\r\n    .zmiti-page-main-ui .zmiti-title > h1 {\r\n      width: 6rem;\r\n      height: 2.5rem;\r\n      line-height: 1.6rem;\r\n      position: relative; }\r\n      .zmiti-page-main-ui .zmiti-title > h1:before {\r\n        content: \"\";\r\n        left: 0;\r\n        bottom: .5rem;\r\n        width: .6rem;\r\n        height: 4px;\r\n        background: #000;\r\n        position: absolute; }\r\n    .zmiti-page-main-ui .zmiti-title > div {\r\n      position: relative;\r\n      z-index: 1;\r\n      width: 7rem;\r\n      font-size: .4rem; }\r\n  .zmiti-page-main-ui .zmiti-pager {\r\n    width: 3rem;\r\n    position: absolute;\r\n    top: 0;\r\n    right: 0; }\r\n    .zmiti-page-main-ui .zmiti-pager > span {\r\n      position: absolute;\r\n      left: 1.8rem;\r\n      top: .7rem; }\r\n  .zmiti-page-main-ui .zmiti-page1-img {\r\n    width: 10rem;\r\n    bottom: 2rem;\r\n    position: absolute;\r\n    box-sizing: border-box;\r\n    display: -webkit-box;\r\n    -webkit-box-align: center;\r\n    -webkit-box-pack: center;\r\n    -webkit-box-orient: horizontal; }\r\n    .zmiti-page-main-ui .zmiti-page1-img > div {\r\n      -webkit-transform: translate3d(0, 1rem, 0);\r\n      transform: translate3d(0, 1rem, 0);\r\n      opacity: 0;\r\n      -webkit-transition: 1s;\r\n      transition: 1s; }\r\n      .zmiti-page-main-ui .zmiti-page1-img > div.show {\r\n        opacity: 1;\r\n        -webkit-transform: translate3d(0, 0, 0);\r\n        transform: translate3d(0, 0, 0); }\r\n  .zmiti-page-main-ui .zmiti-page2-img {\r\n    position: absolute;\r\n    width: 10rem;\r\n    bottom: 3rem; }\r\n    .zmiti-page-main-ui .zmiti-page2-img:before {\r\n      content: '......';\r\n      position: absolute;\r\n      left: 50%;\r\n      font-size: 1rem;\r\n      color: #000;\r\n      bottom: 0;\r\n      -webkit-transform: translate3d(-50%, 0%, 0);\r\n      transform: translate3d(-50%, 0%, 0);\r\n      opacity: 0;\r\n      -webkit-transition: 0.5s 1s;\r\n      transition: 0.5s 1s; }\r\n    .zmiti-page-main-ui .zmiti-page2-img img {\r\n      width: 9rem;\r\n      position: absolute;\r\n      left: 50%;\r\n      top: 50%;\r\n      -webkit-transform: translate3d(-50%, 0%, 0);\r\n      transform: translate3d(-50%, 0%, 0);\r\n      opacity: 0; }\r\n    .zmiti-page-main-ui .zmiti-page2-img.show:before {\r\n      opacity: 1; }\r\n    .zmiti-page-main-ui .zmiti-page2-img.show img {\r\n      -webkit-transition: 1s;\r\n      transition: 1s;\r\n      opacity: 1;\r\n      -webkit-transform: translate3d(-50%, -50%, 0);\r\n      transform: translate3d(-50%, -50%, 0); }\r\n      .zmiti-page-main-ui .zmiti-page2-img.show img:nth-of-type(1) {\r\n        -webkit-transition: 1s 0.4s;\r\n        transition: 1s 0.4s; }\r\n  .zmiti-page-main-ui .zmiti-page3-img > div {\r\n    position: relative;\r\n    -webkit-transform: translate3d(0, 1rem, 0);\r\n    transform: translate3d(0, 1rem, 0);\r\n    opacity: 0;\r\n    -webkit-transition: 1s;\r\n    transition: 1s; }\r\n    .zmiti-page-main-ui .zmiti-page3-img > div.show {\r\n      opacity: 1;\r\n      -webkit-transform: translate3d(0, -0.5rem, 0);\r\n      transform: translate3d(0, -0.5rem, 0); }\r\n    .zmiti-page-main-ui .zmiti-page3-img > div > span {\r\n      position: absolute;\r\n      bottom: 1.9rem;\r\n      font-size: .5rem; }\r\n      .zmiti-page-main-ui .zmiti-page3-img > div > span:nth-of-type(1) {\r\n        left: 2.7rem;\r\n        color: #20c077; }\r\n      .zmiti-page-main-ui .zmiti-page3-img > div > span:nth-of-type(2) {\r\n        right: 1.3rem;\r\n        color: #ee8a4e; }\r\n  .zmiti-page-main-ui .zmiti-page4-img ol {\r\n    width: 9rem;\r\n    margin: 0 auto; }\r\n    .zmiti-page-main-ui .zmiti-page4-img ol.show li {\r\n      -webkit-transform: translate3d(0, 0, 0);\r\n      transform: translate3d(0, 0, 0);\r\n      opacity: 1; }\r\n    .zmiti-page-main-ui .zmiti-page4-img ol li {\r\n      -webkit-transform: translate3d(2rem, 0, 0);\r\n      transform: translate3d(2rem, 0, 0);\r\n      opacity: 0;\r\n      -webkit-transition: 0.6s;\r\n      transition: 0.6s; }\r\n      .zmiti-page-main-ui .zmiti-page4-img ol li:nth-of-type(2) {\r\n        -webkit-transition: 0.6s 0.4s;\r\n        transition: 0.6s 0.4s; }\r\n      .zmiti-page-main-ui .zmiti-page4-img ol li:nth-of-type(3) {\r\n        -webkit-transition: 0.6s 0.8s;\r\n        transition: 0.6s 0.8s; }\r\n      .zmiti-page-main-ui .zmiti-page4-img ol li:nth-of-type(4) {\r\n        -webkit-transition: 0.6s 1.2s;\r\n        transition: 0.6s 1.2s; }\r\n      .zmiti-page-main-ui .zmiti-page4-img ol li:nth-of-type(5) {\r\n        -webkit-transition: 0.6s 1.6s;\r\n        transition: 0.6s 1.6s; }\r\n      .zmiti-page-main-ui .zmiti-page4-img ol li:nth-of-type(6) {\r\n        -webkit-transition: 0.6s 2s;\r\n        transition: 0.6s 2s; }\r\n  .zmiti-page-main-ui .zmiti-page5-img > div.show {\r\n    opacity: 1;\r\n    -webkit-transform: translate3d(0, 0, 0);\r\n    transform: translate3d(0, 0, 0); }\r\n  .zmiti-page-main-ui .zmiti-page5-img .zmiti-point {\r\n    opacity: 0; }\r\n  .zmiti-page-main-ui .zmiti-page5-img .zmiti-btn {\r\n    color: #fff6bc;\r\n    text-align: center;\r\n    position: relative;\r\n    height: .8rem;\r\n    top: .3rem;\r\n    line-height: .8rem; }\r\n    .zmiti-page-main-ui .zmiti-page5-img .zmiti-btn:before {\r\n      content: '';\r\n      position: absolute;\r\n      left: 0;\r\n      top: 0;\r\n      width: 100%;\r\n      height: 100%;\r\n      border: 1px solid rgba(255, 246, 188, 0.1);\r\n      box-shadow: 0 0 20px rgba(0, 9, 0, 0.1); }\r\n  .zmiti-page-main-ui .zmiti-page5-img .zmiti-letter-C {\r\n    position: relative; }\r\n    .zmiti-page-main-ui .zmiti-page5-img .zmiti-letter-C ol {\r\n      width: 100%;\r\n      height: 100%;\r\n      position: absolute;\r\n      left: 0;\r\n      top: 0; }\r\n      .zmiti-page-main-ui .zmiti-page5-img .zmiti-letter-C ol li {\r\n        box-sizing: border-box;\r\n        width: 2.6rem;\r\n        height: 2.3rem;\r\n        float: left; }\r\n  .zmiti-page-main-ui .zmiti-page5-img img {\r\n    width: 7.8rem;\r\n    display: block; }\r\n  .zmiti-page-main-ui .zmiti-page6-img > div {\r\n    width: 7rem;\r\n    height: 100%;\r\n    position: relative;\r\n    top: -1rem; }\r\n    .zmiti-page-main-ui .zmiti-page6-img > div.show img {\r\n      opacity: 1;\r\n      -webkit-transform: translate3d(0, 0, 0);\r\n      transform: translate3d(0, 0, 0); }\r\n    .zmiti-page-main-ui .zmiti-page6-img > div img {\r\n      -webkit-transform: translate3d(-2rem, 1rem, 0);\r\n      transform: translate3d(-2rem, 1rem, 0);\r\n      opacity: 0;\r\n      -webkit-transition: 1s;\r\n      transition: 1s; }\r\n      .zmiti-page-main-ui .zmiti-page6-img > div img:nth-of-type(1) {\r\n        position: absolute;\r\n        top: 0;\r\n        left: 0; }\r\n      .zmiti-page-main-ui .zmiti-page6-img > div img:nth-of-type(2) {\r\n        -webkit-transition: 1s 0.4s;\r\n        transition: 1s 0.4s; }\r\n  .zmiti-page-main-ui .zmiti-page7-img {\r\n    bottom: 0;\r\n    box-sizing: border-box; }\r\n    .zmiti-page-main-ui .zmiti-page7-img ul {\r\n      margin-top: 1.5rem;\r\n      width: 8rem;\r\n      float: right; }\r\n      .zmiti-page-main-ui .zmiti-page7-img ul.show li {\r\n        -webkit-transform: translate3d(0, 0, 0);\r\n        transform: translate3d(0, 0, 0);\r\n        opacity: 1; }\r\n      .zmiti-page-main-ui .zmiti-page7-img ul li {\r\n        -webkit-transform: translate3d(2rem, 0, 0);\r\n        transform: translate3d(2rem, 0, 0);\r\n        opacity: 0;\r\n        -webkit-transition: 0.6s;\r\n        transition: 0.6s;\r\n        width: 100%;\r\n        background: #fff;\r\n        height: 1.3rem;\r\n        line-height: 1.3rem;\r\n        margin: .5rem 0;\r\n        text-indent: 2em;\r\n        position: relative; }\r\n        .zmiti-page-main-ui .zmiti-page7-img ul li:nth-of-type(2) {\r\n          -webkit-transition: 0.6s 0.4s;\r\n          transition: 0.6s 0.4s; }\r\n        .zmiti-page-main-ui .zmiti-page7-img ul li:nth-of-type(3) {\r\n          -webkit-transition: 0.6s 0.8s;\r\n          transition: 0.6s 0.8s; }\r\n        .zmiti-page-main-ui .zmiti-page7-img ul li:nth-of-type(4) {\r\n          -webkit-transition: 0.6s 1.2s;\r\n          transition: 0.6s 1.2s; }\r\n        .zmiti-page-main-ui .zmiti-page7-img ul li:nth-of-type(5) {\r\n          -webkit-transition: 0.6s 1.6s;\r\n          transition: 0.6s 1.6s; }\r\n        .zmiti-page-main-ui .zmiti-page7-img ul li:nth-of-type(6) {\r\n          -webkit-transition: 0.6s 2s;\r\n          transition: 0.6s 2s; }\r\n        .zmiti-page-main-ui .zmiti-page7-img ul li:before {\r\n          content: '';\r\n          position: absolute;\r\n          width: 100%;\r\n          height: 100%;\r\n          left: 0;\r\n          top: 0;\r\n          box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); }\r\n        .zmiti-page-main-ui .zmiti-page7-img ul li span {\r\n          font-size: .5rem;\r\n          font-weight: bold;\r\n          margin-right: .7rem; }\r\n        .zmiti-page-main-ui .zmiti-page7-img ul li label {\r\n          font-size: .5rem; }\r\n    .zmiti-page-main-ui .zmiti-page7-img .zmiti-wish {\r\n      font-size: 12px;\r\n      color: #fdf5c3;\r\n      position: absolute;\r\n      width: 100%;\r\n      bottom: 2rem;\r\n      text-align: center; }\r\n    .zmiti-page-main-ui .zmiti-page7-img .zmiti-share-btn {\r\n      background: #fdf5c3;\r\n      width: 8rem;\r\n      border-radius: 1rem;\r\n      position: absolute;\r\n      left: 1rem;\r\n      bottom: .4rem;\r\n      font-size: .5rem;\r\n      color: #ec3a3f;\r\n      text-align: center;\r\n      height: 1.2rem;\r\n      line-height: 1.2rem; }\r\n  .zmiti-page-main-ui .zmiti-pagation {\r\n    width: 10rem;\r\n    height: 2rem;\r\n    background: #f0f9fe;\r\n    position: absolute;\r\n    left: 0;\r\n    bottom: 0;\r\n    display: -webkit-box;\r\n    -webkit-box-align: center;\r\n    -webkit-box-pack: center;\r\n    -webkit-box-orient: horizontal;\r\n    -webkit-box-pack: justify; }\r\n    .zmiti-page-main-ui .zmiti-pagation > div {\r\n      width: 2rem; }\r\n      .zmiti-page-main-ui .zmiti-pagation > div:nth-of-type(1), .zmiti-page-main-ui .zmiti-pagation > div:nth-of-type(3) {\r\n        border: 1px solid #000;\r\n        border-radius: 10px;\r\n        height: .7rem;\r\n        line-height: .7rem; }\r\n        .zmiti-page-main-ui .zmiti-pagation > div:nth-of-type(1).disabled, .zmiti-page-main-ui .zmiti-pagation > div:nth-of-type(3).disabled {\r\n          border-color: #dbe1e8;\r\n          color: #dbe1e8; }\r\n      .zmiti-page-main-ui .zmiti-pagation > div:nth-of-type(1) {\r\n        margin-left: -.4rem;\r\n        text-align: right;\r\n        padding-right: .4rem; }\r\n      .zmiti-page-main-ui .zmiti-pagation > div:nth-of-type(3) {\r\n        margin-right: -.4rem;\r\n        padding-left: .4rem; }\r\n\r\n.zmiti-mask {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: fixed;\r\n  z-index: 1000;\r\n  background: rgba(0, 0, 0, 0.6);\r\n  left: 0;\r\n  top: 0;\r\n  text-align: right; }\r\n  .zmiti-mask img {\r\n    width: 5rem; }\r\n\r\n.zmiti-img-C {\r\n  z-index: 1333;\r\n  background: black;\r\n  display: -webkit-box;\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: center;\r\n  -webkit-box-orient: horizontal; }\r\n  .zmiti-img-C img {\r\n    display: block; }\r\n\r\n.zmiti-progress {\r\n  width: 100%;\r\n  height: 2px;\r\n  background: #e4253f;\r\n  position: absolute;\r\n  left: 0;\r\n  bottom: 0;\r\n  -webkit-transition: 0.5s;\r\n  transition: 0.5s;\r\n  -webkit-transform-origin: left;\r\n  transform-origin: left; }\r\n\r\n/*# sourceMappingURL=page.css.map */\r\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+	module.exports = "\n\t<div :class=\"pageClass\" :style=\"pageStyle\n\n\t\" class=\"zmiti-page-main-ui lt-full\">\n\t\t\n\t\t\t<div :class='titleClass' class=\"zmiti-title\">\n\t\t\t\t<h1>2017我们</h1>\n\t\t\t\t<slot name='title'>\t\n\t\t\t\t\t<div>成功挂牌新三版，完成新一轮融资；获得资本市场认可，翻开了新的画卷。</div>\n\t\t\t\t</slot>\n\t\t\t</div>\n\t\t<div class=\"zmiti-pager\">\n\t\t\t<span>{{pagenum}}</span>\n\t\t\t<slot name='page-num'><img :src=\"imgs.pagenum\" /></slot>\n\t\t</div>\n\t\t<slot name='page-img'>\n\t\t\t\n\t\t\t<div  class=\"zmiti-page1-img\" :style='{height:viewH-7*(viewW/10)+\"px\"}'>\n\t\t\t\t<div :class=\"{'show':page1Animate}\">\n\t\t\t\t\t<img :src=\"imgs.pageimg1\" alt=\"\">\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t</slot>\n\n\t\t<div class=\"zmiti-pagation\">\n\t\t\t<div @click='prev' :class=\"{'disabled':pagenum === 0}\">上一页</div>\n\t\t\t<div><img :src=\"imgs.logo\" alt=\"\"></div>\n\t\t\t<div @click='next'>下一页</div>\n\t\t</div>\n\t</div>\t\n";
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
 
 	"use strict";
 
@@ -12272,195 +12186,61 @@
 		value: true
 	});
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
-	var _jquery = __webpack_require__(14);
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var _jquery2 = _interopRequireDefault(_jquery);
+	var Obserable = (function () {
+		function Obserable() {
+			_classCallCheck(this, Obserable);
 
-	var zmitiUtil = {
-		wxInfo: function wxInfo() {
-			return {
-				wxappid: window.wxappid,
-				wxappsecret: wxappsecret,
-				customid: window.customid
-			};
-		},
-		getQueryString: function getQueryString(name) {
-			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-			var r = window.location.search.substr(1).match(reg);
-			if (r != null) return r[2];
-			return null;
-		},
-		changeURLPar: function changeURLPar(url, arg, val) {
-			var pattern = arg + '=([^&]*)';
-			var replaceText = arg + '=' + val;
-			return url.match(pattern) ? url.replace(eval('/(' + arg + '=)([^&]*)/gi'), replaceText) : url.match('[\?]') ? url + '&' + replaceText : url + '?' + replaceText;
-		},
-		isWeiXin: function isWeiXin() {
-			var ua = window.navigator.userAgent.toLowerCase();
-			if (ua.match(/MicroMessenger/i) == 'micromessenger') {
-				return true;
-			} else {
-				return false;
+			this.handlers = {};
+		}
+
+		_createClass(Obserable, [{
+			key: "on",
+			value: function on(type, handler) {
+
+				this.handlers[type] = this.handlers[type] || [];
+
+				this.off(type);
+				this.handlers[type].push({ handler: handler, type: type });
 			}
-		},
-		wxConfig: function wxConfig(title, desc, url) {
-			var isDebug = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
+		}, {
+			key: "off",
+			value: function off(type) {
+				var _this = this;
 
-			var s = this;
-			var img = window.baseUrl + '/assets/images/300.jpg';
-			//var appId = 'wxfacf4a639d9e3bcc'; //'wxfacf4a639d9e3bcc'; // data.wxappid; // 'wxfacf4a639d9e3bcc'; //data.wxappid;
+				this.handlers[type] && this.handlers[type].forEach(function (item, i) {
+					if (item.type === type) {
+						_this.handlers[type].splice(i, 1);
+					};
+				});
+			}
+		}, {
+			key: "trigger",
+			value: function trigger(event) {
 
-			var appId = this.wxInfo().wxappid;
-
-			var durl = url || location.href.split('#')[0];
-
-			var code_durl = encodeURIComponent(durl);
-
-			_jquery2["default"].ajax({
-				type: 'get',
-				//url: "http://api.zmiti.com/weixin/jssdk.php?type=signature&durl=" + code_durl + '&worksid=' + window.customid,
-				url: window.baseUrl + "/weixin/jssdk.php?type=signature&durl=" + code_durl + '&worksid=' + window.customid,
-				dataType: 'jsonp',
-				jsonp: "callback",
-				jsonpCallback: "jsonFlickrFeed",
-				error: function error() {},
-				success: function success(data) {
-
-					wx.config({
-						debug: isDebug, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-						appId: appId, // 必填，公众号的唯一标识
-						timestamp: '1488558145', // 必填，生成签名的时间戳
-						nonceStr: 'Wm3WZYTPz0wzccnW', // 必填，生成签名的随机串
-						signature: data.signature, // 必填，签名，见附录1
-						jsApiList: ['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'hideMenuItems', 'showMenuItems', 'hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-					});
-
-					wx.ready(function () {
-
-						//朋友圈
-
-						wx.onMenuShareTimeline({
-							title: title, // 分享标题
-							link: durl, // 分享链接
-							imgUrl: img, // 分享图标
-							desc: desc,
-							success: function success() {},
-							cancel: function cancel() {}
-						});
-						//朋友
-						wx.onMenuShareAppMessage({
-							title: title, // 分享标题
-							link: durl,
-							imgUrl: img, // 分享图标
-							type: "link",
-							dataUrl: "",
-							desc: desc,
-							success: function success() {},
-							cancel: function cancel() {}
-						});
-						//qq
-						wx.onMenuShareQQ({
-							title: title, // 分享标题
-							link: durl, // 分享链接
-							imgUrl: img, // 分享图标
-							desc: desc,
-							success: function success() {},
-							cancel: function cancel() {}
-						});
-					});
+				if (!event.target) {
+					event.target = this;
 				}
-			});
-		},
-
-		getOauthurl: function getOauthurl() {
-			var s = this;
-
-			var _wxInfo = this.wxInfo();
-
-			var wxappid = _wxInfo.wxappid;
-			var wxappsecret = _wxInfo.wxappsecret;
-			var customid = _wxInfo.customid;
-
-			_jquery2["default"].ajax({
-				type: 'post',
-				//url: window.baseUrl + '/weixin/getwxuserinfo/',
-				url: window.protocol + '//api.zmiti.com/v2/weixin/getwxuserinfo/',
-				data: {
-					code: s.getQueryString('code'),
-					wxappid: wxappid,
-					wxappsecret: wxappsecret
-				},
-				error: function error() {},
-				success: function success(dt) {
-
-					if (dt.getret === 0) {
-
-						s.openid = dt.userinfo.openid;
-						s.nickname = dt.userinfo.nickname;
-						s.headimgurl = dt.userinfo.headimgurl;
-
-						window.nickname = s.nickname;
-						window.headimgurl = s.headimgurl;
-						window.openid = s.openid;
-
-						var URI = window.location.href.split('#')[0];
-
-						s.wxConfig('为你圆梦', '@留守儿童 新华社喊你来许愿！有机会得团圆基金哦');
-					} else {
-						if (s.isWeiXin()) {
-							var mobile = s.getQueryString('mobile');
-							var address1 = s.getQueryString('address1');
-							var address2 = s.getQueryString('address2');
-							var qid = s.getQueryString('qid');
-
-							var redirect_uri = window.location.href.split('?')[0];
-
-							if (mobile) {
-								redirect_uri = s.changeURLPar(redirect_uri, 'mobile', mobile);
-							}
-							if (address1) {
-								redirect_uri = s.changeURLPar(redirect_uri, 'address1', address1);
-							}
-							if (address2) {
-								redirect_uri = s.changeURLPar(redirect_uri, 'address2', address2);
-							}
-
-							if (qid) {
-								redirect_uri = s.changeURLPar(redirect_uri, 'qid', qid);
-							}
-
-							_jquery2["default"].ajax({
-								//url: window.baseUrl + '/weixin/getoauthurl/',
-								url: window.protocol + '//api.zmiti.com/v2/weixin/getoauthurl/',
-								type: 'post',
-								data: {
-									redirect_uri: redirect_uri,
-									scope: 'snsapi_userinfo',
-									worksid: customid,
-									state: new Date().getTime() + ''
-								},
-								error: function error() {},
-								success: function success(dt) {
-									if (dt.getret === 0) {
-										window.location.href = dt.url;
-									}
-								}
-							});
-						} else {
-							s.wxConfig('为你圆梦', '@留守儿童 新华社喊你来许愿！有机会得团圆基金哦');
-						}
+				if (this.handlers[event.type] instanceof Array) {
+					var handlers = this.handlers[event.type]; //检出被观察者注册的观察者
+					for (var i = 0, len = handlers.length; i < len; i++) {
+						return handlers[i].handler(event.data); //回调函数执行，也就是观察者更新自己
 					}
 				}
-			});
-		}
-	};
-	exports["default"] = zmitiUtil;
+			}
+		}]);
+
+		return Obserable;
+	})();
+
+	exports["default"] = Obserable;
 	module.exports = exports["default"];
 
 /***/ }),
-/* 14 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -22280,2712 +22060,7 @@
 
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-	module.exports = "\r\n\t<div :class=\"{'scale':isSure,'show':show}\" @touchmove='touchmove($event)' @touchend='touchend($event)' class=\"zmiti-index-main-ui lt-full\" >\r\n\t\t<div class=\"zmiti-index-title\">\r\n\t\t\t<img :src=\"imgs.title\" alt=\"\">\r\n\t\t</div>\r\n\t\t\t\r\n\t\t<div class=\"zmiti-index-camera\">\r\n\t\t\t<img :src='imgs.camera1' class=\"zmiti-camera-top\" />\r\n\t\t\t<img :src='imgs.camera'/>\r\n\r\n\t\t\t<div v-tap='entryDetail' v-if='i===index' v-for='(detail,i) in detailList' class=\"zmiti-camera-img\" :style=\"detailList[index].indexStyle\">\r\n\t\t\t\t\r\n\t\t\t</div>\r\n\r\n\t\t\t<div :style=\"{WebkitTransform:'rotate('+rotation+'deg)'}\" @touchend='touchend($event)' @touchstart='touchstart($event)' class=\"zmiti-wheel\">\r\n\t\t\t\t<img :src='imgs.wheel'/>\r\n\t\t\t</div>\r\n\r\n\t\t\t<div v-tap='entryDetail' class=\"zmiti-sure\">\r\n\t\t\t\t<img :src=\"imgs.sure\" alt=\"\">\r\n\t\t\t</div>\r\n\r\n\t\t\t<div class=\"zmiti-img-C1\">\r\n\t\t\t\t<div class=\"zmiti-img\" @touchstart='setJIndex(0)'>\r\n\t\t\t\t\t<img v-if='index === 0' :src=\"imgs.imgBg1\" class='zmiti-img-bg' alt=\"\">\r\n\t\t\t\t\t<img v-if='index !== 0' :src=\"imgs.imgBg\" class='zmiti-img-bg' alt=\"\">\r\n\t\t\t\t\t<img :src='imgs.img1'/>\r\n\t\t\t\t</div>\r\n\r\n\t\t\t\t<div class=\"zmiti-img\" @touchstart='setJIndex(1)'>\r\n\t\t\t\t\t<img v-if='index === 1' :src=\"imgs.imgBg1\" class='zmiti-img-bg' alt=\"\">\r\n\t\t\t\t\t<img v-if='index !== 1' :src=\"imgs.imgBg\" class='zmiti-img-bg' alt=\"\">\r\n\t\t\t\t\t<img :src='imgs.img2'/>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"zmiti-img\" @touchstart='setJIndex(2)'>\r\n\t\t\t\t\t<img v-if='index === 2' :src=\"imgs.imgBg1\" class='zmiti-img-bg' alt=\"\">\r\n\t\t\t\t\t<img v-if='index !== 2' :src=\"imgs.imgBg\" class='zmiti-img-bg' alt=\"\">\r\n\t\t\t\t\t<img :src='imgs.img3'/>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"zmiti-img-C2\">\r\n\t\t\t\t\r\n\t\t\t\t<div class=\"zmiti-img\" @touchstart='setJIndex(6)'>\r\n\t\t\t\t\t<img v-if='index === 6' :src=\"imgs.imgBg1\" class='zmiti-img-bg' alt=\"\">\r\n\t\t\t\t\t<img v-if='index !== 6' :src=\"imgs.imgBg\" class='zmiti-img-bg' alt=\"\">\r\n\t\t\t\t\t<img :src='imgs.img7'/>\r\n\t\t\t\t</div>\t\r\n\t\t\t\t<div class=\"zmiti-img\" @touchstart='setJIndex(5)'>\r\n\t\t\t\t\t<img v-if='index === 5' :src=\"imgs.imgBg1\" class='zmiti-img-bg' alt=\"\">\r\n\t\t\t\t\t<img v-if='index !== 5' :src=\"imgs.imgBg\" class='zmiti-img-bg' alt=\"\">\r\n\t\t\t\t\t<img :src='imgs.img6'/>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"zmiti-img\" @touchstart='setJIndex(4)'>\r\n\t\t\t\t\t<img v-if='index === 4' :src=\"imgs.imgBg1\" class='zmiti-img-bg' alt=\"\">\r\n\t\t\t\t\t<img v-if='index !== 4' :src=\"imgs.imgBg\" class='zmiti-img-bg' alt=\"\">\r\n\t\t\t\t\t<img :src='imgs.img5'/>\r\n\t\t\t\t</div>\r\n\t\t\t\t<div class=\"zmiti-img\" @touchstart='setJIndex(3)'>\r\n\t\t\t\t\t<img v-if='index === 3' :src=\"imgs.imgBg1\" class='zmiti-img-bg' alt=\"\">\r\n\t\t\t\t\t<img v-if='index !== 3' :src=\"imgs.imgBg\" class='zmiti-img-bg' alt=\"\">\r\n\t\t\t\t\t<img :src='imgs.img4'/>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t\t\r\n\t\t</div>\t\t\r\n\r\n\t\t<div class=\"zmiti-index-bottom\">\r\n\t\t\t<img :src='imgs.bottom'/>\r\n\t\t</div>\r\n\t\t<audio  ref='wheel' :src='wheelMusic'></audio>\r\n\t\t<audio  ref='change' :src='changeMusic'></audio>\r\n\r\n\t</div>\r\n";
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__vue_script__ = __webpack_require__(17)
-	__vue_template__ = __webpack_require__(26)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "F:\\xuchang2018\\project\\journalist\\components\\page1\\page1.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// <template>
-	// 	<div  :class="{'show':show}" class="zmiti-page1-main-ui lt-full" ref='page'>
-	// 		<section :style="{background: 'url('+imgs.bg+') repeat'}" v-if='index === i' v-for='(detail,i) in detailList'>
-	// 			<div v-if='detail.mediaType==="video"' class="zmiti-video-main-ui">
-	// 				<img :src="imgs.j1" />
-	// 				<audio src='./assets/music/bg1.mp3' ref='video-audio'></audio>
-	// 				<div class="zmiti-video-C">
-	// 					<!--  -->
-	// 					<div v-if='!play' v-tap='playVideo' :style='{background:"url("+imgs[detail.poster]+") no-repeat center center ",backgroundSize:"cover"}' >
-	// 						<img style="width:100%;" class="zmiti-poster" :src="imgs[detail.poster]" alt="">
-	// 						<img  class="zmiti-paused" :src="imgs.paused" />
-	// 					</div>
-	// 					<video v-show='show' x-webkit-airplay="true" webkit-playsinline="true" playsinline="true"  @ended='ended' @puase='play=false' v-tap='pauseVideo' @play='play=true' ref='video' :src='detail.src'></video>
-	// 				</div>
-	// 			</div>
-	// 			<div v-if='detail.mediaType==="image"' class="zmiti-video-main-ui">
-	// 				<img :src="imgs.j1" />
-	// 				<div class="zmiti-video-C">
-	// 					<img :src="detail.src" alt="">
-	// 				</div>
-	// 			</div>
-	// 			<div class="zmiti-item ">
-	// 				<img :src='imgs.microphone' class="zmiti-microphone" />
-	// 				<div class="zmiti-j-content">
-	// 					<h2>{{detail.title}}</h2>
-	// 					<div class="zmiti-j-sub-title">{{detail.subTitle}}</div>
-	// 					<div class="zmiti-j-text" >
-	// 						<div v-for='text in detail.text1'>
-	// 							{{text}}
-	// 						</div>
-	// 					</div>
-	// 				</div>
-	// 				<img class="zmiti-bg" :src="imgs.jbg1" :style="detail.text1Style" />
-	// 			</div>
-	// 			<div class="zmiti-item zmiti-item2">
-	// 				<div class="zmiti-j-content">
-	// 					<div class="zmiti-j-text" v-for='text in detail.text2'>
-	// 						{{text}}
-	// 					</div>
-	// 				</div>
-	// 				<img class="" :src="imgs.jbg21" />
-	// 				<img class="zmiti-bg2" :src="imgs.jbg2" :style="detail.text2Style" />
-	// 				<img class="" :src="imgs.jbg22" />
-	// 			</div>
-	// 			<div class="zmiti-item">
-	// 				<img :src='imgs[detail.name]' />
-	// 			</div>
-	//
-	// 			<div v-if='detail.text3.length>0' class="zmiti-item zmiti-item4">
-	// 				<div class="zmiti-j-content">
-	// 					<div class="zmiti-j-text" v-for='text in detail.text3'>
-	// 						{{text}}
-	// 					</div>
-	// 				</div>
-	// 				<img :src='imgs.jbg3' class="zmiti-bg" :style="detail.text3Style" />
-	// 				<img :src="imgs.camera2" class="zmiti-camera2" alt="">
-	// 			</div>
-	//
-	// 			<div class="zmiti-item zmiti-item5">
-	// 				<div class="zmiti-j-content">
-	// 					<div class="zmiti-j-text">
-	// 						<div v-for='text in detail.text4'>{{text}}</div>
-	// 					</div>
-	// 				</div>
-	// 				<img :src='imgs.jbg4' class="zmiti-bg" :style="detail.text4Style" />
-	//
-	// 			</div>
-	//
-	// 			<Footer :obserable='obserable'></Footer>
-	//
-	//
-	// 		</section>
-	// 	</div>
-	// </template>
-	// <script>
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-		value: true
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	__webpack_require__(18);
-
-	var _libAssetsJs = __webpack_require__(11);
-
-	var _libAssetsJs2 = _interopRequireDefault(_libAssetsJs);
-
-	var _iscroll = __webpack_require__(20);
-
-	var _iscroll2 = _interopRequireDefault(_iscroll);
-
-	var _footerFooter = __webpack_require__(21);
-
-	var _footerFooter2 = _interopRequireDefault(_footerFooter);
-
-	var _libDataJs = __webpack_require__(12);
-
-	var _libDataJs2 = _interopRequireDefault(_libDataJs);
-
-	exports['default'] = {
-		name: 'zmitipage1',
-		props: ['obserable'],
-		data: function data() {
-			return {
-				imgs: _libAssetsJs2['default'],
-				play: false,
-				index: -1,
-				show: false,
-				detailList: _libDataJs2['default']
-			};
-		},
-		methods: {
-			ended: function ended() {
-				this.play = false;
-				this.$refs['video-audio'][0].pause();
-				var obserable = this.obserable;
-
-				obserable.trigger({
-					type: 'toggleBgMusic',
-					data: true
-				});
-			},
-			playVideo: function playVideo() {
-				this.$refs['video-audio'][0].volume = 0.6;
-				this.$refs['video'][0].play();
-				this.$refs['video-audio'][0].play();
-				var obserable = this.obserable;
-
-				obserable.trigger({
-					type: 'toggleBgMusic',
-					data: false
-				});
-			},
-			pauseVideo: function pauseVideo() {
-				this.$refs['video-audio'][0].pause();
-				this.$refs['video'][0].pause();
-				this.play = false;
-				var obserable = this.obserable;
-
-				obserable.trigger({
-					type: 'toggleBgMusic',
-					data: true
-				});
-			}
-		},
-		components: {
-			Footer: _footerFooter2['default']
-		},
-		mounted: function mounted() {
-			var _this = this;
-
-			var obserable = this.obserable;
-
-			obserable.on('togglePage', function (data) {
-				_this.show = data;
-
-				if (!data) {
-					_this.play = false;
-					_this.$refs['video'][0] && _this.$refs['video'][0].pause();
-
-					obserable.trigger({
-						type: 'toggleBgMusic',
-						data: true
-					});
-				}
-				var index = obserable.trigger({
-					type: 'getIndex'
-				});
-				_this.index = index;
-
-				setTimeout(function () {
-					_this.scroll = new _iscroll2['default'](_this.$refs['page'], {});
-					_this.scroll.refresh();
-				}, 100);
-			});
-		}
-	};
-
-	// </script>
-	module.exports = exports['default'];
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(19);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(10)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!../../node_modules/css-loader/index.js!./page.css", function() {
-				var newContent = require("!!../../node_modules/css-loader/index.js!./page.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(9)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0; }\r\n\r\n.zmiti-text-overflow {\r\n  overflow: hidden;\r\n  white-space: nowrap;\r\n  word-break: break-all;\r\n  text-overflow: ellipsis;\r\n  -webkit-text-overflow: ellipsis; }\r\n\r\n.zmiti-play {\r\n  width: .8rem;\r\n  height: .8rem;\r\n  border-radius: 50%;\r\n  position: fixed;\r\n  z-index: 1000;\r\n  right: .5rem;\r\n  top: .5rem; }\r\n  .zmiti-play.rotate {\r\n    -webkit-animation: rotate 5s linear infinite;\r\n    animation: rotate 5s linear infinite; }\r\n\r\n@-webkit-keyframes rotate {\r\n  to {\r\n    -webkit-transform: rotate(360deg);\r\n    transform: rotate(360deg); } }\r\n.zmiti-page1-main-ui {\r\n  opacity: 0;\r\n  -webkit-transition: 1s 0.4s;\r\n  transition: 1s 0.4s;\r\n  color: #054485;\r\n  background: #fff;\r\n  z-index: -1;\r\n  font-size: 12px; }\r\n  .zmiti-page1-main-ui.show {\r\n    z-index: 102;\r\n    opacity: 1; }\r\n  .zmiti-page1-main-ui > section {\r\n    padding-bottom: 1rem; }\r\n  .zmiti-page1-main-ui .zmiti-video-main-ui {\r\n    position: relative; }\r\n    .zmiti-page1-main-ui .zmiti-video-main-ui .zmiti-video-C {\r\n      position: absolute;\r\n      left: 1rem;\r\n      top: 1.8rem;\r\n      width: 7rem;\r\n      overflow: hidden;\r\n      border-radius: 10px;\r\n      border: 1px solid #2b6198;\r\n      height: 3.95rem; }\r\n      .zmiti-page1-main-ui .zmiti-video-main-ui .zmiti-video-C .zmiti-paused {\r\n        position: absolute;\r\n        z-index: 100;\r\n        width: 1rem;\r\n        left: 50%;\r\n        margin-left: -.5rem;\r\n        top: 50%;\r\n        margin-top: -.5rem; }\r\n      .zmiti-page1-main-ui .zmiti-video-main-ui .zmiti-video-C video {\r\n        border-radius: 10px;\r\n        width: 100%;\r\n        height: 100%;\r\n        left: 0;\r\n        top: 0; }\r\n      .zmiti-page1-main-ui .zmiti-video-main-ui .zmiti-video-C > div {\r\n        position: absolute;\r\n        width: 100%;\r\n        height: 100%;\r\n        z-index: 10; }\r\n  .zmiti-page1-main-ui .zmiti-item {\r\n    margin-top: .6rem;\r\n    position: relative; }\r\n    .zmiti-page1-main-ui .zmiti-item .zmiti-j-content {\r\n      width: 7rem;\r\n      position: absolute;\r\n      left: 1.5rem;\r\n      top: 1.5rem; }\r\n      .zmiti-page1-main-ui .zmiti-item .zmiti-j-content h2 {\r\n        font-size: .5rem;\r\n        font-weight: normal;\r\n        text-align: center; }\r\n      .zmiti-page1-main-ui .zmiti-item .zmiti-j-content .zmiti-j-sub-title {\r\n        text-align: center;\r\n        margin: .4rem 0; }\r\n      .zmiti-page1-main-ui .zmiti-item .zmiti-j-content .zmiti-j-text {\r\n        text-indent: 2em;\r\n        line-height: .6rem; }\r\n        .zmiti-page1-main-ui .zmiti-item .zmiti-j-content .zmiti-j-text > div {\r\n          margin: 10px 0; }\r\n    .zmiti-page1-main-ui .zmiti-item .zmiti-microphone {\r\n      position: absolute;\r\n      width: 1.4rem;\r\n      right: 1rem;\r\n      top: .4rem; }\r\n    .zmiti-page1-main-ui .zmiti-item > img.zmiti-bg {\r\n      width: 9rem;\r\n      display: block;\r\n      margin: 0 auto;\r\n      height: 9.5rem; }\r\n    .zmiti-page1-main-ui .zmiti-item > img.zmiti-bg2 {\r\n      display: block;\r\n      margin: 0 auto;\r\n      height: 8rem; }\r\n  .zmiti-page1-main-ui .zmiti-item2 .zmiti-j-text {\r\n    margin-top: .4rem; }\r\n  .zmiti-page1-main-ui .zmiti-item4 {\r\n    width: 8rem;\r\n    margin: 0 auto;\r\n    border: 1px solid transparent; }\r\n    .zmiti-page1-main-ui .zmiti-item4 > img.zmiti-bg {\r\n      height: 7rem;\r\n      width: 100%; }\r\n    .zmiti-page1-main-ui .zmiti-item4 .zmiti-j-content {\r\n      position: absolute;\r\n      width: 80%;\r\n      left: 10%;\r\n      -webkit-transform: rotate(-3deg);\r\n      transform: rotate(-3deg); }\r\n    .zmiti-page1-main-ui .zmiti-item4 .zmiti-camera2 {\r\n      position: absolute;\r\n      width: 1rem;\r\n      right: 0;\r\n      bottom: 0; }\r\n  .zmiti-page1-main-ui .zmiti-item5 > img.zmiti-bg {\r\n    width: 100%;\r\n    height: 14rem; }\r\n\r\n/*# sourceMappingURL=page.css.map */\r\n", ""]);
-
-	// exports
-
-
-/***/ }),
 /* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*! iScroll v5.2.0 ~ (c) 2008-2016 Matteo Spinelli ~ http://cubiq.org/license */
-	(function (window, document, Math) {
-	var rAF = window.requestAnimationFrame	||
-		window.webkitRequestAnimationFrame	||
-		window.mozRequestAnimationFrame		||
-		window.oRequestAnimationFrame		||
-		window.msRequestAnimationFrame		||
-		function (callback) { window.setTimeout(callback, 1000 / 60); };
-
-	var utils = (function () {
-		var me = {};
-
-		var _elementStyle = document.createElement('div').style;
-		var _vendor = (function () {
-			var vendors = ['t', 'webkitT', 'MozT', 'msT', 'OT'],
-				transform,
-				i = 0,
-				l = vendors.length;
-
-			for ( ; i < l; i++ ) {
-				transform = vendors[i] + 'ransform';
-				if ( transform in _elementStyle ) return vendors[i].substr(0, vendors[i].length-1);
-			}
-
-			return false;
-		})();
-
-		function _prefixStyle (style) {
-			if ( _vendor === false ) return false;
-			if ( _vendor === '' ) return style;
-			return _vendor + style.charAt(0).toUpperCase() + style.substr(1);
-		}
-
-		me.getTime = Date.now || function getTime () { return new Date().getTime(); };
-
-		me.extend = function (target, obj) {
-			for ( var i in obj ) {
-				target[i] = obj[i];
-			}
-		};
-
-		me.addEvent = function (el, type, fn, capture) {
-			el.addEventListener(type, fn, !!capture);
-		};
-
-		me.removeEvent = function (el, type, fn, capture) {
-			el.removeEventListener(type, fn, !!capture);
-		};
-
-		me.prefixPointerEvent = function (pointerEvent) {
-			return window.MSPointerEvent ?
-				'MSPointer' + pointerEvent.charAt(7).toUpperCase() + pointerEvent.substr(8):
-				pointerEvent;
-		};
-
-		me.momentum = function (current, start, time, lowerMargin, wrapperSize, deceleration) {
-			var distance = current - start,
-				speed = Math.abs(distance) / time,
-				destination,
-				duration;
-
-			deceleration = deceleration === undefined ? 0.0006 : deceleration;
-
-			destination = current + ( speed * speed ) / ( 2 * deceleration ) * ( distance < 0 ? -1 : 1 );
-			duration = speed / deceleration;
-
-			if ( destination < lowerMargin ) {
-				destination = wrapperSize ? lowerMargin - ( wrapperSize / 2.5 * ( speed / 8 ) ) : lowerMargin;
-				distance = Math.abs(destination - current);
-				duration = distance / speed;
-			} else if ( destination > 0 ) {
-				destination = wrapperSize ? wrapperSize / 2.5 * ( speed / 8 ) : 0;
-				distance = Math.abs(current) + destination;
-				duration = distance / speed;
-			}
-
-			return {
-				destination: Math.round(destination),
-				duration: duration
-			};
-		};
-
-		var _transform = _prefixStyle('transform');
-
-		me.extend(me, {
-			hasTransform: _transform !== false,
-			hasPerspective: _prefixStyle('perspective') in _elementStyle,
-			hasTouch: 'ontouchstart' in window,
-			hasPointer: !!(window.PointerEvent || window.MSPointerEvent), // IE10 is prefixed
-			hasTransition: _prefixStyle('transition') in _elementStyle
-		});
-
-		/*
-		This should find all Android browsers lower than build 535.19 (both stock browser and webview)
-		- galaxy S2 is ok
-	    - 2.3.6 : `AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1`
-	    - 4.0.4 : `AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30`
-	   - galaxy S3 is badAndroid (stock brower, webview)
-	     `AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30`
-	   - galaxy S4 is badAndroid (stock brower, webview)
-	     `AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30`
-	   - galaxy S5 is OK
-	     `AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Mobile Safari/537.36 (Chrome/)`
-	   - galaxy S6 is OK
-	     `AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Mobile Safari/537.36 (Chrome/)`
-	  */
-		me.isBadAndroid = (function() {
-			var appVersion = window.navigator.appVersion;
-			// Android browser is not a chrome browser.
-			if (/Android/.test(appVersion) && !(/Chrome\/\d/.test(appVersion))) {
-				var safariVersion = appVersion.match(/Safari\/(\d+.\d)/);
-				if(safariVersion && typeof safariVersion === "object" && safariVersion.length >= 2) {
-					return parseFloat(safariVersion[1]) < 535.19;
-				} else {
-					return true;
-				}
-			} else {
-				return false;
-			}
-		})();
-
-		me.extend(me.style = {}, {
-			transform: _transform,
-			transitionTimingFunction: _prefixStyle('transitionTimingFunction'),
-			transitionDuration: _prefixStyle('transitionDuration'),
-			transitionDelay: _prefixStyle('transitionDelay'),
-			transformOrigin: _prefixStyle('transformOrigin')
-		});
-
-		me.hasClass = function (e, c) {
-			var re = new RegExp("(^|\\s)" + c + "(\\s|$)");
-			return re.test(e.className);
-		};
-
-		me.addClass = function (e, c) {
-			if ( me.hasClass(e, c) ) {
-				return;
-			}
-
-			var newclass = e.className.split(' ');
-			newclass.push(c);
-			e.className = newclass.join(' ');
-		};
-
-		me.removeClass = function (e, c) {
-			if ( !me.hasClass(e, c) ) {
-				return;
-			}
-
-			var re = new RegExp("(^|\\s)" + c + "(\\s|$)", 'g');
-			e.className = e.className.replace(re, ' ');
-		};
-
-		me.offset = function (el) {
-			var left = -el.offsetLeft,
-				top = -el.offsetTop;
-
-			// jshint -W084
-			while (el = el.offsetParent) {
-				left -= el.offsetLeft;
-				top -= el.offsetTop;
-			}
-			// jshint +W084
-
-			return {
-				left: left,
-				top: top
-			};
-		};
-
-		me.preventDefaultException = function (el, exceptions) {
-			for ( var i in exceptions ) {
-				if ( exceptions[i].test(el[i]) ) {
-					return true;
-				}
-			}
-
-			return false;
-		};
-
-		me.extend(me.eventType = {}, {
-			touchstart: 1,
-			touchmove: 1,
-			touchend: 1,
-
-			mousedown: 2,
-			mousemove: 2,
-			mouseup: 2,
-
-			pointerdown: 3,
-			pointermove: 3,
-			pointerup: 3,
-
-			MSPointerDown: 3,
-			MSPointerMove: 3,
-			MSPointerUp: 3
-		});
-
-		me.extend(me.ease = {}, {
-			quadratic: {
-				style: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-				fn: function (k) {
-					return k * ( 2 - k );
-				}
-			},
-			circular: {
-				style: 'cubic-bezier(0.1, 0.57, 0.1, 1)',	// Not properly "circular" but this looks better, it should be (0.075, 0.82, 0.165, 1)
-				fn: function (k) {
-					return Math.sqrt( 1 - ( --k * k ) );
-				}
-			},
-			back: {
-				style: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-				fn: function (k) {
-					var b = 4;
-					return ( k = k - 1 ) * k * ( ( b + 1 ) * k + b ) + 1;
-				}
-			},
-			bounce: {
-				style: '',
-				fn: function (k) {
-					if ( ( k /= 1 ) < ( 1 / 2.75 ) ) {
-						return 7.5625 * k * k;
-					} else if ( k < ( 2 / 2.75 ) ) {
-						return 7.5625 * ( k -= ( 1.5 / 2.75 ) ) * k + 0.75;
-					} else if ( k < ( 2.5 / 2.75 ) ) {
-						return 7.5625 * ( k -= ( 2.25 / 2.75 ) ) * k + 0.9375;
-					} else {
-						return 7.5625 * ( k -= ( 2.625 / 2.75 ) ) * k + 0.984375;
-					}
-				}
-			},
-			elastic: {
-				style: '',
-				fn: function (k) {
-					var f = 0.22,
-						e = 0.4;
-
-					if ( k === 0 ) { return 0; }
-					if ( k == 1 ) { return 1; }
-
-					return ( e * Math.pow( 2, - 10 * k ) * Math.sin( ( k - f / 4 ) * ( 2 * Math.PI ) / f ) + 1 );
-				}
-			}
-		});
-
-		me.tap = function (e, eventName) {
-			var ev = document.createEvent('Event');
-			ev.initEvent(eventName, true, true);
-			ev.pageX = e.pageX;
-			ev.pageY = e.pageY;
-			e.target.dispatchEvent(ev);
-		};
-
-		me.click = function (e) {
-			var target = e.target,
-				ev;
-
-			if ( !(/(SELECT|INPUT|TEXTAREA)/i).test(target.tagName) ) {
-				ev = document.createEvent('MouseEvents');
-				ev.initMouseEvent('click', true, true, e.view, 1,
-					target.screenX, target.screenY, target.clientX, target.clientY,
-					e.ctrlKey, e.altKey, e.shiftKey, e.metaKey,
-					0, null);
-
-				ev._constructed = true;
-				target.dispatchEvent(ev);
-			}
-		};
-
-		return me;
-	})();
-	function IScroll (el, options) {
-		this.wrapper = typeof el == 'string' ? document.querySelector(el) : el;
-		this.scroller = this.wrapper.children[0];
-		this.scrollerStyle = this.scroller.style;		// cache style for better performance
-
-		this.options = {
-
-			resizeScrollbars: true,
-
-			mouseWheelSpeed: 20,
-
-			snapThreshold: 0.334,
-
-	// INSERT POINT: OPTIONS
-			disablePointer : !utils.hasPointer,
-			disableTouch : utils.hasPointer || !utils.hasTouch,
-			disableMouse : utils.hasPointer || utils.hasTouch,
-			startX: 0,
-			startY: 0,
-			scrollY: true,
-			directionLockThreshold: 5,
-			momentum: true,
-
-			bounce: true,
-			bounceTime: 600,
-			bounceEasing: '',
-
-			preventDefault: true,
-			preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT)$/ },
-
-			HWCompositing: true,
-			useTransition: true,
-			useTransform: true,
-			bindToWrapper: typeof window.onmousedown === "undefined"
-		};
-
-		for ( var i in options ) {
-			this.options[i] = options[i];
-		}
-
-		// Normalize options
-		this.translateZ = this.options.HWCompositing && utils.hasPerspective ? ' translateZ(0)' : '';
-
-		this.options.useTransition = utils.hasTransition && this.options.useTransition;
-		this.options.useTransform = utils.hasTransform && this.options.useTransform;
-
-		this.options.eventPassthrough = this.options.eventPassthrough === true ? 'vertical' : this.options.eventPassthrough;
-		this.options.preventDefault = !this.options.eventPassthrough && this.options.preventDefault;
-
-		// If you want eventPassthrough I have to lock one of the axes
-		this.options.scrollY = this.options.eventPassthrough == 'vertical' ? false : this.options.scrollY;
-		this.options.scrollX = this.options.eventPassthrough == 'horizontal' ? false : this.options.scrollX;
-
-		// With eventPassthrough we also need lockDirection mechanism
-		this.options.freeScroll = this.options.freeScroll && !this.options.eventPassthrough;
-		this.options.directionLockThreshold = this.options.eventPassthrough ? 0 : this.options.directionLockThreshold;
-
-		this.options.bounceEasing = typeof this.options.bounceEasing == 'string' ? utils.ease[this.options.bounceEasing] || utils.ease.circular : this.options.bounceEasing;
-
-		this.options.resizePolling = this.options.resizePolling === undefined ? 60 : this.options.resizePolling;
-
-		if ( this.options.tap === true ) {
-			this.options.tap = 'tap';
-		}
-
-		if ( this.options.shrinkScrollbars == 'scale' ) {
-			this.options.useTransition = false;
-		}
-
-		this.options.invertWheelDirection = this.options.invertWheelDirection ? -1 : 1;
-
-	// INSERT POINT: NORMALIZATION
-
-		// Some defaults
-		this.x = 0;
-		this.y = 0;
-		this.directionX = 0;
-		this.directionY = 0;
-		this._events = {};
-
-	// INSERT POINT: DEFAULTS
-
-		this._init();
-		this.refresh();
-
-		this.scrollTo(this.options.startX, this.options.startY);
-		this.enable();
-	}
-
-	IScroll.prototype = {
-		version: '5.2.0',
-
-		_init: function () {
-			this._initEvents();
-
-			if ( this.options.scrollbars || this.options.indicators ) {
-				this._initIndicators();
-			}
-
-			if ( this.options.mouseWheel ) {
-				this._initWheel();
-			}
-
-			if ( this.options.snap ) {
-				this._initSnap();
-			}
-
-			if ( this.options.keyBindings ) {
-				this._initKeys();
-			}
-
-	// INSERT POINT: _init
-
-		},
-
-		destroy: function () {
-			this._initEvents(true);
-			clearTimeout(this.resizeTimeout);
-	 		this.resizeTimeout = null;
-			this._execEvent('destroy');
-		},
-
-		_transitionEnd: function (e) {
-			if ( e.target != this.scroller || !this.isInTransition ) {
-				return;
-			}
-
-			this._transitionTime();
-			if ( !this.resetPosition(this.options.bounceTime) ) {
-				this.isInTransition = false;
-				this._execEvent('scrollEnd');
-			}
-		},
-
-		_start: function (e) {
-			// React to left mouse button only
-			if ( utils.eventType[e.type] != 1 ) {
-			  // for button property
-			  // http://unixpapa.com/js/mouse.html
-			  var button;
-		    if (!e.which) {
-		      /* IE case */
-		      button = (e.button < 2) ? 0 :
-		               ((e.button == 4) ? 1 : 2);
-		    } else {
-		      /* All others */
-		      button = e.button;
-		    }
-				if ( button !== 0 ) {
-					return;
-				}
-			}
-
-			if ( !this.enabled || (this.initiated && utils.eventType[e.type] !== this.initiated) ) {
-				return;
-			}
-
-			if ( this.options.preventDefault && !utils.isBadAndroid && !utils.preventDefaultException(e.target, this.options.preventDefaultException) ) {
-				e.preventDefault();
-			}
-
-			var point = e.touches ? e.touches[0] : e,
-				pos;
-
-			this.initiated	= utils.eventType[e.type];
-			this.moved		= false;
-			this.distX		= 0;
-			this.distY		= 0;
-			this.directionX = 0;
-			this.directionY = 0;
-			this.directionLocked = 0;
-
-			this.startTime = utils.getTime();
-
-			if ( this.options.useTransition && this.isInTransition ) {
-				this._transitionTime();
-				this.isInTransition = false;
-				pos = this.getComputedPosition();
-				this._translate(Math.round(pos.x), Math.round(pos.y));
-				this._execEvent('scrollEnd');
-			} else if ( !this.options.useTransition && this.isAnimating ) {
-				this.isAnimating = false;
-				this._execEvent('scrollEnd');
-			}
-
-			this.startX    = this.x;
-			this.startY    = this.y;
-			this.absStartX = this.x;
-			this.absStartY = this.y;
-			this.pointX    = point.pageX;
-			this.pointY    = point.pageY;
-
-			this._execEvent('beforeScrollStart');
-		},
-
-		_move: function (e) {
-			if ( !this.enabled || utils.eventType[e.type] !== this.initiated ) {
-				return;
-			}
-
-			if ( this.options.preventDefault ) {	// increases performance on Android? TODO: check!
-				e.preventDefault();
-			}
-
-			var point		= e.touches ? e.touches[0] : e,
-				deltaX		= point.pageX - this.pointX,
-				deltaY		= point.pageY - this.pointY,
-				timestamp	= utils.getTime(),
-				newX, newY,
-				absDistX, absDistY;
-
-			this.pointX		= point.pageX;
-			this.pointY		= point.pageY;
-
-			this.distX		+= deltaX;
-			this.distY		+= deltaY;
-			absDistX		= Math.abs(this.distX);
-			absDistY		= Math.abs(this.distY);
-
-			// We need to move at least 10 pixels for the scrolling to initiate
-			if ( timestamp - this.endTime > 300 && (absDistX < 10 && absDistY < 10) ) {
-				return;
-			}
-
-			// If you are scrolling in one direction lock the other
-			if ( !this.directionLocked && !this.options.freeScroll ) {
-				if ( absDistX > absDistY + this.options.directionLockThreshold ) {
-					this.directionLocked = 'h';		// lock horizontally
-				} else if ( absDistY >= absDistX + this.options.directionLockThreshold ) {
-					this.directionLocked = 'v';		// lock vertically
-				} else {
-					this.directionLocked = 'n';		// no lock
-				}
-			}
-
-			if ( this.directionLocked == 'h' ) {
-				if ( this.options.eventPassthrough == 'vertical' ) {
-					e.preventDefault();
-				} else if ( this.options.eventPassthrough == 'horizontal' ) {
-					this.initiated = false;
-					return;
-				}
-
-				deltaY = 0;
-			} else if ( this.directionLocked == 'v' ) {
-				if ( this.options.eventPassthrough == 'horizontal' ) {
-					e.preventDefault();
-				} else if ( this.options.eventPassthrough == 'vertical' ) {
-					this.initiated = false;
-					return;
-				}
-
-				deltaX = 0;
-			}
-
-			deltaX = this.hasHorizontalScroll ? deltaX : 0;
-			deltaY = this.hasVerticalScroll ? deltaY : 0;
-
-			newX = this.x + deltaX;
-			newY = this.y + deltaY;
-
-			// Slow down if outside of the boundaries
-			if ( newX > 0 || newX < this.maxScrollX ) {
-				newX = this.options.bounce ? this.x + deltaX / 3 : newX > 0 ? 0 : this.maxScrollX;
-			}
-			if ( newY > 0 || newY < this.maxScrollY ) {
-				newY = this.options.bounce ? this.y + deltaY / 3 : newY > 0 ? 0 : this.maxScrollY;
-			}
-
-			this.directionX = deltaX > 0 ? -1 : deltaX < 0 ? 1 : 0;
-			this.directionY = deltaY > 0 ? -1 : deltaY < 0 ? 1 : 0;
-
-			if ( !this.moved ) {
-				this._execEvent('scrollStart');
-			}
-
-			this.moved = true;
-
-			this._translate(newX, newY);
-
-	/* REPLACE START: _move */
-
-			if ( timestamp - this.startTime > 300 ) {
-				this.startTime = timestamp;
-				this.startX = this.x;
-				this.startY = this.y;
-			}
-
-	/* REPLACE END: _move */
-
-		},
-
-		_end: function (e) {
-			if ( !this.enabled || utils.eventType[e.type] !== this.initiated ) {
-				return;
-			}
-
-			if ( this.options.preventDefault && !utils.preventDefaultException(e.target, this.options.preventDefaultException) ) {
-				e.preventDefault();
-			}
-
-			var point = e.changedTouches ? e.changedTouches[0] : e,
-				momentumX,
-				momentumY,
-				duration = utils.getTime() - this.startTime,
-				newX = Math.round(this.x),
-				newY = Math.round(this.y),
-				distanceX = Math.abs(newX - this.startX),
-				distanceY = Math.abs(newY - this.startY),
-				time = 0,
-				easing = '';
-
-			this.isInTransition = 0;
-			this.initiated = 0;
-			this.endTime = utils.getTime();
-
-			// reset if we are outside of the boundaries
-			if ( this.resetPosition(this.options.bounceTime) ) {
-				return;
-			}
-
-			this.scrollTo(newX, newY);	// ensures that the last position is rounded
-
-			// we scrolled less than 10 pixels
-			if ( !this.moved ) {
-				if ( this.options.tap ) {
-					utils.tap(e, this.options.tap);
-				}
-
-				if ( this.options.click ) {
-					utils.click(e);
-				}
-
-				this._execEvent('scrollCancel');
-				return;
-			}
-
-			if ( this._events.flick && duration < 200 && distanceX < 100 && distanceY < 100 ) {
-				this._execEvent('flick');
-				return;
-			}
-
-			// start momentum animation if needed
-			if ( this.options.momentum && duration < 300 ) {
-				momentumX = this.hasHorizontalScroll ? utils.momentum(this.x, this.startX, duration, this.maxScrollX, this.options.bounce ? this.wrapperWidth : 0, this.options.deceleration) : { destination: newX, duration: 0 };
-				momentumY = this.hasVerticalScroll ? utils.momentum(this.y, this.startY, duration, this.maxScrollY, this.options.bounce ? this.wrapperHeight : 0, this.options.deceleration) : { destination: newY, duration: 0 };
-				newX = momentumX.destination;
-				newY = momentumY.destination;
-				time = Math.max(momentumX.duration, momentumY.duration);
-				this.isInTransition = 1;
-			}
-
-
-			if ( this.options.snap ) {
-				var snap = this._nearestSnap(newX, newY);
-				this.currentPage = snap;
-				time = this.options.snapSpeed || Math.max(
-						Math.max(
-							Math.min(Math.abs(newX - snap.x), 1000),
-							Math.min(Math.abs(newY - snap.y), 1000)
-						), 300);
-				newX = snap.x;
-				newY = snap.y;
-
-				this.directionX = 0;
-				this.directionY = 0;
-				easing = this.options.bounceEasing;
-			}
-
-	// INSERT POINT: _end
-
-			if ( newX != this.x || newY != this.y ) {
-				// change easing function when scroller goes out of the boundaries
-				if ( newX > 0 || newX < this.maxScrollX || newY > 0 || newY < this.maxScrollY ) {
-					easing = utils.ease.quadratic;
-				}
-
-				this.scrollTo(newX, newY, time, easing);
-				return;
-			}
-
-			this._execEvent('scrollEnd');
-		},
-
-		_resize: function () {
-			var that = this;
-
-			clearTimeout(this.resizeTimeout);
-
-			this.resizeTimeout = setTimeout(function () {
-				that.refresh();
-			}, this.options.resizePolling);
-		},
-
-		resetPosition: function (time) {
-			var x = this.x,
-				y = this.y;
-
-			time = time || 0;
-
-			if ( !this.hasHorizontalScroll || this.x > 0 ) {
-				x = 0;
-			} else if ( this.x < this.maxScrollX ) {
-				x = this.maxScrollX;
-			}
-
-			if ( !this.hasVerticalScroll || this.y > 0 ) {
-				y = 0;
-			} else if ( this.y < this.maxScrollY ) {
-				y = this.maxScrollY;
-			}
-
-			if ( x == this.x && y == this.y ) {
-				return false;
-			}
-
-			this.scrollTo(x, y, time, this.options.bounceEasing);
-
-			return true;
-		},
-
-		disable: function () {
-			this.enabled = false;
-		},
-
-		enable: function () {
-			this.enabled = true;
-		},
-
-		refresh: function () {
-			var rf = this.wrapper.offsetHeight;		// Force reflow
-
-			this.wrapperWidth	= this.wrapper.clientWidth;
-			this.wrapperHeight	= this.wrapper.clientHeight;
-
-	/* REPLACE START: refresh */
-
-			this.scrollerWidth	= this.scroller.offsetWidth;
-			this.scrollerHeight	= this.scroller.offsetHeight;
-
-			this.maxScrollX		= this.wrapperWidth - this.scrollerWidth;
-			this.maxScrollY		= this.wrapperHeight - this.scrollerHeight;
-
-	/* REPLACE END: refresh */
-
-			this.hasHorizontalScroll	= this.options.scrollX && this.maxScrollX < 0;
-			this.hasVerticalScroll		= this.options.scrollY && this.maxScrollY < 0;
-
-			if ( !this.hasHorizontalScroll ) {
-				this.maxScrollX = 0;
-				this.scrollerWidth = this.wrapperWidth;
-			}
-
-			if ( !this.hasVerticalScroll ) {
-				this.maxScrollY = 0;
-				this.scrollerHeight = this.wrapperHeight;
-			}
-
-			this.endTime = 0;
-			this.directionX = 0;
-			this.directionY = 0;
-
-			this.wrapperOffset = utils.offset(this.wrapper);
-
-			this._execEvent('refresh');
-
-			this.resetPosition();
-
-	// INSERT POINT: _refresh
-
-		},
-
-		on: function (type, fn) {
-			if ( !this._events[type] ) {
-				this._events[type] = [];
-			}
-
-			this._events[type].push(fn);
-		},
-
-		off: function (type, fn) {
-			if ( !this._events[type] ) {
-				return;
-			}
-
-			var index = this._events[type].indexOf(fn);
-
-			if ( index > -1 ) {
-				this._events[type].splice(index, 1);
-			}
-		},
-
-		_execEvent: function (type) {
-			if ( !this._events[type] ) {
-				return;
-			}
-
-			var i = 0,
-				l = this._events[type].length;
-
-			if ( !l ) {
-				return;
-			}
-
-			for ( ; i < l; i++ ) {
-				this._events[type][i].apply(this, [].slice.call(arguments, 1));
-			}
-		},
-
-		scrollBy: function (x, y, time, easing) {
-			x = this.x + x;
-			y = this.y + y;
-			time = time || 0;
-
-			this.scrollTo(x, y, time, easing);
-		},
-
-		scrollTo: function (x, y, time, easing) {
-			easing = easing || utils.ease.circular;
-
-			this.isInTransition = this.options.useTransition && time > 0;
-			var transitionType = this.options.useTransition && easing.style;
-			if ( !time || transitionType ) {
-					if(transitionType) {
-						this._transitionTimingFunction(easing.style);
-						this._transitionTime(time);
-					}
-				this._translate(x, y);
-			} else {
-				this._animate(x, y, time, easing.fn);
-			}
-		},
-
-		scrollToElement: function (el, time, offsetX, offsetY, easing) {
-			el = el.nodeType ? el : this.scroller.querySelector(el);
-
-			if ( !el ) {
-				return;
-			}
-
-			var pos = utils.offset(el);
-
-			pos.left -= this.wrapperOffset.left;
-			pos.top  -= this.wrapperOffset.top;
-
-			// if offsetX/Y are true we center the element to the screen
-			if ( offsetX === true ) {
-				offsetX = Math.round(el.offsetWidth / 2 - this.wrapper.offsetWidth / 2);
-			}
-			if ( offsetY === true ) {
-				offsetY = Math.round(el.offsetHeight / 2 - this.wrapper.offsetHeight / 2);
-			}
-
-			pos.left -= offsetX || 0;
-			pos.top  -= offsetY || 0;
-
-			pos.left = pos.left > 0 ? 0 : pos.left < this.maxScrollX ? this.maxScrollX : pos.left;
-			pos.top  = pos.top  > 0 ? 0 : pos.top  < this.maxScrollY ? this.maxScrollY : pos.top;
-
-			time = time === undefined || time === null || time === 'auto' ? Math.max(Math.abs(this.x-pos.left), Math.abs(this.y-pos.top)) : time;
-
-			this.scrollTo(pos.left, pos.top, time, easing);
-		},
-
-		_transitionTime: function (time) {
-			time = time || 0;
-
-			var durationProp = utils.style.transitionDuration;
-			this.scrollerStyle[durationProp] = time + 'ms';
-
-			if ( !time && utils.isBadAndroid ) {
-				this.scrollerStyle[durationProp] = '0.0001ms';
-				// remove 0.0001ms
-				var self = this;
-				rAF(function() {
-					if(self.scrollerStyle[durationProp] === '0.0001ms') {
-						self.scrollerStyle[durationProp] = '0s';
-					}
-				});
-			}
-
-
-			if ( this.indicators ) {
-				for ( var i = this.indicators.length; i--; ) {
-					this.indicators[i].transitionTime(time);
-				}
-			}
-
-
-	// INSERT POINT: _transitionTime
-
-		},
-
-		_transitionTimingFunction: function (easing) {
-			this.scrollerStyle[utils.style.transitionTimingFunction] = easing;
-
-
-			if ( this.indicators ) {
-				for ( var i = this.indicators.length; i--; ) {
-					this.indicators[i].transitionTimingFunction(easing);
-				}
-			}
-
-
-	// INSERT POINT: _transitionTimingFunction
-
-		},
-
-		_translate: function (x, y) {
-			if ( this.options.useTransform ) {
-
-	/* REPLACE START: _translate */
-
-				this.scrollerStyle[utils.style.transform] = 'translate(' + x + 'px,' + y + 'px)' + this.translateZ;
-
-	/* REPLACE END: _translate */
-
-			} else {
-				x = Math.round(x);
-				y = Math.round(y);
-				this.scrollerStyle.left = x + 'px';
-				this.scrollerStyle.top = y + 'px';
-			}
-
-			this.x = x;
-			this.y = y;
-
-
-		if ( this.indicators ) {
-			for ( var i = this.indicators.length; i--; ) {
-				this.indicators[i].updatePosition();
-			}
-		}
-
-
-	// INSERT POINT: _translate
-
-		},
-
-		_initEvents: function (remove) {
-			var eventType = remove ? utils.removeEvent : utils.addEvent,
-				target = this.options.bindToWrapper ? this.wrapper : window;
-
-			eventType(window, 'orientationchange', this);
-			eventType(window, 'resize', this);
-
-			if ( this.options.click ) {
-				eventType(this.wrapper, 'click', this, true);
-			}
-
-			if ( !this.options.disableMouse ) {
-				eventType(this.wrapper, 'mousedown', this);
-				eventType(target, 'mousemove', this);
-				eventType(target, 'mousecancel', this);
-				eventType(target, 'mouseup', this);
-			}
-
-			if ( utils.hasPointer && !this.options.disablePointer ) {
-				eventType(this.wrapper, utils.prefixPointerEvent('pointerdown'), this);
-				eventType(target, utils.prefixPointerEvent('pointermove'), this);
-				eventType(target, utils.prefixPointerEvent('pointercancel'), this);
-				eventType(target, utils.prefixPointerEvent('pointerup'), this);
-			}
-
-			if ( utils.hasTouch && !this.options.disableTouch ) {
-				eventType(this.wrapper, 'touchstart', this);
-				eventType(target, 'touchmove', this);
-				eventType(target, 'touchcancel', this);
-				eventType(target, 'touchend', this);
-			}
-
-			eventType(this.scroller, 'transitionend', this);
-			eventType(this.scroller, 'webkitTransitionEnd', this);
-			eventType(this.scroller, 'oTransitionEnd', this);
-			eventType(this.scroller, 'MSTransitionEnd', this);
-		},
-
-		getComputedPosition: function () {
-			var matrix = window.getComputedStyle(this.scroller, null),
-				x, y;
-
-			if ( this.options.useTransform ) {
-				matrix = matrix[utils.style.transform].split(')')[0].split(', ');
-				x = +(matrix[12] || matrix[4]);
-				y = +(matrix[13] || matrix[5]);
-			} else {
-				x = +matrix.left.replace(/[^-\d.]/g, '');
-				y = +matrix.top.replace(/[^-\d.]/g, '');
-			}
-
-			return { x: x, y: y };
-		},
-		_initIndicators: function () {
-			var interactive = this.options.interactiveScrollbars,
-				customStyle = typeof this.options.scrollbars != 'string',
-				indicators = [],
-				indicator;
-
-			var that = this;
-
-			this.indicators = [];
-
-			if ( this.options.scrollbars ) {
-				// Vertical scrollbar
-				if ( this.options.scrollY ) {
-					indicator = {
-						el: createDefaultScrollbar('v', interactive, this.options.scrollbars),
-						interactive: interactive,
-						defaultScrollbars: true,
-						customStyle: customStyle,
-						resize: this.options.resizeScrollbars,
-						shrink: this.options.shrinkScrollbars,
-						fade: this.options.fadeScrollbars,
-						listenX: false
-					};
-
-					this.wrapper.appendChild(indicator.el);
-					indicators.push(indicator);
-				}
-
-				// Horizontal scrollbar
-				if ( this.options.scrollX ) {
-					indicator = {
-						el: createDefaultScrollbar('h', interactive, this.options.scrollbars),
-						interactive: interactive,
-						defaultScrollbars: true,
-						customStyle: customStyle,
-						resize: this.options.resizeScrollbars,
-						shrink: this.options.shrinkScrollbars,
-						fade: this.options.fadeScrollbars,
-						listenY: false
-					};
-
-					this.wrapper.appendChild(indicator.el);
-					indicators.push(indicator);
-				}
-			}
-
-			if ( this.options.indicators ) {
-				// TODO: check concat compatibility
-				indicators = indicators.concat(this.options.indicators);
-			}
-
-			for ( var i = indicators.length; i--; ) {
-				this.indicators.push( new Indicator(this, indicators[i]) );
-			}
-
-			// TODO: check if we can use array.map (wide compatibility and performance issues)
-			function _indicatorsMap (fn) {
-				if (that.indicators) {
-					for ( var i = that.indicators.length; i--; ) {
-						fn.call(that.indicators[i]);
-					}
-				}
-			}
-
-			if ( this.options.fadeScrollbars ) {
-				this.on('scrollEnd', function () {
-					_indicatorsMap(function () {
-						this.fade();
-					});
-				});
-
-				this.on('scrollCancel', function () {
-					_indicatorsMap(function () {
-						this.fade();
-					});
-				});
-
-				this.on('scrollStart', function () {
-					_indicatorsMap(function () {
-						this.fade(1);
-					});
-				});
-
-				this.on('beforeScrollStart', function () {
-					_indicatorsMap(function () {
-						this.fade(1, true);
-					});
-				});
-			}
-
-
-			this.on('refresh', function () {
-				_indicatorsMap(function () {
-					this.refresh();
-				});
-			});
-
-			this.on('destroy', function () {
-				_indicatorsMap(function () {
-					this.destroy();
-				});
-
-				delete this.indicators;
-			});
-		},
-
-		_initWheel: function () {
-			utils.addEvent(this.wrapper, 'wheel', this);
-			utils.addEvent(this.wrapper, 'mousewheel', this);
-			utils.addEvent(this.wrapper, 'DOMMouseScroll', this);
-
-			this.on('destroy', function () {
-				clearTimeout(this.wheelTimeout);
-				this.wheelTimeout = null;
-				utils.removeEvent(this.wrapper, 'wheel', this);
-				utils.removeEvent(this.wrapper, 'mousewheel', this);
-				utils.removeEvent(this.wrapper, 'DOMMouseScroll', this);
-			});
-		},
-
-		_wheel: function (e) {
-			if ( !this.enabled ) {
-				return;
-			}
-
-			e.preventDefault();
-
-			var wheelDeltaX, wheelDeltaY,
-				newX, newY,
-				that = this;
-
-			if ( this.wheelTimeout === undefined ) {
-				that._execEvent('scrollStart');
-			}
-
-			// Execute the scrollEnd event after 400ms the wheel stopped scrolling
-			clearTimeout(this.wheelTimeout);
-			this.wheelTimeout = setTimeout(function () {
-				if(!that.options.snap) {
-					that._execEvent('scrollEnd');
-				}
-				that.wheelTimeout = undefined;
-			}, 400);
-
-			if ( 'deltaX' in e ) {
-				if (e.deltaMode === 1) {
-					wheelDeltaX = -e.deltaX * this.options.mouseWheelSpeed;
-					wheelDeltaY = -e.deltaY * this.options.mouseWheelSpeed;
-				} else {
-					wheelDeltaX = -e.deltaX;
-					wheelDeltaY = -e.deltaY;
-				}
-			} else if ( 'wheelDeltaX' in e ) {
-				wheelDeltaX = e.wheelDeltaX / 120 * this.options.mouseWheelSpeed;
-				wheelDeltaY = e.wheelDeltaY / 120 * this.options.mouseWheelSpeed;
-			} else if ( 'wheelDelta' in e ) {
-				wheelDeltaX = wheelDeltaY = e.wheelDelta / 120 * this.options.mouseWheelSpeed;
-			} else if ( 'detail' in e ) {
-				wheelDeltaX = wheelDeltaY = -e.detail / 3 * this.options.mouseWheelSpeed;
-			} else {
-				return;
-			}
-
-			wheelDeltaX *= this.options.invertWheelDirection;
-			wheelDeltaY *= this.options.invertWheelDirection;
-
-			if ( !this.hasVerticalScroll ) {
-				wheelDeltaX = wheelDeltaY;
-				wheelDeltaY = 0;
-			}
-
-			if ( this.options.snap ) {
-				newX = this.currentPage.pageX;
-				newY = this.currentPage.pageY;
-
-				if ( wheelDeltaX > 0 ) {
-					newX--;
-				} else if ( wheelDeltaX < 0 ) {
-					newX++;
-				}
-
-				if ( wheelDeltaY > 0 ) {
-					newY--;
-				} else if ( wheelDeltaY < 0 ) {
-					newY++;
-				}
-
-				this.goToPage(newX, newY);
-
-				return;
-			}
-
-			newX = this.x + Math.round(this.hasHorizontalScroll ? wheelDeltaX : 0);
-			newY = this.y + Math.round(this.hasVerticalScroll ? wheelDeltaY : 0);
-
-			this.directionX = wheelDeltaX > 0 ? -1 : wheelDeltaX < 0 ? 1 : 0;
-			this.directionY = wheelDeltaY > 0 ? -1 : wheelDeltaY < 0 ? 1 : 0;
-
-			if ( newX > 0 ) {
-				newX = 0;
-			} else if ( newX < this.maxScrollX ) {
-				newX = this.maxScrollX;
-			}
-
-			if ( newY > 0 ) {
-				newY = 0;
-			} else if ( newY < this.maxScrollY ) {
-				newY = this.maxScrollY;
-			}
-
-			this.scrollTo(newX, newY, 0);
-
-	// INSERT POINT: _wheel
-		},
-
-		_initSnap: function () {
-			this.currentPage = {};
-
-			if ( typeof this.options.snap == 'string' ) {
-				this.options.snap = this.scroller.querySelectorAll(this.options.snap);
-			}
-
-			this.on('refresh', function () {
-				var i = 0, l,
-					m = 0, n,
-					cx, cy,
-					x = 0, y,
-					stepX = this.options.snapStepX || this.wrapperWidth,
-					stepY = this.options.snapStepY || this.wrapperHeight,
-					el;
-
-				this.pages = [];
-
-				if ( !this.wrapperWidth || !this.wrapperHeight || !this.scrollerWidth || !this.scrollerHeight ) {
-					return;
-				}
-
-				if ( this.options.snap === true ) {
-					cx = Math.round( stepX / 2 );
-					cy = Math.round( stepY / 2 );
-
-					while ( x > -this.scrollerWidth ) {
-						this.pages[i] = [];
-						l = 0;
-						y = 0;
-
-						while ( y > -this.scrollerHeight ) {
-							this.pages[i][l] = {
-								x: Math.max(x, this.maxScrollX),
-								y: Math.max(y, this.maxScrollY),
-								width: stepX,
-								height: stepY,
-								cx: x - cx,
-								cy: y - cy
-							};
-
-							y -= stepY;
-							l++;
-						}
-
-						x -= stepX;
-						i++;
-					}
-				} else {
-					el = this.options.snap;
-					l = el.length;
-					n = -1;
-
-					for ( ; i < l; i++ ) {
-						if ( i === 0 || el[i].offsetLeft <= el[i-1].offsetLeft ) {
-							m = 0;
-							n++;
-						}
-
-						if ( !this.pages[m] ) {
-							this.pages[m] = [];
-						}
-
-						x = Math.max(-el[i].offsetLeft, this.maxScrollX);
-						y = Math.max(-el[i].offsetTop, this.maxScrollY);
-						cx = x - Math.round(el[i].offsetWidth / 2);
-						cy = y - Math.round(el[i].offsetHeight / 2);
-
-						this.pages[m][n] = {
-							x: x,
-							y: y,
-							width: el[i].offsetWidth,
-							height: el[i].offsetHeight,
-							cx: cx,
-							cy: cy
-						};
-
-						if ( x > this.maxScrollX ) {
-							m++;
-						}
-					}
-				}
-
-				this.goToPage(this.currentPage.pageX || 0, this.currentPage.pageY || 0, 0);
-
-				// Update snap threshold if needed
-				if ( this.options.snapThreshold % 1 === 0 ) {
-					this.snapThresholdX = this.options.snapThreshold;
-					this.snapThresholdY = this.options.snapThreshold;
-				} else {
-					this.snapThresholdX = Math.round(this.pages[this.currentPage.pageX][this.currentPage.pageY].width * this.options.snapThreshold);
-					this.snapThresholdY = Math.round(this.pages[this.currentPage.pageX][this.currentPage.pageY].height * this.options.snapThreshold);
-				}
-			});
-
-			this.on('flick', function () {
-				var time = this.options.snapSpeed || Math.max(
-						Math.max(
-							Math.min(Math.abs(this.x - this.startX), 1000),
-							Math.min(Math.abs(this.y - this.startY), 1000)
-						), 300);
-
-				this.goToPage(
-					this.currentPage.pageX + this.directionX,
-					this.currentPage.pageY + this.directionY,
-					time
-				);
-			});
-		},
-
-		_nearestSnap: function (x, y) {
-			if ( !this.pages.length ) {
-				return { x: 0, y: 0, pageX: 0, pageY: 0 };
-			}
-
-			var i = 0,
-				l = this.pages.length,
-				m = 0;
-
-			// Check if we exceeded the snap threshold
-			if ( Math.abs(x - this.absStartX) < this.snapThresholdX &&
-				Math.abs(y - this.absStartY) < this.snapThresholdY ) {
-				return this.currentPage;
-			}
-
-			if ( x > 0 ) {
-				x = 0;
-			} else if ( x < this.maxScrollX ) {
-				x = this.maxScrollX;
-			}
-
-			if ( y > 0 ) {
-				y = 0;
-			} else if ( y < this.maxScrollY ) {
-				y = this.maxScrollY;
-			}
-
-			for ( ; i < l; i++ ) {
-				if ( x >= this.pages[i][0].cx ) {
-					x = this.pages[i][0].x;
-					break;
-				}
-			}
-
-			l = this.pages[i].length;
-
-			for ( ; m < l; m++ ) {
-				if ( y >= this.pages[0][m].cy ) {
-					y = this.pages[0][m].y;
-					break;
-				}
-			}
-
-			if ( i == this.currentPage.pageX ) {
-				i += this.directionX;
-
-				if ( i < 0 ) {
-					i = 0;
-				} else if ( i >= this.pages.length ) {
-					i = this.pages.length - 1;
-				}
-
-				x = this.pages[i][0].x;
-			}
-
-			if ( m == this.currentPage.pageY ) {
-				m += this.directionY;
-
-				if ( m < 0 ) {
-					m = 0;
-				} else if ( m >= this.pages[0].length ) {
-					m = this.pages[0].length - 1;
-				}
-
-				y = this.pages[0][m].y;
-			}
-
-			return {
-				x: x,
-				y: y,
-				pageX: i,
-				pageY: m
-			};
-		},
-
-		goToPage: function (x, y, time, easing) {
-			easing = easing || this.options.bounceEasing;
-
-			if ( x >= this.pages.length ) {
-				x = this.pages.length - 1;
-			} else if ( x < 0 ) {
-				x = 0;
-			}
-
-			if ( y >= this.pages[x].length ) {
-				y = this.pages[x].length - 1;
-			} else if ( y < 0 ) {
-				y = 0;
-			}
-
-			var posX = this.pages[x][y].x,
-				posY = this.pages[x][y].y;
-
-			time = time === undefined ? this.options.snapSpeed || Math.max(
-				Math.max(
-					Math.min(Math.abs(posX - this.x), 1000),
-					Math.min(Math.abs(posY - this.y), 1000)
-				), 300) : time;
-
-			this.currentPage = {
-				x: posX,
-				y: posY,
-				pageX: x,
-				pageY: y
-			};
-
-			this.scrollTo(posX, posY, time, easing);
-		},
-
-		next: function (time, easing) {
-			var x = this.currentPage.pageX,
-				y = this.currentPage.pageY;
-
-			x++;
-
-			if ( x >= this.pages.length && this.hasVerticalScroll ) {
-				x = 0;
-				y++;
-			}
-
-			this.goToPage(x, y, time, easing);
-		},
-
-		prev: function (time, easing) {
-			var x = this.currentPage.pageX,
-				y = this.currentPage.pageY;
-
-			x--;
-
-			if ( x < 0 && this.hasVerticalScroll ) {
-				x = 0;
-				y--;
-			}
-
-			this.goToPage(x, y, time, easing);
-		},
-
-		_initKeys: function (e) {
-			// default key bindings
-			var keys = {
-				pageUp: 33,
-				pageDown: 34,
-				end: 35,
-				home: 36,
-				left: 37,
-				up: 38,
-				right: 39,
-				down: 40
-			};
-			var i;
-
-			// if you give me characters I give you keycode
-			if ( typeof this.options.keyBindings == 'object' ) {
-				for ( i in this.options.keyBindings ) {
-					if ( typeof this.options.keyBindings[i] == 'string' ) {
-						this.options.keyBindings[i] = this.options.keyBindings[i].toUpperCase().charCodeAt(0);
-					}
-				}
-			} else {
-				this.options.keyBindings = {};
-			}
-
-			for ( i in keys ) {
-				this.options.keyBindings[i] = this.options.keyBindings[i] || keys[i];
-			}
-
-			utils.addEvent(window, 'keydown', this);
-
-			this.on('destroy', function () {
-				utils.removeEvent(window, 'keydown', this);
-			});
-		},
-
-		_key: function (e) {
-			if ( !this.enabled ) {
-				return;
-			}
-
-			var snap = this.options.snap,	// we are using this alot, better to cache it
-				newX = snap ? this.currentPage.pageX : this.x,
-				newY = snap ? this.currentPage.pageY : this.y,
-				now = utils.getTime(),
-				prevTime = this.keyTime || 0,
-				acceleration = 0.250,
-				pos;
-
-			if ( this.options.useTransition && this.isInTransition ) {
-				pos = this.getComputedPosition();
-
-				this._translate(Math.round(pos.x), Math.round(pos.y));
-				this.isInTransition = false;
-			}
-
-			this.keyAcceleration = now - prevTime < 200 ? Math.min(this.keyAcceleration + acceleration, 50) : 0;
-
-			switch ( e.keyCode ) {
-				case this.options.keyBindings.pageUp:
-					if ( this.hasHorizontalScroll && !this.hasVerticalScroll ) {
-						newX += snap ? 1 : this.wrapperWidth;
-					} else {
-						newY += snap ? 1 : this.wrapperHeight;
-					}
-					break;
-				case this.options.keyBindings.pageDown:
-					if ( this.hasHorizontalScroll && !this.hasVerticalScroll ) {
-						newX -= snap ? 1 : this.wrapperWidth;
-					} else {
-						newY -= snap ? 1 : this.wrapperHeight;
-					}
-					break;
-				case this.options.keyBindings.end:
-					newX = snap ? this.pages.length-1 : this.maxScrollX;
-					newY = snap ? this.pages[0].length-1 : this.maxScrollY;
-					break;
-				case this.options.keyBindings.home:
-					newX = 0;
-					newY = 0;
-					break;
-				case this.options.keyBindings.left:
-					newX += snap ? -1 : 5 + this.keyAcceleration>>0;
-					break;
-				case this.options.keyBindings.up:
-					newY += snap ? 1 : 5 + this.keyAcceleration>>0;
-					break;
-				case this.options.keyBindings.right:
-					newX -= snap ? -1 : 5 + this.keyAcceleration>>0;
-					break;
-				case this.options.keyBindings.down:
-					newY -= snap ? 1 : 5 + this.keyAcceleration>>0;
-					break;
-				default:
-					return;
-			}
-
-			if ( snap ) {
-				this.goToPage(newX, newY);
-				return;
-			}
-
-			if ( newX > 0 ) {
-				newX = 0;
-				this.keyAcceleration = 0;
-			} else if ( newX < this.maxScrollX ) {
-				newX = this.maxScrollX;
-				this.keyAcceleration = 0;
-			}
-
-			if ( newY > 0 ) {
-				newY = 0;
-				this.keyAcceleration = 0;
-			} else if ( newY < this.maxScrollY ) {
-				newY = this.maxScrollY;
-				this.keyAcceleration = 0;
-			}
-
-			this.scrollTo(newX, newY, 0);
-
-			this.keyTime = now;
-		},
-
-		_animate: function (destX, destY, duration, easingFn) {
-			var that = this,
-				startX = this.x,
-				startY = this.y,
-				startTime = utils.getTime(),
-				destTime = startTime + duration;
-
-			function step () {
-				var now = utils.getTime(),
-					newX, newY,
-					easing;
-
-				if ( now >= destTime ) {
-					that.isAnimating = false;
-					that._translate(destX, destY);
-
-					if ( !that.resetPosition(that.options.bounceTime) ) {
-						that._execEvent('scrollEnd');
-					}
-
-					return;
-				}
-
-				now = ( now - startTime ) / duration;
-				easing = easingFn(now);
-				newX = ( destX - startX ) * easing + startX;
-				newY = ( destY - startY ) * easing + startY;
-				that._translate(newX, newY);
-
-				if ( that.isAnimating ) {
-					rAF(step);
-				}
-			}
-
-			this.isAnimating = true;
-			step();
-		},
-		handleEvent: function (e) {
-			switch ( e.type ) {
-				case 'touchstart':
-				case 'pointerdown':
-				case 'MSPointerDown':
-				case 'mousedown':
-					this._start(e);
-					break;
-				case 'touchmove':
-				case 'pointermove':
-				case 'MSPointerMove':
-				case 'mousemove':
-					this._move(e);
-					break;
-				case 'touchend':
-				case 'pointerup':
-				case 'MSPointerUp':
-				case 'mouseup':
-				case 'touchcancel':
-				case 'pointercancel':
-				case 'MSPointerCancel':
-				case 'mousecancel':
-					this._end(e);
-					break;
-				case 'orientationchange':
-				case 'resize':
-					this._resize();
-					break;
-				case 'transitionend':
-				case 'webkitTransitionEnd':
-				case 'oTransitionEnd':
-				case 'MSTransitionEnd':
-					this._transitionEnd(e);
-					break;
-				case 'wheel':
-				case 'DOMMouseScroll':
-				case 'mousewheel':
-					this._wheel(e);
-					break;
-				case 'keydown':
-					this._key(e);
-					break;
-				case 'click':
-					if ( this.enabled && !e._constructed ) {
-						e.preventDefault();
-						e.stopPropagation();
-					}
-					break;
-			}
-		}
-	};
-	function createDefaultScrollbar (direction, interactive, type) {
-		var scrollbar = document.createElement('div'),
-			indicator = document.createElement('div');
-
-		if ( type === true ) {
-			scrollbar.style.cssText = 'position:absolute;z-index:9999';
-			indicator.style.cssText = '-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;position:absolute;background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.9);border-radius:3px';
-		}
-
-		indicator.className = 'iScrollIndicator';
-
-		if ( direction == 'h' ) {
-			if ( type === true ) {
-				scrollbar.style.cssText += ';height:7px;left:2px;right:2px;bottom:0';
-				indicator.style.height = '100%';
-			}
-			scrollbar.className = 'iScrollHorizontalScrollbar';
-		} else {
-			if ( type === true ) {
-				scrollbar.style.cssText += ';width:7px;bottom:2px;top:2px;right:1px';
-				indicator.style.width = '100%';
-			}
-			scrollbar.className = 'iScrollVerticalScrollbar';
-		}
-
-		scrollbar.style.cssText += ';overflow:hidden';
-
-		if ( !interactive ) {
-			scrollbar.style.pointerEvents = 'none';
-		}
-
-		scrollbar.appendChild(indicator);
-
-		return scrollbar;
-	}
-
-	function Indicator (scroller, options) {
-		this.wrapper = typeof options.el == 'string' ? document.querySelector(options.el) : options.el;
-		this.wrapperStyle = this.wrapper.style;
-		this.indicator = this.wrapper.children[0];
-		this.indicatorStyle = this.indicator.style;
-		this.scroller = scroller;
-
-		this.options = {
-			listenX: true,
-			listenY: true,
-			interactive: false,
-			resize: true,
-			defaultScrollbars: false,
-			shrink: false,
-			fade: false,
-			speedRatioX: 0,
-			speedRatioY: 0
-		};
-
-		for ( var i in options ) {
-			this.options[i] = options[i];
-		}
-
-		this.sizeRatioX = 1;
-		this.sizeRatioY = 1;
-		this.maxPosX = 0;
-		this.maxPosY = 0;
-
-		if ( this.options.interactive ) {
-			if ( !this.options.disableTouch ) {
-				utils.addEvent(this.indicator, 'touchstart', this);
-				utils.addEvent(window, 'touchend', this);
-			}
-			if ( !this.options.disablePointer ) {
-				utils.addEvent(this.indicator, utils.prefixPointerEvent('pointerdown'), this);
-				utils.addEvent(window, utils.prefixPointerEvent('pointerup'), this);
-			}
-			if ( !this.options.disableMouse ) {
-				utils.addEvent(this.indicator, 'mousedown', this);
-				utils.addEvent(window, 'mouseup', this);
-			}
-		}
-
-		if ( this.options.fade ) {
-			this.wrapperStyle[utils.style.transform] = this.scroller.translateZ;
-			var durationProp = utils.style.transitionDuration;
-			this.wrapperStyle[durationProp] = utils.isBadAndroid ? '0.0001ms' : '0ms';
-			// remove 0.0001ms
-			var self = this;
-			if(utils.isBadAndroid) {
-				rAF(function() {
-					if(self.wrapperStyle[durationProp] === '0.0001ms') {
-						self.wrapperStyle[durationProp] = '0s';
-					}
-				});
-			}
-			this.wrapperStyle.opacity = '0';
-		}
-	}
-
-	Indicator.prototype = {
-		handleEvent: function (e) {
-			switch ( e.type ) {
-				case 'touchstart':
-				case 'pointerdown':
-				case 'MSPointerDown':
-				case 'mousedown':
-					this._start(e);
-					break;
-				case 'touchmove':
-				case 'pointermove':
-				case 'MSPointerMove':
-				case 'mousemove':
-					this._move(e);
-					break;
-				case 'touchend':
-				case 'pointerup':
-				case 'MSPointerUp':
-				case 'mouseup':
-				case 'touchcancel':
-				case 'pointercancel':
-				case 'MSPointerCancel':
-				case 'mousecancel':
-					this._end(e);
-					break;
-			}
-		},
-
-		destroy: function () {
-			if ( this.options.fadeScrollbars ) {
-				clearTimeout(this.fadeTimeout);
-				this.fadeTimeout = null;
-			}
-			if ( this.options.interactive ) {
-				utils.removeEvent(this.indicator, 'touchstart', this);
-				utils.removeEvent(this.indicator, utils.prefixPointerEvent('pointerdown'), this);
-				utils.removeEvent(this.indicator, 'mousedown', this);
-
-				utils.removeEvent(window, 'touchmove', this);
-				utils.removeEvent(window, utils.prefixPointerEvent('pointermove'), this);
-				utils.removeEvent(window, 'mousemove', this);
-
-				utils.removeEvent(window, 'touchend', this);
-				utils.removeEvent(window, utils.prefixPointerEvent('pointerup'), this);
-				utils.removeEvent(window, 'mouseup', this);
-			}
-
-			if ( this.options.defaultScrollbars ) {
-				this.wrapper.parentNode.removeChild(this.wrapper);
-			}
-		},
-
-		_start: function (e) {
-			var point = e.touches ? e.touches[0] : e;
-
-			e.preventDefault();
-			e.stopPropagation();
-
-			this.transitionTime();
-
-			this.initiated = true;
-			this.moved = false;
-			this.lastPointX	= point.pageX;
-			this.lastPointY	= point.pageY;
-
-			this.startTime	= utils.getTime();
-
-			if ( !this.options.disableTouch ) {
-				utils.addEvent(window, 'touchmove', this);
-			}
-			if ( !this.options.disablePointer ) {
-				utils.addEvent(window, utils.prefixPointerEvent('pointermove'), this);
-			}
-			if ( !this.options.disableMouse ) {
-				utils.addEvent(window, 'mousemove', this);
-			}
-
-			this.scroller._execEvent('beforeScrollStart');
-		},
-
-		_move: function (e) {
-			var point = e.touches ? e.touches[0] : e,
-				deltaX, deltaY,
-				newX, newY,
-				timestamp = utils.getTime();
-
-			if ( !this.moved ) {
-				this.scroller._execEvent('scrollStart');
-			}
-
-			this.moved = true;
-
-			deltaX = point.pageX - this.lastPointX;
-			this.lastPointX = point.pageX;
-
-			deltaY = point.pageY - this.lastPointY;
-			this.lastPointY = point.pageY;
-
-			newX = this.x + deltaX;
-			newY = this.y + deltaY;
-
-			this._pos(newX, newY);
-
-	// INSERT POINT: indicator._move
-
-			e.preventDefault();
-			e.stopPropagation();
-		},
-
-		_end: function (e) {
-			if ( !this.initiated ) {
-				return;
-			}
-
-			this.initiated = false;
-
-			e.preventDefault();
-			e.stopPropagation();
-
-			utils.removeEvent(window, 'touchmove', this);
-			utils.removeEvent(window, utils.prefixPointerEvent('pointermove'), this);
-			utils.removeEvent(window, 'mousemove', this);
-
-			if ( this.scroller.options.snap ) {
-				var snap = this.scroller._nearestSnap(this.scroller.x, this.scroller.y);
-
-				var time = this.options.snapSpeed || Math.max(
-						Math.max(
-							Math.min(Math.abs(this.scroller.x - snap.x), 1000),
-							Math.min(Math.abs(this.scroller.y - snap.y), 1000)
-						), 300);
-
-				if ( this.scroller.x != snap.x || this.scroller.y != snap.y ) {
-					this.scroller.directionX = 0;
-					this.scroller.directionY = 0;
-					this.scroller.currentPage = snap;
-					this.scroller.scrollTo(snap.x, snap.y, time, this.scroller.options.bounceEasing);
-				}
-			}
-
-			if ( this.moved ) {
-				this.scroller._execEvent('scrollEnd');
-			}
-		},
-
-		transitionTime: function (time) {
-			time = time || 0;
-			var durationProp = utils.style.transitionDuration;
-			this.indicatorStyle[durationProp] = time + 'ms';
-
-			if ( !time && utils.isBadAndroid ) {
-				this.indicatorStyle[durationProp] = '0.0001ms';
-				// remove 0.0001ms
-				var self = this;
-				rAF(function() {
-					if(self.indicatorStyle[durationProp] === '0.0001ms') {
-						self.indicatorStyle[durationProp] = '0s';
-					}
-				});
-			}
-		},
-
-		transitionTimingFunction: function (easing) {
-			this.indicatorStyle[utils.style.transitionTimingFunction] = easing;
-		},
-
-		refresh: function () {
-			this.transitionTime();
-
-			if ( this.options.listenX && !this.options.listenY ) {
-				this.indicatorStyle.display = this.scroller.hasHorizontalScroll ? 'block' : 'none';
-			} else if ( this.options.listenY && !this.options.listenX ) {
-				this.indicatorStyle.display = this.scroller.hasVerticalScroll ? 'block' : 'none';
-			} else {
-				this.indicatorStyle.display = this.scroller.hasHorizontalScroll || this.scroller.hasVerticalScroll ? 'block' : 'none';
-			}
-
-			if ( this.scroller.hasHorizontalScroll && this.scroller.hasVerticalScroll ) {
-				utils.addClass(this.wrapper, 'iScrollBothScrollbars');
-				utils.removeClass(this.wrapper, 'iScrollLoneScrollbar');
-
-				if ( this.options.defaultScrollbars && this.options.customStyle ) {
-					if ( this.options.listenX ) {
-						this.wrapper.style.right = '8px';
-					} else {
-						this.wrapper.style.bottom = '8px';
-					}
-				}
-			} else {
-				utils.removeClass(this.wrapper, 'iScrollBothScrollbars');
-				utils.addClass(this.wrapper, 'iScrollLoneScrollbar');
-
-				if ( this.options.defaultScrollbars && this.options.customStyle ) {
-					if ( this.options.listenX ) {
-						this.wrapper.style.right = '2px';
-					} else {
-						this.wrapper.style.bottom = '2px';
-					}
-				}
-			}
-
-			var r = this.wrapper.offsetHeight;	// force refresh
-
-			if ( this.options.listenX ) {
-				this.wrapperWidth = this.wrapper.clientWidth;
-				if ( this.options.resize ) {
-					this.indicatorWidth = Math.max(Math.round(this.wrapperWidth * this.wrapperWidth / (this.scroller.scrollerWidth || this.wrapperWidth || 1)), 8);
-					this.indicatorStyle.width = this.indicatorWidth + 'px';
-				} else {
-					this.indicatorWidth = this.indicator.clientWidth;
-				}
-
-				this.maxPosX = this.wrapperWidth - this.indicatorWidth;
-
-				if ( this.options.shrink == 'clip' ) {
-					this.minBoundaryX = -this.indicatorWidth + 8;
-					this.maxBoundaryX = this.wrapperWidth - 8;
-				} else {
-					this.minBoundaryX = 0;
-					this.maxBoundaryX = this.maxPosX;
-				}
-
-				this.sizeRatioX = this.options.speedRatioX || (this.scroller.maxScrollX && (this.maxPosX / this.scroller.maxScrollX));
-			}
-
-			if ( this.options.listenY ) {
-				this.wrapperHeight = this.wrapper.clientHeight;
-				if ( this.options.resize ) {
-					this.indicatorHeight = Math.max(Math.round(this.wrapperHeight * this.wrapperHeight / (this.scroller.scrollerHeight || this.wrapperHeight || 1)), 8);
-					this.indicatorStyle.height = this.indicatorHeight + 'px';
-				} else {
-					this.indicatorHeight = this.indicator.clientHeight;
-				}
-
-				this.maxPosY = this.wrapperHeight - this.indicatorHeight;
-
-				if ( this.options.shrink == 'clip' ) {
-					this.minBoundaryY = -this.indicatorHeight + 8;
-					this.maxBoundaryY = this.wrapperHeight - 8;
-				} else {
-					this.minBoundaryY = 0;
-					this.maxBoundaryY = this.maxPosY;
-				}
-
-				this.maxPosY = this.wrapperHeight - this.indicatorHeight;
-				this.sizeRatioY = this.options.speedRatioY || (this.scroller.maxScrollY && (this.maxPosY / this.scroller.maxScrollY));
-			}
-
-			this.updatePosition();
-		},
-
-		updatePosition: function () {
-			var x = this.options.listenX && Math.round(this.sizeRatioX * this.scroller.x) || 0,
-				y = this.options.listenY && Math.round(this.sizeRatioY * this.scroller.y) || 0;
-
-			if ( !this.options.ignoreBoundaries ) {
-				if ( x < this.minBoundaryX ) {
-					if ( this.options.shrink == 'scale' ) {
-						this.width = Math.max(this.indicatorWidth + x, 8);
-						this.indicatorStyle.width = this.width + 'px';
-					}
-					x = this.minBoundaryX;
-				} else if ( x > this.maxBoundaryX ) {
-					if ( this.options.shrink == 'scale' ) {
-						this.width = Math.max(this.indicatorWidth - (x - this.maxPosX), 8);
-						this.indicatorStyle.width = this.width + 'px';
-						x = this.maxPosX + this.indicatorWidth - this.width;
-					} else {
-						x = this.maxBoundaryX;
-					}
-				} else if ( this.options.shrink == 'scale' && this.width != this.indicatorWidth ) {
-					this.width = this.indicatorWidth;
-					this.indicatorStyle.width = this.width + 'px';
-				}
-
-				if ( y < this.minBoundaryY ) {
-					if ( this.options.shrink == 'scale' ) {
-						this.height = Math.max(this.indicatorHeight + y * 3, 8);
-						this.indicatorStyle.height = this.height + 'px';
-					}
-					y = this.minBoundaryY;
-				} else if ( y > this.maxBoundaryY ) {
-					if ( this.options.shrink == 'scale' ) {
-						this.height = Math.max(this.indicatorHeight - (y - this.maxPosY) * 3, 8);
-						this.indicatorStyle.height = this.height + 'px';
-						y = this.maxPosY + this.indicatorHeight - this.height;
-					} else {
-						y = this.maxBoundaryY;
-					}
-				} else if ( this.options.shrink == 'scale' && this.height != this.indicatorHeight ) {
-					this.height = this.indicatorHeight;
-					this.indicatorStyle.height = this.height + 'px';
-				}
-			}
-
-			this.x = x;
-			this.y = y;
-
-			if ( this.scroller.options.useTransform ) {
-				this.indicatorStyle[utils.style.transform] = 'translate(' + x + 'px,' + y + 'px)' + this.scroller.translateZ;
-			} else {
-				this.indicatorStyle.left = x + 'px';
-				this.indicatorStyle.top = y + 'px';
-			}
-		},
-
-		_pos: function (x, y) {
-			if ( x < 0 ) {
-				x = 0;
-			} else if ( x > this.maxPosX ) {
-				x = this.maxPosX;
-			}
-
-			if ( y < 0 ) {
-				y = 0;
-			} else if ( y > this.maxPosY ) {
-				y = this.maxPosY;
-			}
-
-			x = this.options.listenX ? Math.round(x / this.sizeRatioX) : this.scroller.x;
-			y = this.options.listenY ? Math.round(y / this.sizeRatioY) : this.scroller.y;
-
-			this.scroller.scrollTo(x, y);
-		},
-
-		fade: function (val, hold) {
-			if ( hold && !this.visible ) {
-				return;
-			}
-
-			clearTimeout(this.fadeTimeout);
-			this.fadeTimeout = null;
-
-			var time = val ? 250 : 500,
-				delay = val ? 0 : 300;
-
-			val = val ? '1' : '0';
-
-			this.wrapperStyle[utils.style.transitionDuration] = time + 'ms';
-
-			this.fadeTimeout = setTimeout((function (val) {
-				this.wrapperStyle.opacity = val;
-				this.visible = +val;
-			}).bind(this, val), delay);
-		}
-	};
-
-	IScroll.utils = utils;
-
-	if ( typeof module != 'undefined' && module.exports ) {
-		module.exports = IScroll;
-	} else if ( true ) {
-	        !(__WEBPACK_AMD_DEFINE_RESULT__ = function () { return IScroll; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	} else {
-		window.IScroll = IScroll;
-	}
-
-	})(window, document, Math);
-
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__vue_script__ = __webpack_require__(22)
-	__vue_template__ = __webpack_require__(25)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "F:\\xuchang2018\\project\\journalist\\components\\footer\\footer.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// <template>
-	// 	<footer class="zmiti-footer-main-ui">
-	// 		<div class="zmiti-footer-btns">
-	// 			<div v-tap='backToIndex'><img :src="imgs.back" alt=""></div>
-	// 			<div v-tap='showShare'><img :src="imgs.share" alt=""></div>
-	// 		</div>
-	//
-	// 		<div class="zmiti-footer-line">
-	// 			<img :src="imgs.line" alt="">
-	// 		</div>
-	//
-	// 		<div v-tap='showCopyright' class="zmiti-look-copyright">
-	// 			查看版权
-	// 		</div>
-	//
-	//
-	// 	</footer>
-	// </template>
-	// <script>
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-		value: true
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	var _libAssetsJs = __webpack_require__(11);
-
-	var _libAssetsJs2 = _interopRequireDefault(_libAssetsJs);
-
-	__webpack_require__(23);
-
-	exports['default'] = {
-		props: ['obserable'],
-		data: function data() {
-			return {
-				imgs: _libAssetsJs2['default'],
-				viewH: document.documentElement.clientHeight,
-				showMask: false
-			};
-		},
-		methods: {
-			showCopyright: function showCopyright() {
-				var obserable = this.obserable;
-
-				obserable.trigger({
-					type: 'showCopyright'
-				});
-			},
-			backToIndex: function backToIndex() {
-				var obserable = this.obserable;
-
-				obserable.trigger({
-					type: 'togglePage',
-					data: false
-				});
-				obserable.trigger({
-					type: 'showIndex'
-				});
-			},
-			showShare: function showShare() {
-				var obserable = this.obserable;
-
-				obserable.trigger({
-					type: 'showShare'
-				});
-			}
-		},
-		mounted: function mounted() {}
-	};
-
-	// </script>
-	module.exports = exports['default'];
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(24);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(10)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!../../node_modules/css-loader/index.js!./footer.css", function() {
-				var newContent = require("!!../../node_modules/css-loader/index.js!./footer.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(9)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0; }\r\n\r\n.zmiti-text-overflow {\r\n  overflow: hidden;\r\n  white-space: nowrap;\r\n  word-break: break-all;\r\n  text-overflow: ellipsis;\r\n  -webkit-text-overflow: ellipsis; }\r\n\r\n.zmiti-play {\r\n  width: .8rem;\r\n  height: .8rem;\r\n  border-radius: 50%;\r\n  position: fixed;\r\n  z-index: 1000;\r\n  right: .5rem;\r\n  top: .5rem; }\r\n  .zmiti-play.rotate {\r\n    -webkit-animation: rotate 5s linear infinite;\r\n    animation: rotate 5s linear infinite; }\r\n\r\n@-webkit-keyframes rotate {\r\n  to {\r\n    -webkit-transform: rotate(360deg);\r\n    transform: rotate(360deg); } }\r\n.zmiti-footer-main-ui .zmiti-footer-btns {\r\n  display: -webkit-box;\r\n  -webkit-box-align: center;\r\n  -webkit-box-pack: center;\r\n  -webkit-box-orient: horizontal;\r\n  width: 8rem;\r\n  margin: 1rem auto; }\r\n  .zmiti-footer-main-ui .zmiti-footer-btns > div {\r\n    -webkit-box-flex: 1;\r\n    margin: 0 .3rem; }\r\n.zmiti-footer-main-ui .zmiti-look-copyright {\r\n  width: 3rem;\r\n  height: 1rem;\r\n  border: 1px solid #054485;\r\n  border-radius: 8px;\r\n  text-align: center;\r\n  line-height: 1rem;\r\n  margin: .5rem auto;\r\n  font-size: .5rem; }\r\n\r\n/*# sourceMappingURL=footer.css.map */\r\n", ""]);
-
-	// exports
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports) {
-
-	module.exports = "\r\n\t<footer class=\"zmiti-footer-main-ui\">\r\n\t\t<div class=\"zmiti-footer-btns\">\r\n\t\t\t<div v-tap='backToIndex'><img :src=\"imgs.back\" alt=\"\"></div>\r\n\t\t\t<div v-tap='showShare'><img :src=\"imgs.share\" alt=\"\"></div>\r\n\t\t</div>\r\n\r\n\t\t<div class=\"zmiti-footer-line\">\r\n\t\t\t<img :src=\"imgs.line\" alt=\"\">\r\n\t\t</div>\r\n\r\n\t\t<div v-tap='showCopyright' class=\"zmiti-look-copyright\">\r\n\t\t\t查看版权\r\n\t\t</div>\r\n\t\t\r\n\t\t\r\n\t</footer>\r\n";
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports) {
-
-	module.exports = "\r\n\t<div  :class=\"{'show':show}\" class=\"zmiti-page1-main-ui lt-full\" ref='page'>\r\n\t\t<section :style=\"{background: 'url('+imgs.bg+') repeat'}\" v-if='index === i' v-for='(detail,i) in detailList'>\r\n\t\t\t<div v-if='detail.mediaType===\"video\"' class=\"zmiti-video-main-ui\">\r\n\t\t\t\t<img :src=\"imgs.j1\" />\r\n\t\t\t\t<audio src='./assets/music/bg1.mp3' ref='video-audio'></audio>\r\n\t\t\t\t<div class=\"zmiti-video-C\">\r\n\t\t\t\t\t<!--  -->\r\n\t\t\t\t\t<div v-if='!play' v-tap='playVideo' :style='{background:\"url(\"+imgs[detail.poster]+\") no-repeat center center \",backgroundSize:\"cover\"}' >\r\n\t\t\t\t\t\t<img style=\"width:100%;\" class=\"zmiti-poster\" :src=\"imgs[detail.poster]\" alt=\"\">\r\n\t\t\t\t\t\t<img  class=\"zmiti-paused\" :src=\"imgs.paused\" />\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\t<video v-show='show' x-webkit-airplay=\"true\" webkit-playsinline=\"true\" playsinline=\"true\"  @ended='ended' @puase='play=false' v-tap='pauseVideo' @play='play=true' ref='video' :src='detail.src'></video>\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t\t<div v-if='detail.mediaType===\"image\"' class=\"zmiti-video-main-ui\">\r\n\t\t\t\t<img :src=\"imgs.j1\" />\r\n\t\t\t\t<div class=\"zmiti-video-C\">\r\n\t\t\t\t\t<img :src=\"detail.src\" alt=\"\">\r\n\t\t\t\t</div>\r\n\t\t\t</div>\r\n\t\t\t<div class=\"zmiti-item \">\r\n\t\t\t\t<img :src='imgs.microphone' class=\"zmiti-microphone\" />\r\n\t\t\t\t<div class=\"zmiti-j-content\">\r\n\t\t\t\t\t<h2>{{detail.title}}</h2>\r\n\t\t\t\t\t<div class=\"zmiti-j-sub-title\">{{detail.subTitle}}</div>\r\n\t\t\t\t\t<div class=\"zmiti-j-text\" >\r\n\t\t\t\t\t\t<div v-for='text in detail.text1'>\r\n\t\t\t\t\t\t\t{{text}}\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<img class=\"zmiti-bg\" :src=\"imgs.jbg1\" :style=\"detail.text1Style\" />\r\n\t\t\t</div>\r\n\t\t\t<div class=\"zmiti-item zmiti-item2\">\r\n\t\t\t\t<div class=\"zmiti-j-content\">\r\n\t\t\t\t\t<div class=\"zmiti-j-text\" v-for='text in detail.text2'>\r\n\t\t\t\t\t\t{{text}}\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<img class=\"\" :src=\"imgs.jbg21\" />\r\n\t\t\t\t<img class=\"zmiti-bg2\" :src=\"imgs.jbg2\" :style=\"detail.text2Style\" />\r\n\t\t\t\t<img class=\"\" :src=\"imgs.jbg22\" />\r\n\t\t\t</div>\r\n\t\t\t<div class=\"zmiti-item\">\r\n\t\t\t\t<img :src='imgs[detail.name]' />\r\n\t\t\t</div>\r\n\r\n\t\t\t<div v-if='detail.text3.length>0' class=\"zmiti-item zmiti-item4\">\r\n\t\t\t\t<div class=\"zmiti-j-content\">\r\n\t\t\t\t\t<div class=\"zmiti-j-text\" v-for='text in detail.text3'>\r\n\t\t\t\t\t\t{{text}}\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<img :src='imgs.jbg3' class=\"zmiti-bg\" :style=\"detail.text3Style\" />\r\n\t\t\t\t<img :src=\"imgs.camera2\" class=\"zmiti-camera2\" alt=\"\">\r\n\t\t\t</div>\r\n\r\n\t\t\t<div class=\"zmiti-item zmiti-item5\">\r\n\t\t\t\t<div class=\"zmiti-j-content\">\r\n\t\t\t\t\t<div class=\"zmiti-j-text\">\r\n\t\t\t\t\t\t<div v-for='text in detail.text4'>{{text}}</div>\r\n\t\t\t\t\t</div>\r\n\t\t\t\t</div>\r\n\t\t\t\t<img :src='imgs.jbg4' class=\"zmiti-bg\" :style=\"detail.text4Style\" />\r\n\r\n\t\t\t</div>\r\n\r\n\t\t\t<Footer :obserable='obserable'></Footer>\r\n\r\n\r\n\t\t</section>\r\n\t</div>\r\n";
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	var __vue_script__, __vue_template__
-	__vue_script__ = __webpack_require__(28)
-	__vue_template__ = __webpack_require__(31)
-	module.exports = __vue_script__ || {}
-	if (module.exports.__esModule) module.exports = module.exports.default
-	if (__vue_template__) { (typeof module.exports === "function" ? module.exports.options : module.exports).template = __vue_template__ }
-	if (false) {(function () {  module.hot.accept()
-	  var hotAPI = require("vue-hot-reload-api")
-	  hotAPI.install(require("vue"), true)
-	  if (!hotAPI.compatible) return
-	  var id = "F:\\xuchang2018\\project\\journalist\\components\\copyright\\copyright.vue"
-	  if (!module.hot.data) {
-	    hotAPI.createRecord(id, module.exports)
-	  } else {
-	    hotAPI.update(id, module.exports, __vue_template__)
-	  }
-	})()}
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// <template>
-	// 	<div v-show='showCopyright' class="zmiti-copyright-main-ui lt-full">
-	// 		<section>
-	// 			<h1 class="zmiti-fill"></h1>
-	// 			<img :src='imgs.copyright1'/>
-	//
-	// 			<div class="zmiti-team">
-	// 				<div><span>出品：</span><span>陈凯星</span><span>冯瑛冰</span><span>马书平</span></div>
-	// 				<div><span>监制：</span><span>齐慧杰</span></div>
-	// 				<div><span>统筹：</span><span>曹晓轩</span></div>
-	// 				<div><span>策划：</span><span>李瑜</span></div>
-	// 				<div><span>编辑：</span><span>孟洁</span><span>肖磊涛</span></div>
-	// 			</div>
-	//
-	// 		</section>
-	// 		<section>
-	// 			<div class="zmiti-back" @touchstart='showCopyright = false'>
-	// 				<img :src='imgs.back' />
-	// 			</div>
-	//
-	// 			<div class="zmiti-download">
-	// 				<img :src="imgs.download" alt="">
-	// 			</div>
-	// 		</section>
-	// 	</div>
-	// </template>
-	// <script>
-	'use strict';
-
-	Object.defineProperty(exports, '__esModule', {
-		value: true
-	});
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
-
-	__webpack_require__(29);
-
-	var _libAssetsJs = __webpack_require__(11);
-
-	var _libAssetsJs2 = _interopRequireDefault(_libAssetsJs);
-
-	exports['default'] = {
-		props: ['obserable'],
-		name: 'Copyright',
-		data: function data() {
-			return {
-				imgs: _libAssetsJs2['default'],
-				showCopyright: false
-			};
-		},
-		methods: {},
-		mounted: function mounted() {
-			var _this = this;
-
-			var obserable = this.obserable;
-
-			obserable.on('showCopyright', function () {
-				_this.showCopyright = true;
-			});
-		}
-	};
-
-	// </script>
-	module.exports = exports['default'];
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	// style-loader: Adds some css to the DOM by adding a <style> tag
-
-	// load the styles
-	var content = __webpack_require__(30);
-	if(typeof content === 'string') content = [[module.id, content, '']];
-	// add the styles to the DOM
-	var update = __webpack_require__(10)(content, {});
-	if(content.locals) module.exports = content.locals;
-	// Hot Module Replacement
-	if(false) {
-		// When the styles change, update the <style> tags
-		if(!content.locals) {
-			module.hot.accept("!!../../node_modules/css-loader/index.js!./copyright.css", function() {
-				var newContent = require("!!../../node_modules/css-loader/index.js!./copyright.css");
-				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-				update(newContent);
-			});
-		}
-		// When the module is disposed, remove the <style> tags
-		module.hot.dispose(function() { update(); });
-	}
-
-/***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	exports = module.exports = __webpack_require__(9)();
-	// imports
-
-
-	// module
-	exports.push([module.id, "/*.ant-btn:focus, .ant-btn:hover,.ant-input:focus, .ant-input:hover {\r\n    background-color: #fff;\r\n    border-color: #bf1616;\r\n    box-shadow: 0 0 0 2px rgba(191, 22, 22, 0.1);\r\n}*/\r\n.lt-full {\r\n  width: 100%;\r\n  height: 100%;\r\n  position: absolute;\r\n  left: 0;\r\n  top: 0; }\r\n\r\n.zmiti-text-overflow {\r\n  overflow: hidden;\r\n  white-space: nowrap;\r\n  word-break: break-all;\r\n  text-overflow: ellipsis;\r\n  -webkit-text-overflow: ellipsis; }\r\n\r\n.zmiti-play {\r\n  width: .8rem;\r\n  height: .8rem;\r\n  border-radius: 50%;\r\n  position: fixed;\r\n  z-index: 1000;\r\n  right: .5rem;\r\n  top: .5rem; }\r\n  .zmiti-play.rotate {\r\n    -webkit-animation: rotate 5s linear infinite;\r\n    animation: rotate 5s linear infinite; }\r\n\r\n@-webkit-keyframes rotate {\r\n  to {\r\n    -webkit-transform: rotate(360deg);\r\n    transform: rotate(360deg); } }\r\n.zmiti-copyright-main-ui {\r\n  background: #fff;\r\n  z-index: 152; }\r\n  .zmiti-copyright-main-ui > section {\r\n    position: absolute;\r\n    width: 100%;\r\n    height: 50%;\r\n    box-sizing: border-box;\r\n    left: 0;\r\n    top: 0; }\r\n    .zmiti-copyright-main-ui > section .zmiti-fill {\r\n      height: 7vh; }\r\n    .zmiti-copyright-main-ui > section:nth-of-type(2) {\r\n      bottom: 0;\r\n      top: auto; }\r\n    .zmiti-copyright-main-ui > section .zmiti-download {\r\n      width: 6rem;\r\n      position: absolute;\r\n      left: 2rem;\r\n      bottom: 4vh; }\r\n    .zmiti-copyright-main-ui > section .zmiti-team {\r\n      width: 7rem;\r\n      margin: 3vh auto; }\r\n      .zmiti-copyright-main-ui > section .zmiti-team > div {\r\n        height: .8rem; }\r\n      .zmiti-copyright-main-ui > section .zmiti-team span {\r\n        margin: .2rem; }\r\n    .zmiti-copyright-main-ui > section .zmiti-back {\r\n      width: 4rem;\r\n      margin: 4vh auto; }\r\n\r\n/*# sourceMappingURL=copyright.css.map */\r\n", ""]);
-
-	// exports
-
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports) {
-
-	module.exports = "\r\n\t<div v-show='showCopyright' class=\"zmiti-copyright-main-ui lt-full\">\r\n\t\t<section>\r\n\t\t\t<h1 class=\"zmiti-fill\"></h1>\r\n\t\t\t<img :src='imgs.copyright1'/>\r\n\r\n\t\t\t<div class=\"zmiti-team\">\r\n\t\t\t\t<div><span>出品：</span><span>陈凯星</span><span>冯瑛冰</span><span>马书平</span></div>\r\n\t\t\t\t<div><span>监制：</span><span>齐慧杰</span></div>\r\n\t\t\t\t<div><span>统筹：</span><span>曹晓轩</span></div>\r\n\t\t\t\t<div><span>策划：</span><span>李瑜</span></div>\r\n\t\t\t\t<div><span>编辑：</span><span>孟洁</span><span>肖磊涛</span></div>\r\n\t\t\t</div>\r\n\r\n\t\t</section>\r\n\t\t<section>\r\n\t\t\t<div class=\"zmiti-back\" @touchstart='showCopyright = false'>\r\n\t\t\t\t<img :src='imgs.back' />\r\n\t\t\t</div>\r\n\r\n\t\t\t<div class=\"zmiti-download\">\r\n\t\t\t\t<img :src=\"imgs.download\" alt=\"\">\r\n\t\t\t</div>\r\n\t\t</section>\r\n\t</div>\r\n";
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var Obserable = (function () {
-		function Obserable() {
-			_classCallCheck(this, Obserable);
-
-			this.handlers = {};
-		}
-
-		_createClass(Obserable, [{
-			key: "on",
-			value: function on(type, handler) {
-
-				this.handlers[type] = this.handlers[type] || [];
-
-				this.off(type);
-				this.handlers[type].push({ handler: handler, type: type });
-			}
-		}, {
-			key: "off",
-			value: function off(type) {
-				var _this = this;
-
-				this.handlers[type] && this.handlers[type].forEach(function (item, i) {
-					if (item.type === type) {
-						_this.handlers[type].splice(i, 1);
-					};
-				});
-			}
-		}, {
-			key: "trigger",
-			value: function trigger(event) {
-
-				if (!event.target) {
-					event.target = this;
-				}
-				if (this.handlers[event.type] instanceof Array) {
-					var handlers = this.handlers[event.type]; //检出被观察者注册的观察者
-					for (var i = 0, len = handlers.length; i < len; i++) {
-						return handlers[i].handler(event.data); //回调函数执行，也就是观察者更新自己
-					}
-				}
-			}
-		}]);
-
-		return Obserable;
-	})();
-
-	exports["default"] = Obserable;
-	module.exports = exports["default"];
-
-/***/ }),
-/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25102,6 +22177,200 @@
 	        new vueTouch(el, binding, "longtap");
 	    }
 	});
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var _jquery = __webpack_require__(19);
+
+	var _jquery2 = _interopRequireDefault(_jquery);
+
+	var zmitiUtil = {
+		wxInfo: function wxInfo() {
+			return {
+				wxappid: window.wxappid,
+				wxappsecret: wxappsecret,
+				customid: window.customid
+			};
+		},
+		getQueryString: function getQueryString(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+			var r = window.location.search.substr(1).match(reg);
+			if (r != null) return r[2];
+			return null;
+		},
+		changeURLPar: function changeURLPar(url, arg, val) {
+			var pattern = arg + '=([^&]*)';
+			var replaceText = arg + '=' + val;
+			return url.match(pattern) ? url.replace(eval('/(' + arg + '=)([^&]*)/gi'), replaceText) : url.match('[\?]') ? url + '&' + replaceText : url + '?' + replaceText;
+		},
+		isWeiXin: function isWeiXin() {
+			var ua = window.navigator.userAgent.toLowerCase();
+			if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+				return true;
+			} else {
+				return false;
+			}
+		},
+		wxConfig: function wxConfig(title, desc, url) {
+			var isDebug = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
+
+			var s = this;
+			var img = window.protocol + '//h5.zmiti.com/public/' + window.h5name + '/assets/images/300.jpg';
+			//var appId = 'wxfacf4a639d9e3bcc'; //'wxfacf4a639d9e3bcc'; // data.wxappid; // 'wxfacf4a639d9e3bcc'; //data.wxappid;
+
+			var appId = this.wxInfo().wxappid;
+
+			var durl = url || location.href.split('#')[0];
+
+			var code_durl = encodeURIComponent(durl);
+			_jquery2["default"].ajax({
+				type: 'get',
+				//url: "http://api.zmiti.com/weixin/jssdk.php?type=signature&durl=" + code_durl + '&worksid=' + window.customid,
+				url: window.baseUrl.replace('/v2', '') + "/weixin/jssdk.php?type=signature&durl=" + code_durl,
+				dataType: 'jsonp',
+				jsonp: "callback",
+				jsonpCallback: "jsonFlickrFeed",
+				error: function error() {},
+				success: function success(data) {
+
+					wx.config({
+						debug: isDebug, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+						appId: appId, // 必填，公众号的唯一标识
+						timestamp: '1488558145', // 必填，生成签名的时间戳
+						nonceStr: 'Wm3WZYTPz0wzccnW', // 必填，生成签名的随机串
+						signature: data.signature, // 必填，签名，见附录1
+						jsApiList: ['checkJsApi', 'onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'hideMenuItems', 'showMenuItems', 'hideAllNonBaseMenuItem', 'showAllNonBaseMenuItem'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+					});
+
+					wx.ready(function () {
+
+						//朋友圈
+
+						wx.onMenuShareTimeline({
+							title: title, // 分享标题
+							link: durl, // 分享链接
+							imgUrl: img, // 分享图标
+							desc: desc,
+							success: function success() {},
+							cancel: function cancel() {}
+						});
+						//朋友
+						wx.onMenuShareAppMessage({
+							title: title, // 分享标题
+							link: durl,
+							imgUrl: img, // 分享图标
+							type: "link",
+							dataUrl: "",
+							desc: desc,
+							success: function success() {},
+							cancel: function cancel() {}
+						});
+						//qq
+						wx.onMenuShareQQ({
+							title: title, // 分享标题
+							link: durl, // 分享链接
+							imgUrl: img, // 分享图标
+							desc: desc,
+							success: function success() {},
+							cancel: function cancel() {}
+						});
+					});
+				}
+			});
+		},
+
+		getOauthurl: function getOauthurl() {
+			var s = this;
+
+			var _wxInfo = this.wxInfo();
+
+			var wxappid = _wxInfo.wxappid;
+			var wxappsecret = _wxInfo.wxappsecret;
+			var customid = _wxInfo.customid;
+
+			_jquery2["default"].ajax({
+				type: 'post',
+				//url: window.baseUrl + '/weixin/getwxuserinfo/',
+				url: window.protocol + '//api.zmiti.com/v2/weixin/getwxuserinfo/',
+				data: {
+					code: s.getQueryString('code'),
+					wxappid: wxappid,
+					wxappsecret: wxappsecret
+				},
+				error: function error() {},
+				success: function success(dt) {
+
+					if (dt.getret === 0) {
+
+						s.openid = dt.userinfo.openid;
+						s.nickname = dt.userinfo.nickname;
+						s.headimgurl = dt.userinfo.headimgurl;
+
+						window.nickname = s.nickname;
+						window.headimgurl = s.headimgurl;
+						window.openid = s.openid;
+
+						var URI = window.location.href.split('#')[0];
+					} else {
+						if (s.isWeiXin()) {
+							var mobile = s.getQueryString('mobile');
+							var address1 = s.getQueryString('address1');
+							var address2 = s.getQueryString('address2');
+							var qid = s.getQueryString('qid');
+
+							var redirect_uri = window.location.href.split('?')[0];
+
+							if (mobile) {
+								redirect_uri = s.changeURLPar(redirect_uri, 'mobile', mobile);
+							}
+							if (address1) {
+								redirect_uri = s.changeURLPar(redirect_uri, 'address1', address1);
+							}
+							if (address2) {
+								redirect_uri = s.changeURLPar(redirect_uri, 'address2', address2);
+							}
+
+							if (qid) {
+								redirect_uri = s.changeURLPar(redirect_uri, 'qid', qid);
+							}
+
+							_jquery2["default"].ajax({
+								//url: window.baseUrl + '/weixin/getoauthurl/',
+								url: window.protocol + '//api.zmiti.com/v2/weixin/getoauthurl/',
+								type: 'post',
+								data: {
+									redirect_uri: redirect_uri,
+									scope: 'snsapi_userinfo',
+									worksid: customid,
+									state: new Date().getTime() + ''
+								},
+								error: function error() {},
+								success: function success(dt) {
+									if (dt.getret === 0) {
+										window.location.href = dt.url;
+									}
+								}
+							});
+						} else {
+							s.wxConfig('为你圆梦', '@留守儿童 新华社喊你来许愿！有机会得团圆基金哦');
+						}
+					}
+				}
+			});
+		}
+	};
+	exports["default"] = zmitiUtil;
+	module.exports = exports["default"];
 
 /***/ })
 /******/ ]);

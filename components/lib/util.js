@@ -28,7 +28,7 @@ var zmitiUtil = {
 	},
 	wxConfig: function(title, desc, url, isDebug = false) {
 		var s = this;
-		var img = window.baseUrl + '/assets/images/300.jpg';
+		var img = window.protocol + '//h5.zmiti.com/public/' + window.h5name + '/assets/images/300.jpg';
 		//var appId = 'wxfacf4a639d9e3bcc'; //'wxfacf4a639d9e3bcc'; // data.wxappid; // 'wxfacf4a639d9e3bcc'; //data.wxappid;
 
 		var appId = this.wxInfo().wxappid;
@@ -36,11 +36,10 @@ var zmitiUtil = {
 		var durl = url || location.href.split('#')[0];
 
 		var code_durl = encodeURIComponent(durl);
-
 		$.ajax({
 			type: 'get',
 			//url: "http://api.zmiti.com/weixin/jssdk.php?type=signature&durl=" + code_durl + '&worksid=' + window.customid,
-			url: window.baseUrl + "/weixin/jssdk.php?type=signature&durl=" + code_durl + '&worksid=' + window.customid,
+			url: window.baseUrl.replace('/v2', '') + "/weixin/jssdk.php?type=signature&durl=" + code_durl,
 			dataType: 'jsonp',
 			jsonp: "callback",
 			jsonpCallback: "jsonFlickrFeed",
@@ -139,7 +138,6 @@ var zmitiUtil = {
 
 					var URI = window.location.href.split('#')[0];
 
-					s.wxConfig('为你圆梦', '@留守儿童 新华社喊你来许愿！有机会得团圆基金哦');
 
 				} else {
 					if (s.isWeiXin()) {

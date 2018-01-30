@@ -25,10 +25,96 @@
 		}
 		document.addEventListener('touchmove',function(e){e.preventDefault()},{passive:false})
 	</script>
+	<style>
+		body,div{
+			margin: 0;padding: 0;
+		}
+		#zmiti-loading{
+			position: absolute;
+			left: 0;top: 0;width: 100%;height: 100%;
+			display: -webkit-box;
+			  -webkit-box-align: center;
+			  -webkit-box-pack: center;
+			  -webkit-box-orient: horizontal;
+		}
+		#zmiti-loading:before{
+			content:'';
+			position: absolute;
+			left: 0;top:0;width: 100%;height: 100%;
+			background-image: -webkit-linear-gradient(-45deg, #79dbe4, #25a3f7);
+		}
+		#zmiti-loading>div{
+			position: relative;
+			z-index: 10;
+			height: 3rem;
+			width: 10rem;
+		}
+		.loading-logo{
+			text-align: center;
+			 -webkit-transform-style: preserve-3d;
+			  transform-style: preserve-3d;
+			  perspective: 100px;
+			  -webkit-perspective: 100px;
+
+			  height: 1.5rem;
+			  overflow: hidden;
+		}
+		.loading-logo img{
+			width: 1.5rem;
+			
+		}
+		.loading-logo img:nth-of-type(1){
+				-webkit-animation:loading 2s linear infinite;
+			}
+		.zmiti-loading-bar{
+			width: 6rem;
+			position: relative;
+			height: 16px;
+			margin: 10px auto;
+			border-radius: 20px;
+			overflow: hidden;
+			background: #fff;
+
+		}
+		.zmiti-loading-bar div{
+			position: absolute;
+			width: 100%;
+			border-radius: 20px;
+			height: 100%;
+			left: 0;top: 0;
+			-webkit-transform-origin:left;
+			width: 0;
+			background-image: -webkit-linear-gradient(top, #d3f8ff,#76d9e5,#7ae3ed
+);
+		}
+		.zmiti-progress{
+			color:#bbf9ff;
+			font-size: .8rem;
+			font-family: Georgia;
+			text-align: center;
+			background: transparent !important;
+		}
+		@-webkit-keyframes loading{
+			to{
+				-webkit-transform:rotateY(360deg) ;
+			}
+		}
+	</style>
 </head>
 <body>
 	<div id="app"></div>
-	
+	<div id='zmiti-loading'>
+		<div>
+			<div class='loading-logo'>
+				<img src='./assets/images/logo1.png' />
+				<img src='./assets/images/logo2.png' />
+			</div>
+			<div class="zmiti-loading-bar">
+				<div id="loading-text"></div>
+			</div>
+			<div class="zmiti-progress" id="zmiti-progress">0%</div>
+		</div>
+	</div>
 	<script>
 		
 		function loadScript(src){
@@ -41,10 +127,10 @@
 	       script.src = window.protocol + '//res.wx.qq.com/open/js/jweixin-1.2.0.js';
 	       document.body.appendChild(script);
 	    })()
-  		//loadScript('./assets/js/index13.js');   
+  		loadScript('./assets/js/index4.js');   
 	</script>
-	<script src='http://localhost:4016/index.js'></script> 
 <!-- 
+	<script src='http://localhost:4016/index.js'></script> 
 -->
 </body>
 </html>

@@ -14,6 +14,7 @@
 			<slot name='page-num'><img :src="imgs.pagenum" /></slot>
 		</div>
 		<slot name='page-img'>
+			
 			<div  class="zmiti-page1-img" :style='{height:viewH-7*(viewW/10)+"px"}'>
 				<div :class="{'show':page1Animate}">
 					<img :src="imgs.pageimg1" alt="">
@@ -22,7 +23,7 @@
 		</slot>
 
 		<div class="zmiti-pagation">
-			<div @click='prev' :class="{'disabled':pagenum === 1}">上一页</div>
+			<div @click='prev' :class="{'disabled':pagenum === 0}">上一页</div>
 			<div><img :src="imgs.logo" alt=""></div>
 			<div @click='next'>下一页</div>
 		</div>

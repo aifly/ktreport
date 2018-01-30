@@ -1,327 +1,577 @@
 @import "../css/base.scss";
 
-.zmiti-page-main-ui{
-	background:#f0f9fe;
+.zmiti-page-main-ui {
+	background: #f0f9fe;
 
-	&.page6{
-		background:none;
-		&:before{
-			content:'';
+	&.page6 {
+		background: none;
+
+		&:before {
+			content: '';
 			@include pos(a);
 			width: 100%;
 			height: 100%;
 			left: 0;
 			top: 0;
-			 background-image:linear-gradient(45deg,#e11e3f,#fda93e);
-
+			background-image: linear-gradient(45deg, #e11e3f, #fda93e);
+			background-image: -webkit-linear-gradient(45deg, #e11e3f, #fda93e);
 		}
-		.zmiti-title{
+
+		.zmiti-title {
 			display: none;
-
 		}
+
 	}
 
-	&.page7{
-		.zmiti-pagation{
+	&.page7 {
+		color: #fdf5c3;
+
+		ul {
+			li {
+				background: #f9504f !important;
+			}
+
+		}
+
+		&:before {
+			content: '';
+			@include pos(a);
+			width: 100%;
+			height: 100%;
+			left: 0;
+			top: 0;
+			background-image: -webkit-linear-gradient(top, #ed3c43, #e23052);
+		}
+
+		.zmiti-pagation {
 			display: none;
 		}
-		h1{
+
+		h1 {
 			display: none;
 		}
-		.zmiti-title{
-			img{
+
+		.zmiti-title {
+			&:before {
+				content: "";
+				background-image: -webkit-linear-gradient(45deg, #ec3840, #f25253);
+			}
+
+			img {
 				width: 5rem;
 			}
-		}
-	}
-	.zmiti-title{
 
-		&.page5{
-			&:before{
-				content:'';
+		}
+
+	}
+
+	.zmiti-title {
+		&.page5 {
+			&:before {
+				content: '';
 				@include pos(a);
 				width: 100%;
 				height: 100%;
-				left:0;top: 0;
+				left: 0;
+				top: 0;
 				z-index: 0;
-				background:#f04b4e;
-			}	
-			color:#fff6bc;
-			&>h1{
-				&:before{
-					background:#fff6bc;
-				}
+				background: #f04b4e;
 			}
+
+			color: #fff6bc;
+
+			&>h1 {
+				&:before {
+					background: #fff6bc;
+				}
+
+			}
+
 		}
+
 		width: 8rem;
 		height: 4rem;
 		padding-left: 1rem;
 		@include pos(r);
-		&:before{
-			content:'';
+
+		&:before {
+			content: '';
 			@include pos(a);
 			width: 100%;
 			height: 100%;
-			left:0;top: 0;
+			left: 0;
+			top: 0;
 			z-index: 0;
-			background: -webkit-linear-gradient(left, #f0f9fe , #e2f2ff);
+			background: -webkit-linear-gradient(left, #f0f9fe, #e2f2ff);
 		}
-		&>h1{
-			width: 6rem;
 
+		&>h1 {
+			width: 6rem;
 			height: 2.5rem;
 			line-height: 1.6rem;
 			@include pos(r);
-			&:before{
-				content:"";
+
+			&:before {
+				content: "";
 				left: 0;
 				bottom: .5rem;
 				width: .6rem;
 				height: 4px;
-				background:#000;
+				background: #000;
 				@include pos(a);
 			}
+
 		}
-		&>div{
+
+		&>div {
 			@include pos(r);
 			z-index: 1;
-			width: 6.5rem;
-			font-size: 12px;
+			width: 7rem;
+			font-size: .4rem;
 		}
+
 	}
 
-	.zmiti-pager{
+	.zmiti-pager {
 		width: 3rem;
 		@include pos(a);
 		top: 0;
 		right: 0;
 
-		&>span{
+		&>span {
 			@include pos(a);
 			left: 1.8rem;
 			top: .7rem;
 		}
+
 	}
-	.zmiti-page1-img{
+
+	.zmiti-page1-img {
 		width: 10rem;
-		bottom:3rem;
+		bottom: 2rem;
 		@include pos(a);
-		&>div{
-			@include transform(translate3d(0,1rem,0));
-			opacity:0;
+		box-sizing: border-box;
+		@include displayBox(horizontal);
+
+		&>div {
+			@include transform(translate3d(0, 1rem, 0));
+			opacity: 0;
 			@include transition(1s);
 
-			&.show{
-				opacity:1;
-				@include transform(translate3d(0,0,0));
+			&.show {
+				opacity: 1;
+				@include transform(translate3d(0, 0, 0));
 			}
+
 		}
-		box-sizing:border-box;
-		@include displayBox(horizontal);
+
 	}
 
-	.zmiti-page2-img{
+	.zmiti-page2-img {
 		@include pos(a);
 		width: 10rem;
-		bottom:3rem;
-		img{
-			width: 8rem;;
+		bottom: 3rem;
+
+		&:before {
+			content: '......';
+			@include pos(a);
+			left: 50%;
+			font-size: 1rem;
+			color: #000;
+			bottom: 0;
+			@include transform(translate3d(-50%, 0%, 0));
+			opacity: 0;
+			@include transition(.5s 1s);
+		}
+
+		img {
+			width: 9rem;
 			@include pos(a);
 			left: 50%;
 			top: 50%;
-			@include transform(translate3d(-50%,-50%,0));
+			@include transform(translate3d(-50%, 0%, 0));
+			opacity: 0;
+		}
+
+		&.show {
+			&:before {
+				opacity: 1;
+			}
+
+			img {
+				@include transition(1s);
+
+				&:nth-of-type(1) {
+					@include transition(1s .4s);
+				}
+
+				opacity: 1;
+				@include transform(translate3d(-50%, -50%, 0));
+			}
+
 		}
 
 	}
 
-	.zmiti-page3-img{
-		&>div{
+	.zmiti-page3-img {
+		&>div {
 			@include pos(r);
-			&>span{
+			@include transform(translate3d(0, 1rem, 0));
+			opacity: 0;
+			@include transition(1s);
+
+			&.show {
+				opacity: 1;
+				@include transform(translate3d(0, -.5rem, 0));
+			}
+
+			&>span {
 				@include pos(a);
-				bottom:1.9rem;
+				bottom: 1.9rem;
 				font-size: .5rem;
-				&:nth-of-type(1){
+
+				&:nth-of-type(1) {
 					left: 2.7rem;
-					color:#20c077;
+					color: #20c077;
 				}
-				&:nth-of-type(2){
+
+				&:nth-of-type(2) {
 					right: 1.3rem;
-					color:#ee8a4e;
+					color: #ee8a4e;
 				}
+
 			}
+
 		}
+
 	}
 
-	.zmiti-page4-img{
-		ol{
+	.zmiti-page4-img {
+		ol {
 			width: 9rem;
-			margin:0 auto;
-		}
-	}
-	.zmiti-page5-img{
-		.zmiti-point{
-			margin-top: -.1rem;
-			span{
-				width: 4px;
-				height: 4px;
-				@include br();
-				background: #fff6bc;
-				display: inline-block;
-				margin:0 2px;
+			margin: 0 auto;
+
+			&.show {
+				li {
+					@include transform(translate3d(0, 0, 0));
+					opacity: 1;
+				}
+
+			}
+
+			li {
+				@include transform(translate3d(2rem, 0, 0));
+				opacity: 0;
+				$time: .4s;
+				@include transition(.6s);
+
+				&:nth-of-type(1) {
+				}
+
+				&:nth-of-type(2) {
+					@include transition(.6s $time);
+				}
+
+				&:nth-of-type(3) {
+					@include transition(.6s $time*2);
+				}
+
+				&:nth-of-type(4) {
+					@include transition(.6s $time*3);
+				}
+
+				&:nth-of-type(5) {
+					@include transition(.6s $time*4);
+				}
+
+				&:nth-of-type(6) {
+					@include transition(.6s $time*5);
+				}
+
 			}
 
 		}
-		.zmiti-btn{
-			color:#fff6bc;
+
+	}
+
+	.zmiti-page5-img {
+		&>div {
+			&.show {
+				opacity: 1;
+				@include transform(translate3d(0, 0, 0));
+			}
+
+		}
+
+		.zmiti-point {
+			opacity: 0;
+		}
+
+		.zmiti-btn {
+			color: #fff6bc;
 			text-align: center;
 			@include pos(r);
 			height: .8rem;
+			top: .3rem;
 			line-height: .8rem;
-			&:before{
-				content:'';
+
+			&:before {
+				content: '';
 				@include pos(a);
 				left: 0;
 				top: 0;
 				width: 100%;
 				height: 100%;
-				border:1px solid rgba(255,246,188,.1);
-				box-shadow:0 0 20px rgba(0,9,0,.1);
+				border: 1px solid rgba(255, 246, 188, .1);
+				box-shadow: 0 0 20px rgba(0, 9, 0, .1);
 			}
+
 		}
-		.zmiti-letter-C{
+
+		.zmiti-letter-C {
 			@include pos(r);
-			ol{
+
+			ol {
 				width: 100%;
 				height: 100%;
 				@include pos(a);
 				left: 0;
-				top:0;
-				li{
-					box-sizing:border-box;
+				top: 0;
+
+				li {
+					box-sizing: border-box;
 					width: 2.6rem;
 					height: 2.3rem;
 					float: left;
 				}
+
 			}
+
 		}
-		img{
+
+		img {
 			width: 7.8rem;
 			display: block;
 		}
 
 	}
-	
-	.zmiti-page6-img{
-		&>div{
+
+	.zmiti-page6-img {
+		&>div {
 			width: 7rem;
 			height: 100%;
 			@include pos(r);
 			top: -1rem;
-			img{
-				&:nth-of-type(1){
+
+			&.show {
+				img {
+					opacity: 1;
+					@include transform(translate3d(0, 0, 0));
+				}
+
+			}
+
+			img {
+				@include transform(translate3d(-2rem, 1rem, 0));
+				opacity: 0;
+				@include transition(1s);
+
+				&:nth-of-type(1) {
 					@include pos(a);
 					top: 0;
 					left: 0;
 				}
+
+				&:nth-of-type(2) {
+					@include transition(1s .4s);
+				}
+
 			}
+
 		}
+
 	}
 
-	.zmiti-page7-img{
-		bottom:0;	
-		box-sizing:border-box;
-		ul{
+	.zmiti-page7-img {
+		bottom: 0;
+		box-sizing: border-box;
+
+		ul {
 			margin-top: 1.5rem;
 			width: 8rem;
 			float: right;
-			li{
+
+			&.show {
+				li {
+					@include transform(translate3d(0, 0, 0));
+					opacity: 1;
+				}
+
+			}
+
+			li {
+				@include transform(translate3d(2rem, 0, 0));
+				opacity: 0;
+				$time: .4s;
+				@include transition(.6s);
+
+				&:nth-of-type(1) {
+				}
+
+				&:nth-of-type(2) {
+					@include transition(.6s $time);
+				}
+
+				&:nth-of-type(3) {
+					@include transition(.6s $time*2);
+				}
+
+				&:nth-of-type(4) {
+					@include transition(.6s $time*3);
+				}
+
+				&:nth-of-type(5) {
+					@include transition(.6s $time*4);
+				}
+
+				&:nth-of-type(6) {
+					@include transition(.6s $time*5);
+				}
+
 				width: 100%;
-				background:#fff;
+				background: #fff;
 				height: 1.3rem;
 				line-height: 1.3rem;
-				margin:.5rem 0;
+				margin: .5rem 0;
 				text-indent: 2em;
 				@include pos(r);
-				&:before{
-					content:'';
+
+				&:before {
+					content: '';
 					@include pos(a);
 					width: 100%;
 					height: 100%;
 					left: 0;
 					top: 0;
-					box-shadow:0 0 10px rgba(0,0,0,.2);
+					box-shadow: 0 0 10px rgba(0, 0, 0, .2);
 				}
 
-				span{
+				span {
 					font-size: .5rem;
 					font-weight: bold;
 					margin-right: .7rem;
 				}
-				label{
-					font-size:.5rem;
+
+				label {
+					font-size: .5rem;
 				}
+
 			}
+
 		}
-		.zmiti-wish{
+
+		.zmiti-wish {
 			font-size: 12px;
-			color:#b5cfe4;
+			color: #fdf5c3;
 			@include pos(a);
 			width: 100%;
-			bottom:2rem;
+			bottom: 2rem;
 			text-align: center;
 		}
-		.zmiti-share-btn{
-			background:#47acfd;
+
+		.zmiti-share-btn {
+			background: #fdf5c3;
 			width: 8rem;
 			@include br(1rem);
 			@include pos(a);
 			left: 1rem;
-			bottom:.4rem;
+			bottom: .4rem;
 			font-size: .5rem;
-			color:#fff;
+			color: #ec3a3f;
 			text-align: center;
-			height: 1.4rem;
-			line-height: 1.4rem;
-
+			height: 1.2rem;
+			line-height: 1.2rem;
 		}
+
 	}
 
-
-	.zmiti-pagation{
+	.zmiti-pagation {
 		width: 10rem;
-		height: 3rem;
-		background:#f0f9fe;
+		height: 2rem;
+		background: #f0f9fe;
 		@include pos(a);
 		left: 0;
-		bottom:0;
+		bottom: 0;
 		@include displayBox(horizontal);
-		-webkit-box-pack:justify;
-		&>div{
+		-webkit-box-pack: justify;
+
+		&>div {
 			width: 2rem;
 
-			&:nth-of-type(1),&:nth-of-type(3){
-				border:1px solid #000;
+			&:nth-of-type(1), &:nth-of-type(3) {
+				border: 1px solid #000;
 				@include br(10px);
 				height: .7rem;
 				line-height: .7rem;
-				&.disabled{
-					border-color:#dbe1e8;
-					color:#dbe1e8;
+
+				&.disabled {
+					border-color: #dbe1e8;
+					color: #dbe1e8;
 				}
+
 			}
-			&:nth-of-type(1){
+
+			&:nth-of-type(1) {
 				margin-left: -.4rem;
 				text-align: right;
-				padding-right:.4rem;
+				padding-right: .4rem;
+			}
 
-			}
-			&:nth-of-type(3){
+			&:nth-of-type(3) {
 				margin-right: -.4rem;
-				padding-left:.4rem;
+				padding-left: .4rem;
 			}
+
 		}
 
-
 	}
+
+}
+
+.zmiti-mask {
+	width: 100%;
+	height: 100%;
+	@include pos(f);
+	z-index: 1000;
+	background: rgba(0, 0, 0, .6);
+	left: 0;
+	top: 0;
+	text-align: right;
+
+	img {
+		width: 5rem;
+	}
+
+}
+
+.zmiti-img-C {
+	z-index: 1333;
+	background: rgba(0, 0, 0, 1);
+	@include displayBox(horizontal);
+
+	img {
+		display: block;
+	}
+
+}
+
+.zmiti-progress {
+	width: 100%;
+	height: 2px;
+	background: rgb(228, 37, 63);
+	@include pos(a);
+	left: 0;
+	bottom: 0;
+	@include transition(.5s);
+	@include transformOrigin(left);
 }
